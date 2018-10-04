@@ -78,54 +78,54 @@
     token: 57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46
     scan_interval: 2
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/36
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/36
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Kitchen Temperature'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Hallway Temperature'
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Hallway Battery'
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
     value_template: '{{ value_json.state.presence }}'
     name: 'Hallway Presence'
     scan_interval: 10
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Hallway Lux'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/38
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/38
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Kitchen Lux'
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
     value_template: '{{ value_json.state.presence }}'
     name: 'Kitchen Presence'
     scan_interval: 10
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
