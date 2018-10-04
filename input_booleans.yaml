@@ -1,0 +1,25 @@
+#fadingtime_on
+  fadingtime_on:
+    name: 'Sunset'
+    icon: mdi:weather-sunset-down
+    initial: off
+#vattenkokare
+  vattenkokare:
+    name: 'Boiler'
+    icon: mdi:kettle
+    initial: off
+#perka
+  perka:
+    name: 'Coffee'
+    icon: mdi:coffee
+    initial: off
+#fadelight
+  fadelight:
+    name: 'Solnedgång'
+    initial: on
+    icon: mdi:weather-sunset-down
+#läggdags vardagar
+  alarmweekday_lidija:
+    name: 'Enbart vardagar'
+    initial: on
+    icon: mdi:calendar
