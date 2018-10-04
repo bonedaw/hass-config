@@ -1,1 +1,147 @@
+homeassistant:
+  name: Home
+  latitude: !secret lat_home
+  longitude: !secret long_home
+  elevation: 3
+  unit_system: metric
+  time_zone: !secret time_zone
+  customize: !include customize.yaml
+#  packages: 
+#    pack_1: !include janet.yaml
+zone: !include zone.yaml
+frontend:
+  javascript_version: auto
+#  javascript_version: latest
+#  themes: !include themes.yaml
+config:
+http:
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+#  base_url: !secret my_baseurl
+#  server_port: 8123
+#  ssl_certificate: !secret ssl_certificate
+#  ssl_key: !secret ssl_key
+#  trusted_networks: !secret trusted_networks
+#  api_password: !secret http_password
+updater:
+#discovery:
+#  ignore:
+#    - samsung_tv
+# Allows you to issue voice commands from the frontend in enabled browsers
+#conversation: !include conversation.yaml
+#intent_script: !include intent_script.yaml
+history:
+  exclude:
+    entities:
+       !include logbook.yaml
+recorder:
+  purge_interval: 2
+  purge_keep_days: 5
+#hue
+hue:
+  bridges:
+    - host: 192.168.10.218
+      allow_unreachable: true
+      allow_hue_groups: true
+#zwave
+#zwave:
+#  usb_path: /dev/ttyACM0
+#  new_entity_ids: true
+#telldus duo
+#tellstick:
+#  host: core-tellstick
+#  port: [50800, 50801]
+#  signal_repetitions: 10
+#tellduslive:
+#  public_key: !secret telldus_public_key
+#  private_key: !secret telldus_private_key
+#  token: !secret telldus_token
+#  token_secret: !secret telldus_token_secret
+switch: !include switch.yaml
+light: !include lights.yaml
+camera: !include camera.yaml
+timer: !include timer.yaml
+group: !include groups.yaml
+input_select: !include input_selects.yaml
+input_number: !include input_sliders.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scene.yaml
+sensor: !include sensor.yaml
+binary_sensor: !include binary_sensors.yaml
+device_tracker: !include device_tracker.yaml
+mqtt: !include mqtt.yaml
+media_player: !include media_player.yaml
+cast:
+input_boolean: !include input_booleans.yaml
+notify: !include notify.yaml
+tts:
+  - platform: google
+google:
+  client_id: !secret goocalendar_id
+  client_secret: !secret goocalendar_key
+#    language: 'sv'
+#sv-se
+logbook:
+  exclude:
+    domains:
+      - sensor
+      - switch
+      - media_player
+      - sun
+      - weblink
+      - lights
+    entities:
+      - sensor.last_boot
+      - sensor.date
+logger:
+  default: error
+map:
+sun:
+# Cloud
+cloud:
+  google_actions:
+    filter:
+      include_entities: 
+       !include include_entities.yaml
+      include_domains:
+        - switch
+        - light
+      exclude_entities:
+       !include exclude_entities.yaml
+    entity_config:
+      switch.kitchen:
+        name: Custom Name for Google Assistant
+        aliases:
+         - bright lights
+         - entry lights
+        room: living room
+hassio:
+#alarmpanel mqtt
+alarm_control_panel:
+  - platform: manual_mqtt
+    state_topic: home/alarm
+    command_topic: home/alarm/set
+ifttt:
+  key: !secret ifttt_key
+python_script:
+panel_iframe:
+  trafiken:
+      title: 'Trafiken'
+      url: 'https://trafiken.nu/goteborg/karta/'
+      icon: mdi:traffic-light
+  allergi:
+      title: 'Allergi'
+      url: 'https://weather.com/sv-SE/forecast/allergy/l/SWXX0031:1:SW'
+      icon: mdi:poll
+  weather:
+      title: 'Väder'
+      url: 'https://weather.com/sv-SE/weather/today/l/SWXX0031:1:SW'
+      icon: mdi:poll
+  magicmirror:
+    title: 'Magic Mirror'
+    url: 'http://hassio.local:8181'
+    icon: mdi:image-filter-frames
 
+#weather:
+#  - platform: yweather
+#databas
