@@ -6,29 +6,11 @@ homeassistant:
   unit_system: metric
   time_zone: !secret time_zone
   customize: !include customize.yaml
-#  packages: 
-#    pack_1: !include janet.yaml
 zone: !include zone.yaml
 frontend:
   javascript_version: auto
-#  javascript_version: latest
-#  themes: !include themes.yaml
 config:
-http:
-# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-#  base_url: !secret my_baseurl
-#  server_port: 8123
-#  ssl_certificate: !secret ssl_certificate
-#  ssl_key: !secret ssl_key
-#  trusted_networks: !secret trusted_networks
-#  api_password: !secret http_password
 updater:
-#discovery:
-#  ignore:
-#    - samsung_tv
-# Allows you to issue voice commands from the frontend in enabled browsers
-#conversation: !include conversation.yaml
-#intent_script: !include intent_script.yaml
 history:
   exclude:
     entities:
@@ -42,20 +24,6 @@ hue:
     - host: 192.168.10.218
       allow_unreachable: true
       allow_hue_groups: true
-#zwave
-#zwave:
-#  usb_path: /dev/ttyACM0
-#  new_entity_ids: true
-#telldus duo
-#tellstick:
-#  host: core-tellstick
-#  port: [50800, 50801]
-#  signal_repetitions: 10
-#tellduslive:
-#  public_key: !secret telldus_public_key
-#  private_key: !secret telldus_private_key
-#  token: !secret telldus_token
-#  token_secret: !secret telldus_token_secret
 switch: !include switch.yaml
 light: !include lights.yaml
 camera: !include camera.yaml
@@ -141,7 +109,3 @@ panel_iframe:
     title: 'Magic Mirror'
     url: 'http://hassio.local:8181'
     icon: mdi:image-filter-frames
-
-#weather:
-#  - platform: yweather
-#databas
