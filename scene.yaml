@@ -1,0 +1,192 @@
+  - name: 'goodbye'
+    entities:
+        script.goodbye:
+           state: on
+  - name: 'weather'
+    entities:
+        script.schedule:
+           state: on
+  - name: 'schedule'
+    entities:
+        script.schedule:
+           state: on
+  - name: 'information'
+    entities:
+        script.morning:
+           state: on
+  - name: 'Topbox mute'
+    entities:
+        script.topbox_mute_toggle:
+           state: on
+  - name: 'Topbox off'
+    entities:
+        script.topbox_power_toggle:
+           state: on
+  - name: 'Source one'
+    entities:
+        script.tv_hdmi1:
+           state: on
+  - name: 'Source two'
+    entities:
+        script.tv_hdmi2:
+           state: on
+  - name: 'Television paus'
+    entities:
+        script.tv_paus:
+           state: on
+  - name: 'Television play'
+    entities:
+        script.tv_play:
+           state: on
+  - name: 'Television power'
+    entities:
+        script.tv_power_on:
+           state: on
+  - name: 'Volume up ten'
+    entities:
+        script.volume_up_10:
+           state: on
+  - name: 'Volume up ten'
+    entities:
+        script.volume_up_10:
+           state: on
+  - name: 'Volume up five'
+    entities:
+        script.volume_up_5:
+           state: on
+  - name: 'cable'
+    entities:
+        script.denon_cbl:
+           state: on
+  - name: 'audio'
+    entities:
+        script.denon_cd:
+           state: on
+  - name: 'samsung'
+    entities:
+        script.denon_tv:
+           state: on
+  - name: 'mediacenter'
+    entities:
+        script.start_music:
+           state: on
+  - name: 'watch tv'
+    entities:
+        script.start_television:
+           state: on
+  - name: 'start cast'
+    entities:
+        script.start_cast:
+           state: on
+  - name: 'Livingroom normal'
+    entities:
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 150
+            transition: 3
+        light.book_shelf_color_two:
+            state: on
+            brightness: 150
+            rgb_color: [255,189,84]
+            transition: 3
+        light.living_room_window_light:
+            state: on
+            brightness: 150
+            rgb_color: [255,189,84]
+            transition: 3
+  - name: 'Livingroom dim'
+    entities:
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+  - name: 'skymning'
+    entities:
+        light.living_room_right_sofa:
+            state: on
+            color_temp: 454
+            brightness: 50
+            transition: 30
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 50
+            transition: 30
+        light.kitchen_window:
+            state: on
+            color_temp: 454
+            brightness: 50
+            transition: 30
+  - name: 'skymning2'
+    entities:
+        light.living_room_right_sofa:
+            state: off
+            transition: 30
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 150
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            brightness: 150
+            rgb_color: [255,189,84]
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            brightness: 150
+            rgb_color: [255,189,84]
+            transition: 30
+        light.kitchen_window:
+            state: on
+            color_temp: 454
+            brightness: 135
+            transition: 30
+  - name: 'all off'
+    entities:
+        light.bedroom:
+            state: off
+        light.dining:
+            state: off
+        light.guest_room:
+            state: off
+        light.hallway:
+            state: off
+        light.kitchen:
+            state: off
+        light.living_room:
+            state: off
+        light.sink:
+            state: off
+  - name: 'sleep1'
+    entities:
+        light.bedroom_window_light:
+            state: on
+            brightness: 122
+  - name: 'sleep2'
+    entities:
+        light.bedroom_window_light:
+            state: off
+            transition: 1800
