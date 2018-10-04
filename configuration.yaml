@@ -105,7 +105,3 @@ panel_iframe:
       title: 'Väder'
       url: 'https://weather.com/sv-SE/weather/today/l/SWXX0031:1:SW'
       icon: mdi:poll
-  magicmirror:
-    title: 'Magic Mirror'
-    url: 'http://hassio.local:8181'
-    icon: mdi:image-filter-frames
