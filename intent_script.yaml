@@ -1,0 +1,41 @@
+  Polleninfo:
+    speech:
+      text: >
+               {% set mymap = { 'i.h':'None','i.u':'No messaurement','L':'Low','L-M':'Low to Medium','M':'Medium','M-H':'Medium to High','H':'High','H+':'Very High'} %}
+               {% set bjork = 'None' %}
+               {% set gras = 'None' %}
+               {% set al = 'None' %}
+               {% set alm = 'None' %}
+               {% set bok = 'None' %}
+               {% set ek = 'None' %}
+               {% set grabo = 'None' %}
+               {% set hassel = 'None' %}
+               {% set salgvide = 'None' %}
+               {% if states.sensor.pollen_bjork.state in mymap.keys() %}
+               {% set bjork = mymap[states.sensor.pollen_bjork.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_gras.state in mymap.keys() %}
+               {% set gras = mymap[states.sensor.pollen_gras.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_al.state in mymap.keys() %}
+               {% set al = mymap[states.sensor.pollen_al.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_alm.state in mymap.keys() %}
+               {% set alm = mymap[states.sensor.pollen_alm.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_bok.state in mymap.keys() %}
+               {% set bok = mymap[states.sensor.pollen_bok.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_ek.state in mymap.keys() %}
+               {% set ek = mymap[states.sensor.pollen_ek.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_grabo.state in mymap.keys() %}
+               {% set grabo = mymap[states.sensor.pollen_grabo.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_hassel.state in mymap.keys() %}
+               {% set hassel = mymap[states.sensor.pollen_hassel.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_salgvide.state in mymap.keys() %}
+               {% set salgvide = mymap[states.sensor.pollen_salgvide.state] %}
+               {% endif %}
+               {{["Wakey, wakey.","Rise and shine.","Good morning sunshine.","Get your butt out of bed."] | random}} ... to this awesome {{states.sensor.weekday.state}} ... time is ... {{states.sensor.time.state}} ... date is ... {{states.sensor.dates.state}} ... on week ... {{states.sensor.weekofyear.state}} ... It's currently {{states.sensor.dark_sky_summary.state}} ... Temperature right now is ... {{states.sensor.medel_temp_ute.state}} ... lowest today will be ... {{states.sensor.pws_temp_low_1d_c.state}} ... highest today will be ... {{states.sensor.pws_temp_high_1d_c.state}} ... Temperature feels like {{states.sensor.medel_chill_effect.state}} ... Here is a summary of this day ... {{states ('sensor.dark_sky_hourly_summary') }} ... Status for grass is {{ gras }} ... Status for birch is {{ bjork }} ... Status for alder is {{ al }} ... Status for elm is {{ alm }} ... Status for beech is {{ bok }} ... Status for oak is {{ ek }} ... Status for mugwort is {{ grabo }} ... Status for hazel is {{ hassel }} ... Status for willow is {{ salgvide }} ... {{["Lets rock.","Have a great day.","Its going to be awesome today.","Rock and roll."] | random}}.
