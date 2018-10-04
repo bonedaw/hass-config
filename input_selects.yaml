@@ -1,0 +1,79 @@
+# lägg till följande för att få en dropdown list med  val
+  status_hemma:
+    name: 'Home or away'
+    icon: mdi:panda
+    options:
+     - 'Away'
+     - 'Home'
+    initial: 'Home'
+#hue lights
+  livingroom:
+    name: 'Livingroom hue scene'
+    options:
+      - "Select"
+      - "Normal"
+      - "Red"
+      - "Orange"
+      - "Yellow"
+      - "Green"
+      - "Blue"
+      - "Indigo"
+      - "Violet"
+      - "Purple"
+      - "Sienna"
+      - "Salmon"
+      - "Peachpuff"
+      - "Lightpink"
+      - "Aqua"
+      - "Aquamarine"
+      - "Aliceblue"
+      - "Chocolate"
+  kitchen:
+    name: 'Kitchen hue scene'
+    options:
+      - "Select"
+      - "Normal"
+      - "Red"
+      - "Orange"
+      - "Yellow"
+      - "Green"
+      - "Blue"
+      - "Indigo"
+      - "Violet"
+      - "Purple"
+  all:
+    name: 'All hue scene'
+    options:
+      - "Select"
+      - "Normal"
+      - "Red"
+      - "Orange"
+      - "Yellow"
+      - "Green"
+      - "Blue"
+      - "Indigo"
+      - "Violet"
+      - "Purple"
+#högtalare
+  speakers:
+    name: Speakers
+    icon: mdi:google-home
+    options:
+      - 'Hallway'
+      - 'Music'
+      - 'All'
+      - 'Kitchen'
+      - 'Living room'
+      - 'V-rum Soffa Vänster'
+      - 'V-rum Soffa Höger'
+      - 'V-rum'
+    initial: 'Music'
+#årstid
+  status_season:
+    name: 'Season'
+    icon: mdi:language-swift
+    options:
+     - 'Summer'
+     - 'Winter'
+     - 'Spring'
+     - 'Autumn'
