@@ -1,0 +1,587 @@
+    morning_music:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.chromecast_audio
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.chromecast_audio
+              volume_level: '0.4'
+          - service: media_player.play_media
+            data_template:
+              entity_id: media_player.chromecast_audio
+              media_content_type: playlist
+              media_content_id: spotify:user:spotify:playlist:37i9dQZF1DXcxacyAXkQDu
+#weather
+    weather:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.living_room_speaker
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_speaker
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.living_room_speaker
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Wakey, wakey.","Rise and shine.","Good morning sunshine.","Get your butt out of bed."] | random}} ...
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Good afternoon.","Hey there you are.","Do you want some information.","Lets see what i can tell you."] | random}} ...
+               {% else %}
+               {{["Good evening.","Good to see you.","Nice to see you.","How do you do."] | random}} ...
+               {% endif %}
+               It's currently {{states.sensor.dark_sky_summary.state}} ... Temperature right now is {{states.sensor.medel_temp_ute.state|round}} degrees ... Temperature feels like {{states.sensor.medel_chill_effect.state|round}} degrees ... Here is a summary of this day ... {{states ('sensor.dark_sky_hourly_summary') }}  {{["Lets rock.","Have a great day.","Its going to be awesome today.","Rock and roll."] | random}}
+#calendar
+    schedule:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.living_room_speaker
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_speaker
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.living_room_speaker
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Wakey, wakey.","Rise and shine.","Good morning sunshine.","Get your butt out of bed."] | random}} to this awesome
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Good afternoon.","Hey there you are.","Do you want some information.","Lets see what i can tell you."] | random}} this awesome
+               {% else %}
+               {{["Good evening.","Good to see you.","Nice to see you.","How do you do."] | random}} this awesome
+               {% endif %}
+               {{states.sensor.weekday.state}} ... time is  {{states.sensor.time.state}} ... date is  {{states.sensor.dates.state}} ... on week {{states.sensor.weekofyear.state}} ... Your next meeting called {{states.sensor.cmessage.state}} ...  {{["Lets rock.","Have a great day.","Its going to be awesome today.","Rock and roll."] | random}}
+#full information
+    morning:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.living_room_speaker
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_speaker
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.living_room_speaker
+              message: >
+               {% set mymap = { 'i.h':'None','i.u':'No messaurement','L':'Low','L-M':'Low to Medium','M':'Medium','M-H':'Medium to High','H':'High','H+':'Very High'} %}
+               {% set bjork = 'None' %}
+               {% set gras = 'None' %}
+               {% set al = 'None' %}
+               {% set alm = 'None' %}
+               {% set bok = 'None' %}
+               {% set ek = 'None' %}
+               {% set grabo = 'None' %}
+               {% set hassel = 'None' %}
+               {% set salgvide = 'None' %}
+               {% if states.sensor.pollen_bjork.state in mymap.keys() %}
+               {% set bjork = mymap[states.sensor.pollen_bjork.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_gras.state in mymap.keys() %}
+               {% set gras = mymap[states.sensor.pollen_gras.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_al.state in mymap.keys() %}
+               {% set al = mymap[states.sensor.pollen_al.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_alm.state in mymap.keys() %}
+               {% set alm = mymap[states.sensor.pollen_alm.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_bok.state in mymap.keys() %}
+               {% set bok = mymap[states.sensor.pollen_bok.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_ek.state in mymap.keys() %}
+               {% set ek = mymap[states.sensor.pollen_ek.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_grabo.state in mymap.keys() %}
+               {% set grabo = mymap[states.sensor.pollen_grabo.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_hassel.state in mymap.keys() %}
+               {% set hassel = mymap[states.sensor.pollen_hassel.state] %}
+               {% endif %}
+               {% if states.sensor.pollen_salgvide.state in mymap.keys() %}
+               {% set salgvide = mymap[states.sensor.pollen_salgvide.state] %}
+               {% endif %}
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Wakey, wakey.","Rise and shine.","Good morning sunshine.","Get your butt out of bed."] | random}} to this awesome
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Good afternoon.","Hey there you are.","Do you want some information.","Lets see what i can tell you."] | random}} this awesome
+               {% else %}
+               {{["Good evening.","Good to see you.","Nice to see you.","How do you do."] | random}} this awesome
+               {% endif %}
+               {{states.sensor.weekday.state}} ... time is  {{states.sensor.time.state}} ... date is  {{states.sensor.dates.state}} ... on week {{states.sensor.weekofyear.state}} ... Your next meeting called {{states.sensor.cmessage.state}} ... It's currently {{states.sensor.dark_sky_summary.state}} ... Temperature right now is {{states.sensor.medel_temp_ute.state|round}} degrees ... Temperature feels like {{states.sensor.medel_chill_effect.state|round}} degrees ... Here is a summary of this day ... {{states ('sensor.dark_sky_hourly_summary') }} ... Status for grass is {{ gras }} ... Status for birch is {{ bjork }} ... Status for alder is {{ al }} ... Status for elm is {{ alm }} ... Status for beech is {{ bok }} ... Status for oak is {{ ek }} ... Status for mugwort is {{ grabo }} ... Status for hazel is {{ hassel }} ... Status for willow is {{ salgvide }} ... {{["Lets rock.","Have a great day.","Its going to be awesome today.","Rock and roll."] | random}}
+
+#goodbye
+    goodbye:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.goodbye1
+          - delay: 00:00:12
+          - service: script.turn_on
+            data:
+              entity_id: script.goodbye2
+          - delay: 00:00:06
+          - service: script.turn_on
+            data:
+              entity_id: script.goodbye3
+          - delay: 00:00:01
+    goodbye1:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+    goodbye2:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_off
+          - delay: 00:00:01
+          - service: script.turn_on
+            data:
+              entity_id: script.tv_power_toggle
+          - delay: 00:00:01
+          - service: script.turn_on
+            data:
+              entity_id: script.topbox_power_toggle
+    goodbye3:
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_hanger
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_fan
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_sink
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_sink_two
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_window
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.book_shelf_color_two
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.bookshelf_color
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.living_room_right_sofa
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.living_room_window_light
+
+    play_song:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.living_room_speaker
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_speaker
+              volume_level: '0.4'
+          - service: media_player.play_media
+            data:
+              entity_id: media_player.living_room_speaker
+              media_content_id: '/local/mp3/dawn-chorus.mp3'
+              media_content_type: 'audio/mp3'
+#TV
+    tv_cursor_down:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxMSExITEhMSEzcTNxMSExITNxM3EzcTNxMSExITNxMABiMNBQ=="
+    tv_cursor_enter:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzUTNRM1ExATEBMQExATEBM1EzUTNRMQExATEBMQExATEBMQExATNRMQEzUTNRMQEzUTNRM1ExATNRMQExATNRMABkcNBQ=="
+    tv_cursor_left:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxMSEzcTEhMSEzcTNxMSExITNxMSEzcTNxMSExITNxMABiMNBQ=="
+    tv_cursor_right:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITEhM3ExITEhMSEzcTNxMSEzcTEhM3EzcTNxMSExITNxMABiMNBQ=="
+    tv_cursor_up:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITEhMSExITEhMSEzcTNxMSEzcTNxM3EzcTNxMSExITNxMABiMNBQ=="
+    tv_netflix:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSTEjgSOBI4EhMSExITEhMSExI4EjgSOBITEhMSExITEhMSOBI4EhMSExI4EjgSOBI4EhMSExI4EjgSExITEhMSExIABaQNBQ=="
+    tv_picture_dynamic:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISOBISEjgSOBI4EjgSEhI4EhISOBISEhISEhISEjgSEhIABi0NBQ=="
+    tv_picture_movie:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EjgSOBI4EhISOBI4EjgSEhISEhISEhI4EhISEhIABi0NBQ=="
+    tv_picture_movie1:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEjcSNxI3EhISEhISEhISEhI3EjcSNxISEhISEhISEhISEhI3EjcSNxI3EhISNxI3EjcSEhISEhISEhI3EhISEhIABaQNBQ=="
+    tv_picture_movie2:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEjcSNxI3EhISEhISEhISEhI3EjcSNxISEhISEhISEhISNxISEjcSNxI3EhISNxI3EhISNxISEhISEhI3EhISEhIABaQNBQ=="
+    tv_smart_hub:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJOTEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISOBISEhISOBI4EjgSOBISEhISOBI4EhISEhISEhISOBIABgsNBQ=="
+    tv_hdmi1:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISOBISEhISOBISEjgSOBI4EhISOBI4EhISOBISEhISEhIABi0NBQ=="
+    tv_hdmi2:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EjgSOBI4EjgSEhI4EjgSEhISEhISEhISEjgSEhIABi0NBQ=="
+    tv_power_on:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxMSExITNxM3ExITEhM3ExITNxM3ExITEhM3EzcTEhMABiMNBQ=="
+    tv_paus:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJOTEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EhISOBISEhISOBISEjgSEhI4EhISOBI4EhISOBIABgsNBQ=="
+    tv_play:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJGSEjcSNxI3EhISEhISExISEhI3EjcSNxISEhMSEhISEhITNhM2EjcSExISEhISNxISExISEhISEjcSNxI3EhITNhMABe0NBQ=="
+    tv_power_toggle:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJKSETYRNhE2ERERERERERERERE2ETYRNhERERERERERERERERE2ERERERERERERERERETYRERE2ETYRNhE2ETYRNhEABhANBQ=="
+    tv_mute_toggle:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxM3EzcTNxMSExITEhMSExITEhMSExITNxM3EzcTNxMABiMNBQ=="
+#TV Box
+    topbox_power_toggle:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpMSNxI3EjcSNxISEhISEhISEhISNxI3EhISEhISEhISNxISEjcSEhISEjcSEhISEhISNxISEjcSNxISEjcSNxI3EgAFTwABJkkSAAxXDQUAAAAAAAA"
+    topbox_mute_toggle:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpMSNhI2EjYSNhISEhISEhISEhISNhI2EhISEhISEhISNhI2EjYSNhI2EhISEhISEhISEhISEhISEhI2EjYSNhI2EgAFTgABJkkSAAxXDQUAAAAAAAA="
+    topbox_play_pause_toggle:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpMSNxI3EjcSNxISEhISEhISEhISNxI3EhISEhISEhISNxI3EhISNxISEhISNxISEhISEhI3EhISNxI3EhISNxI3EgAFTgABJkkSAAxWDQUAAAAAAAA="
+    topbox_previous_channel:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpMSNxI3EjcSNxISEhISEhISEhISNxI3EhISEhISEhISNxI3EhISEhI3EjcSEhISEhISEhI3EjcSEhISEjcSNxI3EgAFTwABJkkSAAxWDQUAAAAAAAA="
+    topbox_channel_down:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpMSNhI2EjYSNhISEhISEhISEhISNhI2EhISEhISEhISNhISEjYSEhI2EjYSEhISEhISNhISEjYSEhISEjYSNhI2EgAFTwABJkkSAAxWDQUAAAAAAAA="
+    topbox_channel_up:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAAABJpQSNxI3EjcSNxISEhISEhISEhISNxI3EhISEhISEhISNxISEhISEhISEjcSEhISEhISNxI3EjcSNxISEjcSNxI3EgAFTwABJkkSAAxWDQUAAAAAAAA="
+#Stereo
+    denon_on:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=="
+    denon_off:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIGQg8CBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=="
+    denon_cbl:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIGQgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=="
+    denon_cd:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIGQgZCDwIGQgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAgZCDwIPAg8CBkIGQg8CDwIAAWWDQUAAA=="
+    denon_tv:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=="
+    volume_up:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    volume_up_10:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgpEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    volume_down:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    volume_down_10:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgpEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    volume_down_5:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgVEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    volume_up_5:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgVEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    start_music:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_on
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_up_5
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_cd
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_up_10
+    start_television:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.topbox_power_toggle
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_on
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.tv_power_toggle
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_cbl
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_up_10
+    start_cast:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.tv_hdmi2
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_tv
+#bedtime lidija
+    sleep1:
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.bedroom_window_light
+              state: on
+              brightness: 122
+    sleep2:
+        sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.bedroom_window_light
+              transition: 1800 #1800
+    moodlight:
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.book_shelf_color_two,light.book_shelf_color,light.living_room_window_light
+              effect: colorloop
+              brightness: 127
+              transition: 5
+    stop_moodlight:
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.book_shelf_color_two,light.book_shelf_color,light.living_room_window_light
+              brightness: 197
+              hs_color: 36.706,66.667
+              rgb_color: 255,189,84
+              xy_color: 0.502,0.416
+              transition: 5
+    sleep:
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.sleep1
+          - delay: 00:01:00
+          - service: scene.turn_on
+            data:
+              entity_id: scene.sleep2
+    skymning:
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.skymning
+    skymning2:
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.skymning2
+#coffe/vattenkokare off
+    coffee_off:
+        sequence:
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.perka
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.vattenkokare
+          - service: light.turn_off
+            data:
+              entity_id: light.kaffe
+          - service: input_boolean.turn_off
+            data:
+              entity_id: input_boolean.coffeornot
+    kaffeplugg:
+        sequence:
+          - service: timer.start
+            data:
+              entity_id: timer.timer_perka
+#coffee on
+    coffee_on:
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.kaffe
+          - service: timer.start
+            data:
+              entity_id: timer.timer_perka
+#vattenkokare on
+    vattenkokare_on:
+        sequence:
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.vattenkokare
+          - service: timer.start
+            data:
+              entity_id: timer.timer_vattenkokare
+          - service: light.turn_on
+            data:
+              entity_id: light.kaffe
