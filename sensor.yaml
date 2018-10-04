@@ -1,0 +1,816 @@
+  - platform: template
+    sensors:
+      cmessage:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.message}}"
+  - platform: template
+    sensors:
+      caday:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.all_day}}"
+  - platform: template
+    sensors:
+      cstart:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.start_time}}"
+  - platform: template
+    sensors:
+      cend:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.end_time}}"
+  - platform: template
+    sensors:
+      clocation:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.location}}"
+  - platform: template
+    sensors:
+      cdesc:
+        value_template: "{{ states.calendar.christerninjusnet.attributes.description}}"
+
+  - platform: template
+    sensors:
+      comessage:
+        value_template: "{{ states.calendar.contacts.attributes.message}}"
+  - platform: template
+    sensors:
+      coaday:
+        value_template: "{{ states.calendar.contacts.attributes.all_day}}"
+  - platform: template
+    sensors:
+      costart:
+        value_template: "{{ states.calendar.contacts.attributes.start_time}}"
+  - platform: template
+    sensors:
+      coend:
+        value_template: "{{ states.calendar.contacts.attributes.end_time}}"
+  - platform: template
+    sensors:
+      colocation:
+        value_template: "{{ states.calendar.contacts.attributes.location}}"
+  - platform: template
+    sensors:
+      codesc:
+        value_template: "{{ states.calendar.contacts.attributes.description}}"
+        
+  - platform: template
+    sensors:
+      cymessage:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.message}}"
+  - platform: template
+    sensors:
+      cyaday:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.all_day}}"
+  - platform: template
+    sensors:
+      cystart:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.start_time}}"
+  - platform: template
+    sensors:
+      cyend:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.end_time}}"
+  - platform: template
+    sensors:
+      cylocation:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.location}}"
+  - platform: template
+    sensors:
+      cydesc:
+        value_template: "{{ states.calendar.cykelkalendern.attributes.description}}"
+
+  - platform: hue
+    ip_address: 192.168.10.218
+    token: 57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46
+    scan_interval: 2
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/36
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    scan_interval: 1800
+    name: 'Kitchen Temperature'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    scan_interval: 1800
+    name: 'Hallway Temperature'
+    
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Hallway Battery'
+    
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
+    value_template: '{{ value_json.state.presence }}'
+    name: 'Hallway Presence'
+    scan_interval: 10
+    
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
+    value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
+    unit_of_measurement: Lux
+    scan_interval: 300
+    name: 'Hallway Lux'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/38
+    value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
+    unit_of_measurement: Lux
+    scan_interval: 300
+    name: 'Kitchen Lux'
+    
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    value_template: '{{ value_json.state.presence }}'
+    name: 'Kitchen Presence'
+    scan_interval: 10
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Kitchen Battery'
+
+##################################
+#                                #
+#       System                   #
+#                                #
+##################################
+# time
+  - platform: time_date
+    display_options:
+    - 'time'
+    - 'date'
+    - 'date_time'
+    - 'time_date'
+    - 'time_utc'
+    scan_interval: 30
+##################################
+#                                #
+#       Väder                    #
+#                                #
+##################################
+# darksky
+  - platform: darksky
+    api_key: c37aa122124d2e787eb6045eec229415
+    monitored_conditions:
+      - summary
+      - icon
+      - nearest_storm_distance
+      - hourly_summary
+      - temperature_high
+      - temperature_low
+      - uv_index
+# yr
+  - platform: yr
+    name: Weather
+    forecast: 24
+    monitored_conditions:
+      - temperature
+      - symbol
+      - precipitation
+      - windSpeed
+      - pressure
+      - windDirection
+      - humidity
+      - fog
+      - cloudiness
+      - lowClouds
+      - mediumClouds
+      - highClouds
+      - dewpointTemperature
+#  - platform: worldtidesinfo
+#    api_key: 5eefec0a-ce4d-4774-9136-7c753d535f6c
+  - platform: yweather
+    monitored_conditions:
+      - weather
+      - weather_current
+      - temp_min
+      - temp_max
+      - wind_speed
+      - pressure
+      - visibility
+      - humidity
+      - temperature
+##################################
+#                                #
+#       Luftkvalitet             #
+#                                #
+##################################
+#lufttryck
+  - platform: rest
+    name: GBG_AirPressure
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.Weather.AirPressure["Value"] }}'
+    unit_of_measurement: "hPa"
+#regn
+#  - platform: rest
+#    name: GBG_RainFall
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    method: GET
+#    value_template: '{{ value_json.Weather.RainFall["Value"] }}'
+#    unit_of_measurement: "mm"
+#luftfuktighet
+  - platform: rest
+    name: GBG_Humidity
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.Weather.Humidity["Value"] }}'
+    unit_of_measurement: "%"
+#solinstrålning
+  - platform: rest
+    name: GBG_SolarInsolation
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.Weather.SolarInsolation["Value"] }}'
+    unit_of_measurement: "W/m2"
+#vindhastighet
+#  - platform: rest
+#    name: GBG_WindSpeed
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    method: GET
+#    value_template: '{{ value_json.Weather.WindSpeed["Value"] }}'
+#    unit_of_measurement: "m/s"
+#Kvävedioxid
+  - platform: rest
+    name: GBG_NO2
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.AirQuality.NO2["Value"] }}'
+    unit_of_measurement: "ppb"
+#Svaveldioxid
+  - platform: rest
+    name: GBG_SO2
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.AirQuality.SO2["Value"] }}'
+    unit_of_measurement: "ppb"
+#ozon
+  - platform: rest
+    name: GBG_O3
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.AirQuality.O3["Value"] }}'
+    unit_of_measurement: "ppb"
+#luftpartiklar
+#  - platform: rest
+#    name: GBG_PM10
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    method: GET
+#    value_template: '{{ value_json.AirQuality.PM10["Value"] }}'
+#    unit_of_measurement: "µg/m3"
+#kväveoxidutsläpp 
+  - platform: rest
+    name: GBG_NOx
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    method: GET
+    value_template: '{{ value_json.AirQuality.NOx["Value"] }}'
+    unit_of_measurement: "ppb"
+#luftpartiklar
+#  - platform: rest
+#    name: GBG_PM2_5
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    method: GET
+#    value_template: '{{ value_json.AirQuality.PM2_5["Value"] }}'
+#    unit_of_measurement: "µg/m3"
+#kolmonoxid
+#  - platform: rest
+#    name: GBG_CO
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    method: GET
+#    value_template: '{{ value_json.AirQuality.CO["Value"] }}'
+#    unit_of_measurement: "µg/m3"
+#waqi
+  - platform: waqi
+    token: ad8d4d50aa59f82f78436c7f1948fe6778777c9e
+    locations:
+      - Linköping Hamngatan, Sweden
+      - Fredrikstad, Nygaardsgata, Norway
+      - Lund, Trollebergsvägen, Sweden
+      - Karlshamn, Erik Dahlbergsvägen - Prinsgatan, Sweden
+#airvisual
+  - platform: airvisual
+    api_key: icFkWx8j4r4oXqjRH
+    monitored_conditions:
+      - us
+#      - cn
+    latitude: 57.718231
+    longitude: 11.9508593
+    radius: 50000
+    show_on_map: false
+#pollenkoll
+# Initial HA Sensor to fetch pollen data from pollenkoll.se via pollenkoll.py.
+  - platform: pollenkoll
+    sensors:
+      - city: Göteborg
+        state: Gräs
+# Let's get started with template sensors:
+  - platform: template
+    sensors:
+      pollen_al:
+        friendly_name: "Al"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Al']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Al'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Al'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_alm:
+        friendly_name: "Alm"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Alm']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Alm'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Alm'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_bjork:
+        friendly_name: "Björk"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Björk']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Björk'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Björk'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_bok:
+        friendly_name: "Bok"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Bok']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Bok'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Bok'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_ek:
+        friendly_name: "Ek"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Ek']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Ek'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Ek'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_gras:
+        friendly_name: "Gräs"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Gräs']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gräs'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_grabo:
+        friendly_name: "Gråbo"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Gråbo']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Gråbo'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_hassel:
+        friendly_name: "Hassel"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Hassel']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Hassel'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+      pollen_salgvide:
+        friendly_name: "Sälg / vide"
+        value_template: "{{states.sensor.pollenkoll_goteborg.attributes['Sälg / vide']}}"
+        entity_picture_template: >
+          {% if states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "i.u." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "i.h." %}
+            /local/pollenstatus_iu.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "L" %}
+            /local/pollenstatus_ih-l.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "L-M" %}
+            /local/pollenstatus_l-m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "M" %}
+            /local/pollenstatus_m.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "M-H" %}
+            /local/pollenstatus_m-h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "H" %}
+            /local/pollenstatus_h.png
+          {% elif states.sensor.pollenkoll_goteborg.attributes['Sälg / vide'] == "H+" %}
+            /local/pollenstatus_hplus.png
+          {% endif %}
+  - platform: template
+    sensors:
+      heat_index_1:
+        unit_of_measurement: '°C'
+        value_template: '{{ (((((((states.sensor.weather_temperature.state|float)*1.8)+32) + 61.0 + (((((states.sensor.weather_temperature.state|float)*1.8)+32)-68.0)*1.2) + ((states.sensor.weather_humidity.state|float)*0.094))*0.5)-32)/1.8)|round(1) }}'
+      jagti_windchill:
+        value_template: '{{ (13.12 + 0.6215*float(states.sensor.weather_temperature.state) + 0.3965*(float(states.sensor.weather_temperature.state) - 28.676) *(float(states.sensor.weather_wind_speed .state)*3.6)**0.16) | round(2) }}'
+        unit_of_measurement: '°C'
+        friendly_name: Jag/Ti Wchill
+# Tchill(°C) = 13,12 + 0,6215*Tair + 0.3965*(Tair - 28,676)*S10m0,16
+# S10m = windspeed (km/h) at anemometer_height = 10 m, Tair in °C
+      jagti_windchill_2:
+        value_template: '{{(13.12 +0.6215*float(states.sensor.weather_temperature.state) -11.37*(float(states.sensor.weather_wind_speed.state)*3.6)**0.16 +0.3965*float(states.sensor.weather_temperature.state)*(float(states.sensor.weather_wind_speed.state)*3.6)**0.16) | round(2) }}'
+        unit_of_measurement: '°C'
+        friendly_name: Jag/Ti Wchill v2
+#G  =13,12+0,6215*T-11,37*(W*3,6)^0,16+0,3965*T*(W*3,6)^0,16
+#Invoerveld T = Temperatuur in Graden Celsius
+#Invoerveld W = Wind in meter / seconde
+      steadman_windchill:
+        value_template: '{{ (1.41 - 1.162*float(states.sensor.weather_wind_speed.state) + 0.98*float(states.sensor.weather_temperature.state) + 0.124*float(states.sensor.weather_wind_speed.state)**2 +0.0185*float(states.sensor.weather_wind_speed.state)*float(states.sensor.weather_temperature.state)) | round(2) }}'
+        unit_of_measurement: '°C'
+        friendly_name: Steadman Wchill
+# Tchill(°C) = 1.41 - 1.162*S + 0.98*Tair+0.0124*S2 + 0.0185*S*Tair
+# Tair in °C en S= in m/s.
+  - platform: min_max
+    name: 'Medel_chill_effect'
+    type: mean
+    entity_ids:
+      - sensor.heat_index_1
+      - sensor.jagti_windchill
+      - sensor.jagti_windchill_2
+      - sensor.steadman_windchill
+      - sensor.pws_feelslike_c
+  - platform: min_max
+    name: 'Medel_temp_ute'
+    type: mean
+    entity_ids:
+      - sensor.weather_temperature
+      - sensor.pws_temp_c
+      - sensor.net_utomhus_temperature
+##################################
+#                                #
+#       Innemiljö                #
+#                                #
+##################################
+# medeltemperatur
+  - platform: min_max
+    name: 'Medel temperatur'
+    type: mean
+    entity_ids:
+      - sensor.kitchen_temperature  
+      - sensor.hallway_temperature
+      - sensor.net_inomhus_temperature
+      - sensor.net_temp_vardagsrum_temperature
+      - sensor.net_temp_sovrum_temperature
+#maxtemperatur
+  - platform: min_max
+    name: 'Max temperatur'
+    type: max
+    entity_ids:
+      - sensor.kitchen_temperature  
+      - sensor.hallway_temperature
+      - sensor.net_inomhus_temperature
+      - sensor.net_temp_vardagsrum_temperature
+      - sensor.net_temp_sovrum_temperature
+#minitemperatur
+  - platform: min_max
+    name: 'Minsta temperatur'
+    type: min
+    entity_ids:
+      - sensor.kitchen_temperature  
+      - sensor.hallway_temperature
+      - sensor.net_inomhus_temperature
+      - sensor.net_temp_vardagsrum_temperature
+      - sensor.net_temp_sovrum_temperature
+#senaste temperatur
+  - platform: min_max
+    name: 'Senaste temperatur'
+    type: last
+    entity_ids:
+      - sensor.kitchen_temperature  
+      - sensor.hallway_temperature
+      - sensor.net_inomhus_temperature
+      - sensor.net_temp_vardagsrum_temperature
+      - sensor.net_temp_sovrum_temperature
+##################################
+#                                #
+#       Astronomi                #
+#                                #
+##################################
+#månen
+  - platform: moon
+  - platform: template
+    sensors:
+      moonphases:
+        entity_id: sensor.moon
+        friendly_name: "Moon"
+        value_template: >
+          {% if is_state('sensor.moon', 'new_moon') %}
+            New moon
+          {% elif is_state('sensor.moon', 'waxing_crescent') %}
+            Waxing crescent
+          {% elif is_state('sensor.moon', 'first_quarter') %}
+            First Quarter
+          {% elif is_state('sensor.moon', 'waxing_gibbous') %}
+            Waxing gibbous
+          {% elif is_state('sensor.moon', 'full_moon') %}
+            Full moon
+          {% elif is_state('sensor.moon', 'waning_gibbous') %}
+            Avtagande måne
+          {% elif is_state('sensor.moon', 'last_quarter') %}
+            Waning gibbous
+          {% elif is_state('sensor.moon', 'waning_crescent') %}
+            Waning crescent
+          {% endif %}
+        entity_picture_template: >
+          {% if is_state('sensor.moon', 'new_moon') %}
+            /local/moonphases/nm.png
+          {% elif is_state('sensor.moon', 'waxing_crescent') %}
+            /local/moonphases/wxc.png
+          {% elif is_state('sensor.moon', 'first_quarter') %}
+            /local/moonphases/fq.png
+          {% elif is_state('sensor.moon', 'waxing_gibbous') %}
+            /local/moonphases/wxg.png
+          {% elif is_state('sensor.moon', 'full_moon') %}
+            /local/moonphases/fm.png
+          {% elif is_state('sensor.moon', 'waning_gibbous') %}
+            /local/moonphases/wng.png
+          {% elif is_state('sensor.moon', 'last_quarter') %}
+            /local/moonphases/lq.png
+          {% elif is_state('sensor.moon', 'waning_crescent') %}
+            /local/moonphases/wnc.png
+          {% endif %}
+  - platform: template
+    sensors:
+      manfaser:
+        entity_id: sensor.moon
+        friendly_name: "Moon phases"
+        value_template: >
+          {% if is_state('sensor.moon', 'new_moon') %}
+            New moon
+          {% elif is_state('sensor.moon', 'waxing_crescent') %}
+            Waxing crescent
+          {% elif is_state('sensor.moon', 'first_quarter') %}
+            First Quarter
+          {% elif is_state('sensor.moon', 'waxing_gibbous') %}
+            Waxing gibbous
+          {% elif is_state('sensor.moon', 'full_moon') %}
+            Full moon
+          {% elif is_state('sensor.moon', 'waning_gibbous') %}
+            Waning gibbous
+          {% elif is_state('sensor.moon', 'last_quarter') %}
+            Last quarter
+          {% elif is_state('sensor.moon', 'waning_crescent') %}
+            Waning crescent
+          {% endif %}
+        entity_picture_template: >
+          {% if is_state('sensor.moon', 'new_moon') %}
+            /local/moon/NNewMoon.jpg
+          {% elif is_state('sensor.moon', 'waxing_crescent') %}
+            /local/moon/NWaningCrescent.jpg
+          {% elif is_state('sensor.moon', 'first_quarter') %}
+            /local/moon/NFirstQuarter.jpg
+          {% elif is_state('sensor.moon', 'waxing_gibbous') %}
+            /local/moon/NWaxingGibbous.jpg
+          {% elif is_state('sensor.moon', 'full_moon') %}
+            /local/moon/NFullMoon.jpg
+          {% elif is_state('sensor.moon', 'waning_gibbous') %}
+            /local/moon/NWaningGibbous.jpg
+          {% elif is_state('sensor.moon', 'last_quarter') %}
+            /local/moon/NLastQuarter.jpg
+          {% elif is_state('sensor.moon', 'waning_crescent') %}
+            /local/moon/NWaxingCrescent.jpg
+          {% endif %}
+  - platform: template
+    sensors:
+      moon_phases:
+        friendly_name: 'Moon phases'
+        value_template: >
+          {{ states('sensor.moon')}}
+        entity_picture_template: >
+          {% set state = states('sensor.moon').title().replace('_','').replace(' ','') %}
+          {{ '/local/moonphases/N{}.jpg'.format(state) }}
+#säsong
+  - platform: season
+    type: astronomical
+  - platform: template
+    sensors: 
+      seasons:
+        entity_id: sensor.season
+        friendly_name: "Season"
+        value_template: >
+          {% if is_state('sensor.season', 'summer') %}
+            Summer
+          {% elif is_state('sensor.season', 'winter') %}
+            Winter
+          {% elif is_state('sensor.season', 'spring') %}
+            Spring
+          {% elif is_state('sensor.season', 'autumn') %}
+            Autumn
+          {% endif %}
+        entity_picture_template: >
+          {% if is_state('sensor.season', 'summer') %}
+            /local/season/summer.png
+          {% elif is_state('sensor.season', 'winter') %}
+            /local/season/winter.png
+          {% elif is_state('sensor.season', 'spring') %}
+            /local/season/spring.png
+          {% elif is_state('sensor.season', 'autumn') %}
+            /local/season/autumn.png
+          {% endif %}
+#solvinkel
+  - platform: template
+    sensors:
+      solar_angle:
+        friendly_name: "Solar angle"
+        unit_of_measurement: 'degrees'
+        value_template: "{{ states.sun.sun.attributes.elevation }}"
+#soluppgång
+      sunrise:
+        value_template: "{{ states.sun.sun.attributes.next_rising }}"
+#dag/natt
+  - platform: template
+    sensors:
+      day_night:
+        friendly_name: "Day/Night"
+        value_template: >-
+          {% if is_state('sun.sun', 'above_horizon') %}
+            Day
+          {% else %}
+            Night
+          {% endif %}
+        icon_template: >-
+          {% if is_state('sun.sun', 'above_horizon') %}
+            mdi:weather-sunny
+          {% else %}
+            mdi:weather-night
+          {% endif %}
+#period_of_day
+  - platform: template
+    sensors:
+      period_of_day:
+        friendly_name: 'period of the day'
+        value_template: >-
+          {% if (as_timestamp(states.sun.sun.attributes.next_dusk)) - (as_timestamp(states.sun.sun.attributes.next_setting)) < 0 %}
+            dusk
+          {% elif (as_timestamp(states.sun.sun.attributes.next_rising)) - (as_timestamp(states.sun.sun.attributes.next_dawn)) < 0 %}
+            dawn
+          {% elif (states.sun.sun.attributes.elevation) < 0 %}
+            night
+          {% else %}
+            day
+          {% endif %}
+        icon_template: >-
+          {% if is_state('sun.sun', 'above_horizon') %}
+            mdi:weather-sunny
+          {% else %}
+            mdi:weather-night
+          {% endif %}
+#solen
+  - platform: template
+    sensors:
+      day_sunrise:
+        value_template: '{{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}'
+      day_sunset:
+        value_template: '{{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}'
+      day_noon:
+        value_template: '{{ as_timestamp(states.sun.sun.attributes.next_noon) | timestamp_custom("%H:%M") }}'
+      day_dawn:
+        value_template: '{{ as_timestamp(states.sun.sun.attributes.next_dawn) | timestamp_custom("%H:%M") }}'
+      day_dusk:
+        value_template: '{{ as_timestamp(states.sun.sun.attributes.next_dusk) | timestamp_custom("%H:%M") }}'
+  - platform: template
+    sensors:
+     weekofyear:
+       friendly_name: 'Veckonummer'
+       value_template: "{{ now().strftime('%W') }}"
+     weekday:
+       friendly_name: 'Veckodag'
+       value_template: "{{ now().strftime('%A') }}"
+     dates: 
+       friendly_name: 'Datum'
+       value_template: >
+          {% set months = ["january", "february", "march", "april", "may", "juny", "july", "august", "september", "october", "november", "december"] %}
+          {% set month = months[now().strftime('%m') | int -1] %}  
+          {{ now().strftime('%d') + ' ' + month + ' '+ now().strftime('%Y') }}
+##################################
+#                                #
+#       Blandat                  #
+#                                #
+##################################
+#läggdags
+  - platform: template
+    sensors:
+      fading_time:
+        friendly_name: 'Solnedgång'
+        value_template: '{{ "%0.02d:%0.02d" | format(states("input_number.fading_hour") | int, states("input_number.fading_minutes") | int) }}'
+      bedtime:
+        friendly_name: 'Seconds untill bedtime'
+        entity_id:
+         - input_number.fading_hour
+         - input_number.fading_minutes
+        value_template: >
+          {% set relative_time =  (states.input_number.fading_hour.state|float|multiply(60) + states.input_number.fading_minutes.state|float) - (now().hour|float|multiply(60) + now().minute) %}
+          {%- if relative_time < 0 -%}
+                   {{23*60+relative_time}}
+          {%- else -%}
+                   {{ relative_time-60}}
+          {%- endif %}
+      time_until_bedtime:
+        friendly_name: 'Tid till läggdags'
+        entity_id:
+         - sensor.bedtime
+        value_template: '{{  (states.sensor.bedtime.state.split(" ")[0] | int *60 ) | timestamp_custom("%H:%M") }}'
+#version
+  - platform: version
+ 
