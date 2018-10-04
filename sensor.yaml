@@ -152,7 +152,7 @@
 ##################################
 # darksky
   - platform: darksky
-    api_key: c37aa122124d2e787eb6045eec229415
+    api_key: 
     monitored_conditions:
       - summary
       - icon
@@ -180,7 +180,7 @@
       - highClouds
       - dewpointTemperature
 #  - platform: worldtidesinfo
-#    api_key: 5eefec0a-ce4d-4774-9136-7c753d535f6c
+#    api_key: -ce4d-4774-9136-
   - platform: yweather
     monitored_conditions:
       - weather
@@ -200,84 +200,84 @@
 #lufttryck
   - platform: rest
     name: GBG_AirPressure
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da--?format=json
     method: GET
     value_template: '{{ value_json.Weather.AirPressure["Value"] }}'
     unit_of_measurement: "hPa"
 #regn
 #  - platform: rest
 #    name: GBG_RainFall
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
 #    method: GET
 #    value_template: '{{ value_json.Weather.RainFall["Value"] }}'
 #    unit_of_measurement: "mm"
 #luftfuktighet
   - platform: rest
     name: GBG_Humidity
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.Weather.Humidity["Value"] }}'
     unit_of_measurement: "%"
 #solinstrålning
   - platform: rest
     name: GBG_SolarInsolation
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.Weather.SolarInsolation["Value"] }}'
     unit_of_measurement: "W/m2"
 #vindhastighet
 #  - platform: rest
 #    name: GBG_WindSpeed
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
 #    method: GET
 #    value_template: '{{ value_json.Weather.WindSpeed["Value"] }}'
 #    unit_of_measurement: "m/s"
 #Kvävedioxid
   - platform: rest
     name: GBG_NO2
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.AirQuality.NO2["Value"] }}'
     unit_of_measurement: "ppb"
 #Svaveldioxid
   - platform: rest
     name: GBG_SO2
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.AirQuality.SO2["Value"] }}'
     unit_of_measurement: "ppb"
 #ozon
   - platform: rest
     name: GBG_O3
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.AirQuality.O3["Value"] }}'
     unit_of_measurement: "ppb"
 #luftpartiklar
 #  - platform: rest
 #    name: GBG_PM10
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
 #    method: GET
 #    value_template: '{{ value_json.AirQuality.PM10["Value"] }}'
 #    unit_of_measurement: "µg/m3"
 #kväveoxidutsläpp 
   - platform: rest
     name: GBG_NOx
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
     method: GET
     value_template: '{{ value_json.AirQuality.NOx["Value"] }}'
     unit_of_measurement: "ppb"
 #luftpartiklar
 #  - platform: rest
 #    name: GBG_PM2_5
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
 #    method: GET
 #    value_template: '{{ value_json.AirQuality.PM2_5["Value"] }}'
 #    unit_of_measurement: "µg/m3"
 #kolmonoxid
 #  - platform: rest
 #    name: GBG_CO
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
 #    method: GET
 #    value_template: '{{ value_json.AirQuality.CO["Value"] }}'
 #    unit_of_measurement: "µg/m3"
@@ -291,7 +291,7 @@
       - Karlshamn, Erik Dahlbergsvägen - Prinsgatan, Sweden
 #airvisual
   - platform: airvisual
-    api_key: icFkWx8j4r4oXqjRH
+    api_key: 
     monitored_conditions:
       - us
 #      - cn
@@ -569,9 +569,6 @@
     entity_ids:
       - sensor.kitchen_temperature  
       - sensor.hallway_temperature
-      - sensor.net_inomhus_temperature
-      - sensor.net_temp_vardagsrum_temperature
-      - sensor.net_temp_sovrum_temperature
 #senaste temperatur
   - platform: min_max
     name: 'Senaste temperatur'
