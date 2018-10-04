@@ -1,0 +1,47 @@
+#Broadlink RM 
+  - platform: broadlink
+    type: 'rm2_pro_plus2'
+    host: 192.168.10.151
+    mac: ''
+    timeout: 15
+    switches:
+# stereo
+      denon_power:
+        friendly_name: "Denon power"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIGQg8CBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=='
+      denon_volume:
+        friendly_name: "Denon volume"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+      denon_cat_tv:
+        friendly_name: "Denon CBL TV"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIGQgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+      denon_cd_tv:
+        friendly_name: "Denon CD TV"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIGQgZCDwIGQgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAgZCDwIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+      denon_volume_10:
+        friendly_name: "Denon volume 10"
+        command_on: 'JgpEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgpEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+#tv
+      tv_hdmi1_2:
+        friendly_name: "Tv HDMI12"
+        command_on: 'JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISOBISEhISOBISEjgSOBI4EhISOBI4EhISOBISEhISEhIABi0NBQ=='
+        command_off: 'JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EjgSOBI4EjgSEhI4EjgSEhISEhISEhISEjgSEhIABi0NBQ=='
+      tv_power:
+        friendly_name: "Tv Power"
+        command_on: 'JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxMSExITNxM3ExITEhM3ExITNxM3ExITEhM3EzcTEhMABiMNBQ=='
+        command_off: 'JgBGAJKSETYRNhE2ERERERERERERERE2ETYRNhERERERERERERERERE2ERERERERERERERERETYRERE2ETYRNhE2ETYRNhEABhANBQ=='
+      tv_play:
+        friendly_name: "Play Pause"
+        command_on: 'JgBGAJGSEjcSNxI3EhISEhISExISEhI3EjcSNxISEhMSEhISEhITNhM2EjcSExISEhISNxISExISEhISEjcSNxI3EhITNhMABe0NBQ=='
+        command_off: 'JgBGAJOTEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EhISOBISEhISOBISEjgSEhI4EhISOBI4EhISOBIABgsNBQ=='
+
+# https://irdb.globalcache.com/Home/Database
+# https://dimagoltsman.github.io/Random-Broadlink-RM-Code-Generator/#
+# http://tomeko.net/online_tools/hex_to_base64.php?lang=en1
+# https://repl.it/@ChristerGustafs/SubduedCalculatingRoutes
+# 
