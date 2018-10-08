@@ -1,0 +1,40 @@
+automation:
+- alias: 'Friday 13'
+  initial_state: true
+  trigger:
+  - platform: state
+    entity_id: sensor.hallway_motion_sensor
+    to: 'on'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+  - condition: template
+    value_template: '{{ now().strftime("%d") == "13" }}'
+  action:
+  - service: script.turn_on
+    entity_id: script.friday13
+
+script:
+#friday13
+    friday13:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.hallway
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.hallway
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.hallway
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["On Friday the 13th weird things are supposed to happen. Maybe you should stay in bed.","Friday the 13th is still better than Monday the whatever.","Forget the bad luck, I'm choosing to have a great day.","If you think Friday the 13th is scary, try going a day without coffee. It's horrifying.","It may be Friday the 13th, but it is still Friday and a reason to dance.","I'm just happy it's finally Friday.","Its Friday the 13th! It's only bad luck if you put it in your head. Think its just another day & stay positive.","Don't be superstitious. Nothing will happen on Friday the 13th that cannot happen on Saturday the 14th.","Don't walk under any ladders, Don't break any mirrors, Don't spill any salt, And don't walk by any black cats. Happy Friday the 13th!","Fear of Friday the 13th one of the most popular myths in science is called paraskavedekatriaphobia as well as friggatriskaidekaphobia. Triskaidekaphobia is fear of the number 13.","Don't open umbrellas indoors, at least if you don't want to upset the sun gods.","I'm not nearly as afraid of Friday the 13th as I am of the people who are afraid of Friday the 13th.","It's Friday the 13th. Just warning you all before you make any weekend arangements for wood cabins by lake.","Happy friday the 13th! Don't look what's under your bed tonight & don't turn off the light. You don't know what's coming. Have a good day!" ] | random}} ...
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Good afternoon.","Hey there you are.","Do you want some information.","Lets see what i can tell you."] | random}} ...
+               {% else %}
+               {{["Good evening.","Good to see you.","Nice to see you.","How do you do."] | random}} ...
+               {% endif %}
+               It's currently {{states.sensor.dark_sky_summary.state}} ... Temperature right now is {{states.sensor.medel_temp_ute.state|round}} degrees ... Temperature feels like {{states.sensor.medel_chill_effect.state|round}} degrees ... Here is a summary of this day ... {{states ('sensor.dark_sky_hourly_summary') }}  {{["Lets rock.","Have a great day.","Its going to be awesome today.","Rock and roll."] | random}}
