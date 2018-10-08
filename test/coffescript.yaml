@@ -19,7 +19,7 @@ script:
                {% elif now().strftime("%H")|int < 18 %}
                {{["It's coffee o clock","The only good substitute for a coffee is two coffees.","My only plan today is coffee.","Caffeine rules."] | random}} ...
                {% else %}
-               {{["Any time is coffee time.","Never forget coffee.","Get more out of life with coffee.","How do you do."] | random}} ...
+               {{["Any time is coffee time.","Never forget coffee.","Get more out of life with coffee.","Here you go. Grab your coffee"] | random}} ...
                {% endif %}
           - service: light.turn_off
             data:
@@ -43,13 +43,25 @@ script:
             data_template:
               entity_id: media_player.kitchen
               message: >
+               {% if now().weekday() in (1) %}
                {% if now().strftime("%H")|int < 12 %}
-               {{["I will start working when my coffee does","Patience is the time between drinking a cup of coffee and the motivation to begin your day","You should know that before 10am, no matter what the question is, my answer is always coffee","Coffee, because it’s too early for wine","When life gives you lemons, trade them for coffee","Humanity runs on coffee.","Todays todolist. one make coffee. two drink coffee. three make ore coffee","Nothing is like coffee on a cold day. Or a mild day. Or a hot day.","Keep calm. Coffee is on the way","I like big cups and i cannot lie","Planning to take over the world today. Just need some coffee first.","Insert coffee to begin.","Wake up and smell the coffee.","Life begins after coffee.","Start your day with coffee. End your day with wine."] | random}} ...
+               {{["This week starts with coffee","With this coffee and many, many refills... we will overcome this Monday","You should know that before 10am on a Monday, no matter what the question is, my answer is always coffee","So it is Monday again.","When life gives you lemons, trade them for coffee","Todays good mood is sponsored by Coffee","First Champagne. I mean coffee it is Monday...","Too much Monday. Not enough coffee.","Insert coffee to begin this Monday.","Monday. May the force be with you.","May your coffee be strong and your Monday be short.","I survive Mondays with coffee."] | random}} ...
                {% elif now().strftime("%H")|int < 18 %}
                {{["Life is what happens between coffee and wine","Sometimes I go hours without drinking coffee…it’s called sleeping","Sometimes you gotta drink some coffee, put on some rock n’ roll, and handle your business","Coffee is a hug in a mug","Coffee, because crack is bad for you","I put coffee in my coffee","Keep calm and drink more coffee.","A day without coffee is like something without something.","You had me at hot coffee.","It's time for coffee.","I never drink coffee at lunch. I find it keeps me awake for the afternoon.","Do you know how helpless you feel if you have a full cup of coffee in your hand and you start to sneeze?"] | random}} ...
                {% else %}
                {{["I’ve had so much coffee today I can see noises","Coffee is always a good idea","Grab life by the beans.","Coffee gives strength to get things done","Caffeine is the foundation of the food pyramid.","Everybody should believe in something. I believe in coffee","Way too much coffee. But if it weren't for the coffee, I'd have no identifiable personality whatsoever."] | random}} ...
                {% endif %}
+               {% else %}
+               {% if now().strftime("%H")|int < 12 %}
+               {{["I'm sorry, Dave. I'm afraid I can't do that.... Oh sorry i thought you where Dave. But now i see you are not Dave so i will definitely make you some coffee","Todays good mood is sponsored by Coffee","I will start working when my coffee does","Patience is the time between drinking a cup of coffee and the motivation to begin your day","You should know that before 10am, no matter what the question is, my answer is always coffee","Coffee, because it’s too early for wine","When life gives you lemons, trade them for coffee","Humanity runs on coffee.","Todays todolist. one make coffee. two drink coffee. three make ore coffee","Nothing is like coffee on a cold day. Or a mild day. Or a hot day.","Keep calm. Coffee is on the way","I like big cups and i cannot lie","Planning to take over the world today. Just need some coffee first.","Insert coffee to begin.","Wake up and smell the coffee.","Life begins after coffee.","Start your day with coffee. End your day with wine.","If you think that by threatening me you can get me to do what you want... Well, that's where you're right. But - and I am only saying that because I care - there's a lot of decaffeinated brands on the market that are just as tasty as the real thing.","If I'm not back in five minutes, just wait longer.","Alright, alright alright.","Try not. Do, or do not. There is no try","After very careful consideration, I've come to the conclusion that you need coffee"","The answer to the Ultimate Question of Life, the Universe, and Everything is 42 if you ask Douglas Adams. But if you ask me the answer is coffee","All you really need to know for the moment is that the universe is a lot more complicated than you might think, even if you start from a position of thinking it’s pretty damn complicated in the first place."] | random}} ...
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Life is what happens between coffee and wine","Sometimes I go hours without drinking coffee…it’s called sleeping","Sometimes you gotta drink some coffee, put on some rock n’ roll, and handle your business","Coffee is a hug in a mug","Coffee, because crack is bad for you","I put coffee in my coffee","Keep calm and drink more coffee.","A day without coffee is like something without something.","You had me at hot coffee.","It's time for coffee.","I never drink coffee at lunch. I find it keeps me awake for the afternoon.","Do you know how helpless you feel if you have a full cup of coffee in your hand and you start to sneeze?"] | random}} ...
+               {% else %}
+               {{["I’ve had so much coffee today I can see noises","Coffee is always a good idea","Grab life by the beans.","Coffee gives strength to get things done","Caffeine is the foundation of the food pyramid.","Everybody should believe in something. I believe in coffee","Way too much coffee. But if it weren't for the coffee, I'd have no identifiable personality whatsoever."] | random}} ...
+               {% endif %}
+               {% endif %}
+               
+
           - service: light.turn_on
             data:
               entity_id: light.kitchen_sink,light.kitchen_sink_two #brighten lights
@@ -58,6 +70,8 @@ script:
             data:
               entity_id: script.coffee_on
 
+
+#expose scenes to gh !!!!
 scene:
 #scen coffeemaker
   - name: 'coffee maker'
