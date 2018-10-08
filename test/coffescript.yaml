@@ -1,0 +1,76 @@
+
+script:
+#coffee done
+    coffeedone:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.kitchen
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Caution hot coffee","The only thing i know for sure about today is coffee. Everything else is just wild speculations.","Life is scary without coffee.","Even bad coffee is better than no coffee at all.","nothing make sense before coffee","Time fore awesomeness"] | random}} ...
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["It's coffee o clock","The only good substitute for a coffee is two coffees.","My only plan today is coffee.","Caffeine rules."] | random}} ...
+               {% else %}
+               {{["Any time is coffee time.","Never forget coffee.","Get more out of life with coffee.","How do you do."] | random}} ...
+               {% endif %}
+          - service: light.turn_off
+            data:
+              entity_id: light.kaffe
+          - service: light.turn_on
+            data:
+              entity_id: light.kitchen_sink,light.kitchen_sink_two #dim lights
+              brightness: 127
+script:
+#coffeemaker
+    coffeemaker:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.kitchen
+              volume_level: '0.4'
+          - service: tts.google_say
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["I will start working when my coffee does","Patience is the time between drinking a cup of coffee and the motivation to begin your day","You should know that before 10am, no matter what the question is, my answer is always coffee","Coffee, because it’s too early for wine","When life gives you lemons, trade them for coffee","Humanity runs on coffee.","Todays todolist. one make coffee. two drink coffee. three make ore coffee","Nothing is like coffee on a cold day. Or a mild day. Or a hot day.","Keep calm. Coffee is on the way","I like big cups and i cannot lie","Planning to take over the world today. Just need some coffee first.","Insert coffee to begin.","Wake up and smell the coffee.","Life begins after coffee.","Start your day with coffee. End your day with wine."] | random}} ...
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Life is what happens between coffee and wine","Sometimes I go hours without drinking coffee…it’s called sleeping","Sometimes you gotta drink some coffee, put on some rock n’ roll, and handle your business","Coffee is a hug in a mug","Coffee, because crack is bad for you","I put coffee in my coffee","Keep calm and drink more coffee.","A day without coffee is like something without something.","You had me at hot coffee.","It's time for coffee.","I never drink coffee at lunch. I find it keeps me awake for the afternoon.","Do you know how helpless you feel if you have a full cup of coffee in your hand and you start to sneeze?"] | random}} ...
+               {% else %}
+               {{["I’ve had so much coffee today I can see noises","Coffee is always a good idea","Grab life by the beans.","Coffee gives strength to get things done","Caffeine is the foundation of the food pyramid.","Everybody should believe in something. I believe in coffee","Way too much coffee. But if it weren't for the coffee, I'd have no identifiable personality whatsoever."] | random}} ...
+               {% endif %}
+          - service: light.turn_on
+            data:
+              entity_id: light.kitchen_sink,light.kitchen_sink_two #brighten lights
+              brightness: 127
+          - service: script.turn_on
+            data:
+              entity_id: script.coffee_on
+
+scene:
+#scen coffeemaker
+  - name: 'coffee maker'
+    entities:
+        script.coffeemaker:
+           state: on
+#scen coffee done
+  - name: 'coffe done'
+    entities:
+        script.coffeedone:
+           state: on
+#scen moodlight
+  - name: 'moodlight'
+    entities:
+        script.moodlight:
+           state: on
