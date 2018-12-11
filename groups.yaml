@@ -23,7 +23,6 @@ goocal:
   - sensor.cstart
   - sensor.cend
   - sensor.clocation
-  - sensor.cdesc
 goocal2:
   name: 'Contact Calendar'
   icon: mdi:map-legend
@@ -34,7 +33,6 @@ goocal2:
   - sensor.costart
   - sensor.coend
   - sensor.colocation
-  - sensor.codesc
 goocal3:
   name: 'Bicycle Calendar'
   icon: mdi:map-legend
@@ -45,7 +43,6 @@ goocal3:
   - sensor.cystart
   - sensor.cyend
   - sensor.cylocation
-  - sensor.cydesc
 ######################
 #                    #
 # Remote             #
@@ -98,6 +95,7 @@ lampor2:
   - light.kitchen_fan
   - light.kitchen_sink #kitchen sink
   - light.kitchen_sink_two #kitchen sink
+  - input_number.sink_lamp_bright
 lampor3:
   name: 'Hallway'
   icon: mdi:lightbulb-on-outline
@@ -133,6 +131,7 @@ lampor5:
   - light.guest_room_1
   - light.guest_room_2 #guest room 1
   - light.guest_room_3
+  - input_number.guest_lamp_bright
 lamp:
   name: 'Lights'
   icon: mdi:lightbulb-on-outline
@@ -258,11 +257,10 @@ vmedia:
   icon: mdi:google-home
   entities:
   - media_player.chromecast_audio
-  - media_player.living_room_left_2
+  - media_player.living_room_left
   - media_player.living_room_right
   - media_player.living_room_speaker
-  - media_player.living_room_tv
-  - media_player.chromecast_audio
+  - media_player.chromecastultra7586
   - input_number.spotify_volume_cca
   - input_number.spotify_volume_lr_l
   - input_number.spotify_volume_lr_r
@@ -308,12 +306,14 @@ kitchentimer:
   view: false
   entities:
   - timer.timer_perka
+  - timer.timer_kitchen_tts
+  - input_boolean.kitchen_tts
 kmedia:
   name: 'Kitchen media'
   icon: mdi:google-home
   view: false
   entities:
-  - media_player.kitchen_2
+  - media_player.kitchen
 #  - media_player.spotify
   - input_number.spotify_volume_kitchen
 ### hallen
@@ -326,6 +326,12 @@ hallen:
   - group.hmedia
   - group.hallsensorer
   - group.lampor3
+  - group.halltimer
+halltimer:
+  name: 'Hallway timers'
+  entities:
+  - timer.timer_hallway_tts
+  - input_boolean.hallway_tts
 hallsensorer:
   name: 'Hallway sensors'
   entities:
@@ -364,7 +370,7 @@ smedia:
   icon: mdi:google-home
   view: false
   entities:
-  - media_player.kitchen
+  - media_player.bedroom
   - input_number.spotify_volume_bedroom
 #  - media_player.spotify
 ### Cykelrum
@@ -476,8 +482,8 @@ google_group:
   - media_player.chromecast_audio
   - media_player.hallway
   - media_player.kitchen
-  - media_player.kitchen_2
-  - media_player.living_room_left_2
+  - media_player.bedroom
+  - media_player.living_room_left
   - media_player.living_room_right
   - media_player.living_room_speaker
   - media_player.minus_sovrum
@@ -495,7 +501,7 @@ google_chrome:
   view: false
   icon: mdi:google-chrome
   entities:
-  - media_player.living_room_tv
+  - media_player.chromecastultra7586
 ######################
 #                    #
 # Reseinformation    #
@@ -640,6 +646,7 @@ astronomi:
   - sensor.day_sunset
   - sensor.day_noon
   - sensor.day_night
+  - sensor.period_of_day
   - sensor.moonphases
   - sensor.manfaser
   - sensor.sun
@@ -734,12 +741,6 @@ important:
 # Automatiseringsinformation   #
 #                              #
 ################################
-sunset:
-  name: 'Sunset'
-  icon: mdi:chemical-weapon
-  view: false
-  entities:
-  - automation.fonster_efter_skymning
 kallt:
   name: 'Low temperature'
   icon: mdi:chemical-weapon
@@ -854,9 +855,9 @@ inputs:
   - group.scener
   - group.pollen
   - group.hall
-  - group.sunset
   - group.viktigt
   - group.script
+  - group.janet_settings
 season:
   name: 'Season'
   icon: mdi:language-swift
@@ -879,3 +880,15 @@ natti:
 # Blandat               #
 #                       #
 #########################
+
+house_presence:
+  name: People Locator
+  icon: mdi:account-multiple
+  view: no
+  entities:
+#    - binary_sensor.people_home
+    - device_tracker.christer_samsung_s9
+    - device_tracker.honor9lan
+#    - device_tracker.carolsiphone
+#    - device_tracker.jimsiphone
+    - input_boolean.guests_present
