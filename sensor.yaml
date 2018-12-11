@@ -1,3 +1,14 @@
+  - platform: uptime
+    name: "HA runtime in minutes"
+    unit_of_measurement: minutes
+
+  - platform: template
+    sensors:
+      hallway_motion:
+        value_template: "{{ is_state('sensor.hallway_presence', 'True') }}"
+      kitchen_motion:
+        value_template: "{{ is_state('sensor.kitchen_presence', 'True') }}"
+
   - platform: template
     sensors:
       cmessage:
@@ -18,10 +29,6 @@
     sensors:
       clocation:
         value_template: "{{ states.calendar.christerninjusnet.attributes.location}}"
-  - platform: template
-    sensors:
-      cdesc:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.description}}"
 
   - platform: template
     sensors:
@@ -43,10 +50,6 @@
     sensors:
       colocation:
         value_template: "{{ states.calendar.contacts.attributes.location}}"
-  - platform: template
-    sensors:
-      codesc:
-        value_template: "{{ states.calendar.contacts.attributes.description}}"
         
   - platform: template
     sensors:
@@ -68,64 +71,92 @@
     sensors:
       cylocation:
         value_template: "{{ states.calendar.cykelkalendern.attributes.location}}"
-  - platform: template
-    sensors:
-      cydesc:
-        value_template: "{{ states.calendar.cykelkalendern.attributes.description}}"
+        
+# http://192.168.10.218/debug/clip.html
+
+# http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors
+
 
   - platform: hue
     ip_address: 192.168.10.218
     token: 57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46
     scan_interval: 2
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/36
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/54
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Kitchen Temperature'
 
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Hallway Temperature'
     
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Hallway Battery'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/48
+    value_template: '{{ value_json.config.battery }}'
+    unit_of_measurement: '%'
+    scan_interval: 1800
+    name: 'Guest room Battery'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/48
+    value_template: '{{ value_json.state.temperature | float / 100 }}'
+    unit_of_measurement: °C
+    scan_interval: 1800
+    name: 'Guest room Temperature'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/50
+    value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
+    unit_of_measurement: Lux
+    scan_interval: 300
+    name: 'Guest room Lux'
+
+  - platform: rest
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/49
+    value_template: '{{ value_json.state.presence }}'
+    name: 'Guest room Presence'
+    scan_interval: 10
     
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
     value_template: '{{ value_json.state.presence }}'
     name: 'Hallway Presence'
     scan_interval: 10
     
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Hallway Lux'
 
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/38
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/56
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Kitchen Lux'
     
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/55
     value_template: '{{ value_json.state.presence }}'
     name: 'Kitchen Presence'
     scan_interval: 10
 
   - platform: rest
-    resource: http://192.168.10.218/api/-NTM4WKtXk3De2aI6MUObo9O46/sensors/37
+    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/55
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
@@ -150,17 +181,109 @@
 #       Väder                    #
 #                                #
 ##################################
+
 # darksky
   - platform: darksky
-    api_key: 
+    api_key: !secret darksky
+    forecast:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
     monitored_conditions:
       - summary
+      - precip_probability
+      - wind_speed
+      - cloud_cover
       - icon
-      - nearest_storm_distance
-      - hourly_summary
-      - temperature_high
       - temperature_low
-      - uv_index
+      - temperature_high
+      - daily_summary
+      - hourly_summary
+      - nearest_storm_distance
+      # - Added for weather card
+      - humidity
+      - temperature
+      - wind_bearing
+      - pressure
+      - visibility
+    update_interval:
+      minutes: 5
+  - platform: season
+  - platform: template
+    sensors:
+#      forecast_0:
+#        friendly_name: "Today"
+#        value_template: >
+#          {{states.sensor.dark_sky_daytime_high_temperature.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability.state|round(0)}}%
+#        entity_picture_template: >-
+#          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon.state ~ '.png'}}
+      forecast_1:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (1 * 86400 ) -%}
+          {{ date | timestamp_custom("Tomorrow (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_1.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_1.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_1.state ~ '.png'}}
+      forecast_2:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (2 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_2.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_2.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_2.state ~ '.png'}}
+      forecast_3:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (3 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_3.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_3.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_3.state ~ '.png'}}
+
+      forecast_4:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (4 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_4.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_4.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_4.state ~ '.png'}}
+
+      forecast_5:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (5 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_5.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_5.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_5.state ~ '.png'}}
+
+      forecast_6:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (6 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_6.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_6.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_6.state ~ '.png'}}
+
+      forecast_7:
+        friendly_name_template: >
+          {%- set date = as_timestamp(now()) + (7 * 86400 ) -%}
+          {{ date | timestamp_custom("%A (%m/%d)") | replace("(0", "(") | replace("/0", "/") }}
+        value_template: >
+          {{states.sensor.dark_sky_daytime_high_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_overnight_low_temperature_7.state|round(0)}}°/{{states.sensor.dark_sky_precip_probability_7.state|round(0)}}%
+        entity_picture_template: >-
+          {{ '/local/icons/dark_sky/' ~ states.sensor.dark_sky_icon_7.state ~ '.png'}}
+
+    update_interval:
+      minutes: 5
 # yr
   - platform: yr
     name: Weather
@@ -180,7 +303,7 @@
       - highClouds
       - dewpointTemperature
 #  - platform: worldtidesinfo
-#    api_key: -ce4d-4774-9136-
+#    api_key: 5eefec0a-ce4d-4774-9136-7c753d535f6c
   - platform: yweather
     monitored_conditions:
       - weather
@@ -198,89 +321,89 @@
 #                                #
 ##################################
 #lufttryck
-  - platform: rest
-    name: GBG_AirPressure
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da--?format=json
-    method: GET
-    value_template: '{{ value_json.Weather.AirPressure["Value"] }}'
-    unit_of_measurement: "hPa"
-#regn
-#  - platform: rest
-#    name: GBG_RainFall
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-#    method: GET
-#    value_template: '{{ value_json.Weather.RainFall["Value"] }}'
-#    unit_of_measurement: "mm"
-#luftfuktighet
-  - platform: rest
-    name: GBG_Humidity
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.Weather.Humidity["Value"] }}'
-    unit_of_measurement: "%"
-#solinstrålning
-  - platform: rest
-    name: GBG_SolarInsolation
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.Weather.SolarInsolation["Value"] }}'
-    unit_of_measurement: "W/m2"
-#vindhastighet
-#  - platform: rest
-#    name: GBG_WindSpeed
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-#    method: GET
-#    value_template: '{{ value_json.Weather.WindSpeed["Value"] }}'
-#    unit_of_measurement: "m/s"
-#Kvävedioxid
-  - platform: rest
-    name: GBG_NO2
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.AirQuality.NO2["Value"] }}'
-    unit_of_measurement: "ppb"
-#Svaveldioxid
-  - platform: rest
-    name: GBG_SO2
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.AirQuality.SO2["Value"] }}'
-    unit_of_measurement: "ppb"
-#ozon
-  - platform: rest
-    name: GBG_O3
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.AirQuality.O3["Value"] }}'
-    unit_of_measurement: "ppb"
-#luftpartiklar
-#  - platform: rest
-#    name: GBG_PM10
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-#    method: GET
-#    value_template: '{{ value_json.AirQuality.PM10["Value"] }}'
-#    unit_of_measurement: "µg/m3"
-#kväveoxidutsläpp 
-  - platform: rest
-    name: GBG_NOx
-    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-    method: GET
-    value_template: '{{ value_json.AirQuality.NOx["Value"] }}'
-    unit_of_measurement: "ppb"
-#luftpartiklar
-#  - platform: rest
-#    name: GBG_PM2_5
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-#    method: GET
-#    value_template: '{{ value_json.AirQuality.PM2_5["Value"] }}'
-#    unit_of_measurement: "µg/m3"
-#kolmonoxid
-#  - platform: rest
-#    name: GBG_CO
-#    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/-797d-49da-af98-?format=json
-#    method: GET
-#    value_template: '{{ value_json.AirQuality.CO["Value"] }}'
-#    unit_of_measurement: "µg/m3"
+#   - platform: rest
+#     name: GBG_AirPressure
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.Weather.AirPressure["Value"] }}'
+#     unit_of_measurement: "hPa"
+# #regn
+# #  - platform: rest
+# #    name: GBG_RainFall
+# #    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+# #    method: GET
+# #    value_template: '{{ value_json.Weather.RainFall["Value"] }}'
+# #    unit_of_measurement: "mm"
+# #luftfuktighet
+#   - platform: rest
+#     name: GBG_Humidity
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.Weather.Humidity["Value"] }}'
+#     unit_of_measurement: "%"
+# #solinstrålning
+#   - platform: rest
+#     name: GBG_SolarInsolation
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.Weather.SolarInsolation["Value"] }}'
+#     unit_of_measurement: "W/m2"
+# #vindhastighet
+# #  - platform: rest
+# #    name: GBG_WindSpeed
+# #    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+# #    method: GET
+# #    value_template: '{{ value_json.Weather.WindSpeed["Value"] }}'
+# #    unit_of_measurement: "m/s"
+# #Kvävedioxid
+#   - platform: rest
+#     name: GBG_NO2
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.AirQuality.NO2["Value"] }}'
+#     unit_of_measurement: "ppb"
+# #Svaveldioxid
+#   - platform: rest
+#     name: GBG_SO2
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.AirQuality.SO2["Value"] }}'
+#     unit_of_measurement: "ppb"
+# #ozon
+#   - platform: rest
+#     name: GBG_O3
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.AirQuality.O3["Value"] }}'
+#     unit_of_measurement: "ppb"
+# #luftpartiklar
+# #  - platform: rest
+# #    name: GBG_PM10
+# #    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+# #    method: GET
+# #    value_template: '{{ value_json.AirQuality.PM10["Value"] }}'
+# #    unit_of_measurement: "µg/m3"
+# #kväveoxidutsläpp 
+#   - platform: rest
+#     name: GBG_NOx
+#     resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+#     method: GET
+#     value_template: '{{ value_json.AirQuality.NOx["Value"] }}'
+#     unit_of_measurement: "ppb"
+# #luftpartiklar
+# #  - platform: rest
+# #    name: GBG_PM2_5
+# #    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+# #    method: GET
+# #    value_template: '{{ value_json.AirQuality.PM2_5["Value"] }}'
+# #    unit_of_measurement: "µg/m3"
+# #kolmonoxid
+# #  - platform: rest
+# #    name: GBG_CO
+# #    resource: http://data.goteborg.se/AirQualityService/v1.0/LatestMeasurement/168274a9-797d-49da-af98-b4cb12d806fe?format=json
+# #    method: GET
+# #    value_template: '{{ value_json.AirQuality.CO["Value"] }}'
+# #    unit_of_measurement: "µg/m3"
 #waqi
   - platform: waqi
     token: ad8d4d50aa59f82f78436c7f1948fe6778777c9e
@@ -291,7 +414,7 @@
       - Karlshamn, Erik Dahlbergsvägen - Prinsgatan, Sweden
 #airvisual
   - platform: airvisual
-    api_key: 
+    api_key: icFkWx8j4r4oXqjRH
     monitored_conditions:
       - us
 #      - cn
@@ -536,7 +659,6 @@
     entity_ids:
       - sensor.weather_temperature
       - sensor.pws_temp_c
-      - sensor.net_utomhus_temperature
 ##################################
 #                                #
 #       Innemiljö                #
@@ -549,9 +671,7 @@
     entity_ids:
       - sensor.kitchen_temperature  
       - sensor.hallway_temperature
-      - sensor.net_inomhus_temperature
-      - sensor.net_temp_vardagsrum_temperature
-      - sensor.net_temp_sovrum_temperature
+      - sensor.guest_room_temperature
 #maxtemperatur
   - platform: min_max
     name: 'Max temperatur'
@@ -559,9 +679,7 @@
     entity_ids:
       - sensor.kitchen_temperature  
       - sensor.hallway_temperature
-      - sensor.net_inomhus_temperature
-      - sensor.net_temp_vardagsrum_temperature
-      - sensor.net_temp_sovrum_temperature
+      - sensor.guest_room_temperature
 #minitemperatur
   - platform: min_max
     name: 'Minsta temperatur'
@@ -569,6 +687,7 @@
     entity_ids:
       - sensor.kitchen_temperature  
       - sensor.hallway_temperature
+      - sensor.guest_room_temperature
 #senaste temperatur
   - platform: min_max
     name: 'Senaste temperatur'
@@ -576,14 +695,36 @@
     entity_ids:
       - sensor.kitchen_temperature  
       - sensor.hallway_temperature
-      - sensor.net_inomhus_temperature
-      - sensor.net_temp_vardagsrum_temperature
-      - sensor.net_temp_sovrum_temperature
+      - sensor.guest_room_temperature
 ##################################
 #                                #
 #       Astronomi                #
 #                                #
 ##################################
+  - platform: template
+    sensors:
+      period_of_day:
+        friendly_name: 'period of the day'
+        value_template: >-
+          {% if (as_timestamp(states.sun.sun.attributes.next_dusk)) - (as_timestamp(states.sun.sun.attributes.next_setting)) < 0 %}
+            dusk
+          {% elif (as_timestamp(states.sun.sun.attributes.next_rising)) - (as_timestamp(states.sun.sun.attributes.next_dawn)) < 0 %}
+            dawn
+          {% elif (states.sun.sun.attributes.elevation) < -4 %}
+            night
+          {% else %}
+            day
+          {% endif %}
+        icon_template: >-
+          {% if (as_timestamp(states.sun.sun.attributes.next_dusk)) - (as_timestamp(states.sun.sun.attributes.next_setting)) < 0 %}
+            mdi:weather-sunset-down
+          {% elif (as_timestamp(states.sun.sun.attributes.next_rising)) - (as_timestamp(states.sun.sun.attributes.next_dawn)) < 0 %}
+            mdi:weather-sunset-up
+          {% elif (states.sun.sun.attributes.elevation) < -4 %}
+            mdi:weather-night
+          {% else %}
+            mdi:weather-sunny
+          {% endif %}
 #månen
   - platform: moon
   - platform: template
@@ -769,13 +910,13 @@
   - platform: template
     sensors:
      weekofyear:
-       friendly_name: 'Veckonummer'
+       friendly_name: 'Week number'
        value_template: "{{ now().strftime('%W') }}"
      weekday:
-       friendly_name: 'Veckodag'
+       friendly_name: 'Weekday'
        value_template: "{{ now().strftime('%A') }}"
      dates: 
-       friendly_name: 'Datum'
+       friendly_name: 'Date'
        value_template: >
           {% set months = ["january", "february", "march", "april", "may", "juny", "july", "august", "september", "october", "november", "december"] %}
           {% set month = months[now().strftime('%m') | int -1] %}  
@@ -810,4 +951,22 @@
         value_template: '{{  (states.sensor.bedtime.state.split(" ")[0] | int *60 ) | timestamp_custom("%H:%M") }}'
 #version
   - platform: version
- 
+##################################
+#                                #
+#       Media                    #
+#                                #
+##################################
+  - platform: template
+    sensors:
+      spotify_volume:
+        friendly_name: "Spotify Volume"
+        value_template: "{{ states.media_player.spotify.attributes.volume_level }}"
+
+
+
+
+##################################
+#                                #
+#       Belysning                #
+#                                #
+##################################
