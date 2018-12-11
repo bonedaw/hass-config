@@ -47,27 +47,40 @@
     mode: slider
 
   lr_w_lamp_bright:
-    name: Liwingroom Window Brightness
+    name: Livingroom Window Brightness
     icon: mdi:auto-fix
     initial: 0
     min: 0
     max: 255
     step: 10
   lr_w_lamp_temp:
-    name: Liwingroom Window Temperature
+    name: Livingroom Window Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   lr_w_lamp_white:
-    name: Liwingroom Window Whitness
+    name: Livingroom Window Whitness
     icon: mdi:auto-fix
     initial: 0 
     min: 0 
     max: 255 
     step: 10 
-
+  sink_lamp_bright:
+    name: Sink Brightness
+    icon: mdi:auto-fix
+    initial: 0
+    min: 0
+    max: 255
+    step: 10
+  guest_lamp_bright:
+    name: Guest Room Brightness
+    icon: mdi:auto-fix
+    initial: 0
+    min: 0
+    max: 255
+    step: 10
   k_w_lamp_bright:
     name: Kitchen Window Brightness
     icon: mdi:auto-fix
@@ -78,9 +91,9 @@
   k_w_lamp_temp:
     name: Kitchen Window Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   k_w_lamp_white:
     name: Kitchen Window Whitness
@@ -89,7 +102,6 @@
     min: 0 
     max: 255 
     step: 10 
-
   hall_lamp_bright:
     name: Hallway Brightness
     icon: mdi:auto-fix
@@ -100,9 +112,9 @@
   hall_lamp_temp:
     name: Hallway Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   hall_lamp_white:
     name: Hallway Whitness
@@ -122,9 +134,9 @@
   bookshelf_lamp_temp:
     name: Bookshelf Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   bookshelf_lamp_white:
     name: Bookshelf Whitness
@@ -144,9 +156,9 @@
   livingroom_lamp_temp:
     name: Livingroom Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   livingroom_lamp_white:
     name: Livingroom Whitness
@@ -166,9 +178,9 @@
   bw_lamp_temp:
     name: Bedroom Window Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   bw_lamp_white:
     name: Bedroom Window Whitness
@@ -177,7 +189,6 @@
     min: 0 
     max: 255 
     step: 10 
-
   bwall_lamp_bright:
     name: Bedroom Wall Brightness
     icon: mdi:auto-fix
@@ -188,9 +199,9 @@
   bwall_lamp_temp:
     name: Bedroom Wall Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   bwall_lamp_white:
     name: Bedroom Wall Whitness
@@ -199,7 +210,6 @@
     min: 0 
     max: 255 
     step: 10
-
   bedroom_lamp_bright:
     name: Bedroom Brightness
     icon: mdi:auto-fix
@@ -210,9 +220,9 @@
   bedroom_lamp_temp:
     name: Bedroom Temperature
     icon: mdi:auto-fix
-    initial: 0
-    min: 0
-    max: 255
+    initial: 154
+    min: 154
+    max: 500
     step: 10
   bedroom_lamp_white:
     name: Bedroom Whitness
@@ -221,7 +231,13 @@
     min: 0 
     max: 255 
     step: 10
-
+  kitchen_bright:
+    name: Bedroom Whitness
+    icon: mdi:auto-fix
+    initial: 0 
+    min: 0 
+    max: 255 
+    step: 10    
   window:
     initial: 1
     min: 0
@@ -421,3 +437,12 @@
     min: '0'
     max: '1'
     step: '0.05'
+#spotify volym
+  spotify_volume_hub:
+    name: Volume Hub
+    icon: mdi:volume-high
+    initial: '0.2'
+    min: '0'
+    max: '1'
+    step: '0.05'
+    
