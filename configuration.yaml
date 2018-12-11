@@ -5,45 +5,92 @@ homeassistant:
   elevation: 3
   unit_system: metric
   time_zone: !secret time_zone
-  customize: !include customize.yaml
-zone: !include zone.yaml
+  customize: !include_dir_merge_named customize # !include customize.yaml
+  
+#  packages: 
+#    pack_1: !include packages/janet.yaml
+zone: !include includes/zone.yaml
 frontend:
   javascript_version: auto
+#  javascript_version: latest
+#  themes: !include themes.yaml
 config:
+http:
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret my_baseurl
+#  server_port: 8123
+#  ssl_certificate: !secret ssl_certificate
+#  ssl_key: !secret ssl_key
+#  trusted_networks: !secret trusted_networks
+#  api_password: !secret http_password
 updater:
-history:
-  exclude:
-    entities:
-       !include logbook.yaml
-recorder:
-  purge_interval: 2
-  purge_keep_days: 5
+#custom_updater:
+#  card_urls:
+#    - https://raw.githubusercontent.com/rdehuyss/homeassistant-lovelace-google-calendar-card/master/custom_updater.json
+discovery:
+  ignore:
+    - samsung_tv
+# Allows you to issue voice commands from the frontend in enabled browsers
+#conversation: !include conversation.yaml
+#intent_script: !include intent_script.yaml
+#history:
+#  exclude:
+#    entities:
+#       !include includes/logbook.yaml
+#recorder:
+#  purge_interval: 2
+#  purge_keep_days: 5
 #hue
 hue:
   bridges:
     - host: 192.168.10.218
       allow_unreachable: true
       allow_hue_groups: true
-switch: !include switch.yaml
-light: !include lights.yaml
-camera: !include camera.yaml
-timer: !include timer.yaml
-group: !include groups.yaml
+owntracks:
+  max_gps_accuracy: 500
+  waypoints: true
+  mqtt_topic: "owntracks/#"
+  events_only: true
+  waypoint_whitelist:
+    - Christer
+    - home
+    - Lidija
+    - Honor
+#    - ram
+#zwave
+#zwave:
+#  usb_path: /dev/ttyACM0
+#  new_entity_ids: true
+#telldus duo
+#tellstick:
+#  host: core-tellstick
+#  port: [50800, 50801]
+#  signal_repetitions: 10
+#tellduslive:
+#  public_key: !secret telldus_public_key
+#  private_key: !secret telldus_private_key
+#  token: !secret telldus_token
+#  token_secret: !secret telldus_token_secret
+switch: !include includes/switch.yaml
+light: !include includes/lights.yaml
+camera: !include includes/camera.yaml
+timer: !include includes/timer.yaml
+group: !include groups.yaml #!include_dir_merge_named groups #!include groups.yaml
 input_select: !include input_selects.yaml
 input_number: !include input_sliders.yaml
-automation: !include automations.yaml
+automation: !include automation.yaml # !include_dir_merge_named automations # !include automations/automation_0_system.yaml
 script: !include scripts.yaml
 scene: !include scene.yaml
 sensor: !include sensor.yaml
-binary_sensor: !include binary_sensors.yaml
-device_tracker: !include device_tracker.yaml
-mqtt: !include mqtt.yaml
-media_player: !include media_player.yaml
+binary_sensor: !include includes/binary_sensors.yaml
+device_tracker: !include includes/device_tracker.yaml
+mqtt: !include includes/mqtt.yaml
+media_player: !include includes/media_player.yaml
 cast:
-input_boolean: !include input_booleans.yaml
+input_boolean: !include includes/input_booleans.yaml
 notify: !include notify.yaml
-tts:
-  - platform: google
+tts: !include includes/tts.yaml
+#  - platform: google
 google:
   client_id: !secret goocalendar_id
   client_secret: !secret goocalendar_key
@@ -70,19 +117,51 @@ cloud:
   google_actions:
     filter:
       include_entities: 
-       !include include_entities.yaml
+       !include includes/include_entities.yaml
       include_domains:
         - switch
         - light
+        - input_boolean
       exclude_entities:
-       !include exclude_entities.yaml
-    entity_config:
-      switch.kitchen:
-        name: Custom Name for Google Assistant
-        aliases:
-         - bright lights
-         - entry lights
-        room: living room
+       !include includes/exclude_entities.yaml
+#    entity_config:
+#      switch.kitchen:
+#        name: Custom Name for Google Assistant
+#        aliases:
+#         - bright lights
+#         - entry lights
+#        room: living room
+    # sensor.temperature_kitchen:
+    #   google_assistant: true
+    #   google_assistant_type: climate
+    #   google_assistant_name: kitchen
+    # sensor.temperature_hallway:
+    #   google_assistant: true
+    #   google_assistant_type: climate
+    #   google_assistant_name: hallway
+    # sensor.temperature_guestroom:
+    #   google_assistant: true
+    #   google_assistant_type: climate
+    #   google_assistant_name: guest room
+climate:
+  - platform: generic_thermostat
+    name: Temperature kitchen
+    heater: input_boolean.fake_heater
+    target_sensor: sensor.kitchen_temperature
+    initial_operation_mode: "off"
+    target_temp: 21
+  - platform: generic_thermostat
+    name: Temperature hallway
+    heater: input_boolean.fake_heater
+    target_sensor: sensor.hallway_temperature
+    initial_operation_mode: "off"
+    target_temp: 21    
+  - platform: generic_thermostat
+    name: Temperature guestroom
+    heater: input_boolean.fake_heater
+    target_sensor: sensor.guest_room_temperature
+    initial_operation_mode: "off"
+    target_temp: 21 
 hassio:
 #alarmpanel mqtt
 alarm_control_panel:
@@ -105,3 +184,10 @@ panel_iframe:
       title: 'Väder'
       url: 'https://weather.com/sv-SE/weather/today/l/SWXX0031:1:SW'
       icon: mdi:poll
+
+
+weather:
+  - platform: yweather
+  - platform: darksky
+    api_key: c37aa122124d2e787eb6045eec229415
+#databas
