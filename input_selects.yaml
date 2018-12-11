@@ -1,4 +1,11 @@
 # lägg till följande för att få en dropdown list med  val
+  house_mode:
+      name: 'Mode'
+      options:
+          - 'Home'
+          - 'Away'
+          - 'Night'
+          - 'Extended Away'
   status_hemma:
     name: 'Home or away'
     icon: mdi:panda
