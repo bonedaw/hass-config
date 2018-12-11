@@ -1,7 +1,7 @@
   - platform: hue
-    host: 192.168.10.218
+    host: xxxxx
     allow_hue_groups: true
     allow_unreachable: true
 
 # https://developers.meethue.com/documentation/getting-started
-# http://192.168.10.218/debug/clip.html
+
