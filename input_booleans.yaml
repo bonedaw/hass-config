@@ -1,3 +1,17 @@
+  guests_present:
+    name: 'We have guests'
+    icon: mdi:account-multiple
+  cg_present:
+    name: 'Christer'
+    icon: mdi:human-male
+  lt_present:
+    name: 'Lidija'
+    icon: mdi:human-female
+#fadingtime_on
+  home:
+    name: 'Home'
+    icon: mdi:home-map-marker
+    initial: on
 #fadingtime_on
   fadingtime_on:
     name: 'Sunset'
@@ -23,3 +37,32 @@
     name: 'Enbart vardagar'
     initial: on
     icon: mdi:calendar
+
+#welcome guest
+  guest_tts:
+    name: 'Guest tts'
+    initial: off
+    icon: mdi:voice
+
+#welcome kitchen
+  kitchen_tts:
+    name: 'Kitchen tts'
+    initial: off
+    icon: mdi:voice
+
+#welcome hallway
+  hallway_tts:
+    name: 'Hallway tts'
+    initial: off
+    icon: mdi:voice
+    
+#audio off
+  audio_off:
+    name: 'Audio off'
+    initial: off
+    icon: mdi:voice    
+
+  fake_heater:
+    name: Fake Heater
+    icon: mdi:toggle-switch-off
+    initial: off
