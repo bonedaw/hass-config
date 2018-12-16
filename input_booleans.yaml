@@ -1,3 +1,9 @@
+  xmas:
+    name: 'Christmas'
+    icon: mdi:pine-tree
+  halloween:
+    name: 'Halloween'
+    icon: mdi:halloween
   guests_present:
     name: 'We have guests'
     icon: mdi:account-multiple
