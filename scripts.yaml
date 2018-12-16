@@ -1,4 +1,37 @@
+    select_hue_light:
+        sequence:
+          - service: script.set_hue_christmas_color
+            data_template:
+              light_id: >-
+                {% set i = (range(1,6)|random) %}
+                {% if i == 1 %}
+                  {% set chosen_light = "light.living_room_window_light" %}
+                {% elif i == 2 %}
+                  {% set chosen_light = "light.hue_color_candle_1_3" %}
+                {% endif %}
+                {{ chosen_light }}
+              color_name: >-  
+                {%- set i = (range(1,6)|random) %}  
+                {%- if i == 1 %}  
+                  {% set color = "white" %}  
+                {%- elif i == 2 %}  
+                  {% set color = "blue" %}  
+                {%- elif i == 3 %}  
+                  {% set color = "white" %}  
+                {%- elif i == 4 %}  
+                  {% set color = "blue" %}  
+                {%- elif i == 5 %}  
+                  {% set color = "white" %}  
+                {%- endif %}  
+                {{ color }}  
 
+    set_hue_christmas_color:
+        sequence:
+          - service: light.turn_on
+            data_template:
+              entity_id: '{{ light_id }}'
+              color_name: '{{ color_name }}'
+              transition: 10
 
 #mixer
     mixdone:
@@ -479,7 +512,7 @@
                ] | random}} ...
                {% elif now().strftime("%H")|int < 18 %}
                {{["When life gives you lemons, trade them for coffee",
-               "Water is the most essential element of life, because without water, you can't make coffee"
+               "Water is the most essential element of life, because without water, you can't make coffee",
                "Todays good mood is sponsored by Coffee",
                "Life is what happens between coffee and wine",
                "Sometimes I go hours without drinking coffee…it’s called sleeping",
@@ -531,8 +564,22 @@
             data:
               entity_id: script.coffee_on
 
-#kitchen
+#guest_room
     guest_room:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('switch.xmas', 'on') %}
+                  script.tts_xmas_guest
+                {% elif is_state('switch.halloween', 'on') %}
+                  script.tts_halloween
+                {% else %}
+                  script.guest_room_welcome_tts
+                {% endif %}
+
+#kitchen
+    guest_room_welcome_tts:
         sequence:
           - service: media_player.turn_on
             data:
@@ -552,6 +599,7 @@
                {% if now().strftime("%H")|int < 12 %}
                {{["Keep the dream alive: Hit the snooze button.",
                "Mankind is divisible into two great classes: hosts and guests.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Every house where love abides And friendship is a guest, Is surely home, and home, sweet home For there the heart can rest.",
                "The ornaments of your home are the people who smile upon entering time and time again.",
                "It is not the quantity of the meat but the cheerfulness of the guests which makes the feast.",
@@ -578,6 +626,7 @@
                ] | random}} ... 
                {% elif now().strftime("%H")|int < 18 %}
                {{["The elevator to success is out of order. You’ll have to use the stairs.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "People say nothing is impossible, but I do nothing every day.",
                "I'm not shy, I'm holding back my awesomeness so I don't intimidate you.",
                "Sorry for the mean, awful, accurate things I said.",
@@ -604,6 +653,7 @@
                {{["When life gives you lemons, squirt someone in the eye.",
                "Accept who you are. Unless you're a serial killer.",
                "Never go to bed mad. Stay up and fight.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Good evening.",
                "Good to see you.",
                "Nice to see you.",
@@ -628,6 +678,7 @@
                "Never go to bed mad. Stay up and fight.",
                "Good evening.",
                "Good to see you.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Nice to see you.",
                "Going to eat now again, are you?",
                "Never trust people who smile constantly. They’re either selling something or not very bright.",
@@ -656,6 +707,20 @@
 #kitchen
     kitchen:
         sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('switch.xmas', 'on') %}
+                  script.tts_xmas_kitchen
+                {% elif is_state('switch.halloween', 'on') %}
+                  script.tts_halloween
+                {% else %}
+                  script.kitchen_welcome_tts
+                {% endif %}
+
+#kitchen
+    kitchen_welcome_tts:
+        sequence:
           - service: media_player.turn_on
             data:
               entity_id: media_player.kitchen
@@ -675,6 +740,7 @@
                {{["Keep the dream alive: Hit the snooze button.",
                "Morning comes whether you set the alarm or not.",
                "With the new day comes new strength and new thoughts.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Every morning starts a new page in your story.",
                "Just one small positive thought in the morning can change your whole day.",
                "Joy comes in the morning",
@@ -699,10 +765,12 @@
                {% elif now().strftime("%H")|int < 18 %}
                {{["An apple a day keeps anyone away if you throw it hard enough.",
                "The elevator to success is out of order. You’ll have to use the stairs.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "People say nothing is impossible, but I do nothing every day.",
                "I'm not shy, I'm holding back my awesomeness so I don't intimidate you.",
                "Sorry for the mean, awful, accurate things I said.",
                "A balanced diet means a cupcake in each hand.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "I am not lazy, I am on energy saving mode.",
                "Doing nothing is hard, you never know when you're done.",
                "Time is an illusion, lunchtime doubly so.",
@@ -712,7 +780,7 @@
                "What’s kickin’, little chicken",
                "Put that cookie down!",
                "What's cookin', good lookin'?",
-               "time is  {{states.sensor.time.state}} just if you want to know",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Quit now and cake will be served immediately.",
                "Uh oh. Somebody cut the cake. I told them to wait for you, but they did it anyway. There is still some left, though, if you hurry back.",
                "You really shouldn't be here. This isn't safe for you.",
@@ -723,6 +791,7 @@
                "It's been a long time. How have you been?",
                "Bring me a bucket, and I'll show you a bucket!",
                "Thank You Mario! But our princess is in another castle!",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "There are two ways of arguing with a woman, and neither one works.",
                "The right person in the wrong place can make all the difference in the world.",
                "The President has been kidnapped by ninjas. Are you a bad enough dude to rescue the President?",
@@ -736,6 +805,7 @@
                "The more you weight the harder you are to kidnap. Stay safe, eat cake.",
                "Good evening.",
                "Good to see you.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Nice to see you.",
                "Going to eat now again, are you?",
                "do you eat again now?",
@@ -759,6 +829,7 @@
                "Accept who you are. Unless you're a serial killer.",
                "Never go to bed mad. Stay up and fight.",
                "The more you weight the harder you are to kidnap. Stay safe, eat cake.",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Good evening.",
                "Good to see you.",
                "Nice to see you.",
@@ -788,8 +859,19 @@
             data:
               entity_id: timer.timer_kitchen_tts
 
-#hallway
+#cg_home
     cg_home:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('media_player.all', 'off') %}
+                  script.cg_home_tts
+                {% else %}
+                  script.cg_home_notts
+                {% endif %}
+#hallway
+    cg_home_tts:
         sequence:
           - service: media_player.turn_on
             data:
@@ -843,7 +925,705 @@
               entity_id: timer.timer_hallway_tts
 
 #hallway
+    tts_halloween:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.hallway, media_player.kitchen
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.hallway
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.hallway, media_player.kitchen
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
+            data_template:
+              entity_id: media_player.hallway, media_player.kitchen, media_player.jbllink104191
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["I can’t move, breathe, speak or hear and it’s so dark all the time. If I knew it would be this lonely, I would have been cremated instead.",
+               "Don’t be scared of the monsters, just look for them. Look to your left, to your right, under your bed, behind your dresser, in your closet but never look up, she hates being seen.",
+               "I woke up to hear knocking on glass. At first, I though it was the window until I heard it come from the mirror again.",
+               "She wondered why she was casting two shadows. Afterall, there was only a single lightbulb.",
+               "You’re laying in bed and with your feet dangling out of the covers. You feel a hand grab your feet.",
+               "Caution! Zombie Crossing",
+               "Ghosts Gather Here",
+               "Enter At Your Own Risk",
+               "I Believe In The Great Pumpkin",
+               "We Witch You A Happy Halloween",
+               "When witches go riding, and black cats are seen. The moon laughs and whispers, 'tis near Halloween.",
+               "Double, double, toil and trouble. Fire burn and cauldron bubble."
+               ] | random}} ... 
+               {% elif now().strftime("%H")|int < 07 %}
+               {{["I can’t move, breathe, speak or hear and it’s so dark all the time. If I knew it would be this lonely, I would have been cremated instead.",
+               "Don’t be scared of the monsters, just look for them. Look to your left, to your right, under your bed, behind your dresser, in your closet but never look up, she hates being seen.",
+               "I woke up to hear knocking on glass. At first, I though it was the window until I heard it come from the mirror again.",
+               "She wondered why she was casting two shadows. Afterall, there was only a single lightbulb.",
+               "You’re laying in bed and with your feet dangling out of the covers. You feel a hand grab your feet.",
+               "Caution! Zombie Crossing",
+               "Ghosts Gather Here",
+               "Enter At Your Own Risk",
+               "I Believe In The Great Pumpkin",
+               "We Witch You A Happy Halloween",
+               "When witches go riding, and black cats are seen. The moon laughs and whispers, 'tis near Halloween.",
+               "Double, double, toil and trouble. Fire burn and cauldron bubble."
+               ] | random}} ... 
+               {% else %}
+               {{["I can’t move, breathe, speak or hear and it’s so dark all the time. If I knew it would be this lonely, I would have been cremated instead.",
+               "Don’t be scared of the monsters, just look for them. Look to your left, to your right, under your bed, behind your dresser, in your closet but never look up, she hates being seen.",
+               "I woke up to hear knocking on glass. At first, I though it was the window until I heard it come from the mirror again.",
+               "She wondered why she was casting two shadows. Afterall, there was only a single lightbulb.",
+               "You’re laying in bed and with your feet dangling out of the covers. You feel a hand grab your feet.",
+               "Caution! Zombie Crossing",
+               "Ghosts Gather Here",
+               "Enter At Your Own Risk",
+               "I Believe In The Great Pumpkin",
+               "We Witch You A Happy Halloween",
+               "When witches go riding, and black cats are seen. The moon laughs and whispers, 'tis near Halloween.",
+               "Double, double, toil and trouble. Fire burn and cauldron bubble."
+               ] | random}} ... 
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.hallway_tts
+          - service: timer.start
+            data:
+              entity_id: timer.timer_hallway_tts
+
+#hallway
+    tts_xmas_hallen:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.hallway
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.hallway
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.hallway
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
+            data_template:
+              entity_id: media_player.hallway
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% elif now().strftime("%H")|int < 07 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% else %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.hallway_tts
+          - service: timer.start
+            data:
+              entity_id: timer.timer_hallway_tts
+
+#kitchen
+    tts_xmas_kitchen:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.hallway
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.kitchen
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% elif now().strftime("%H")|int < 07 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% else %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.kitchen_tts
+          - service: timer.start
+            data:
+              entity_id: timer.timer_kitchen_tts
+
+#guest
+    tts_xmas_guest:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.media_player.jbllink104191
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.hallway
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.media_player.jbllink104191
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
+            data_template:
+              entity_id: media_player.media_player.jbllink104191
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% elif now().strftime("%H")|int < 07 %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% else %}
+               {{["Christmas is about spending time with family and friends. It’s about creating happy memories that will last a lifetime. Merry Christmas to you and your family!",
+               "May the closeness of friends, the comfort of home, and the unity of our nation, renew your spirits this festive season. Merry Christmas to your family.",
+               "‘Tis the season to wish one another joy and love and peace. These are my wishes for you, Merry Christmas our dear friends, may you feel the love this special day.",
+               "May this festive season sparkle and shine, may all of your wishes and dreams come true, and may you feel this happiness all year round. Merry Christmas!",
+               "You make the stars shine brighter and the winter days warmer just by being in my life. Merry Christmas to my favorite person in the world.",
+               "A lovely thing about Christmas is that it’s compulsory, like a thunderstorm and we all go through it together. Let’s buckle up and enjoy the ride.",
+               "Celebrate the Wonder and the Joy of the Festive Season. Merry Christmas",
+               "To a joyful present and a well-remembered past. Best wishes for Happy Holidays and a magnificent New Year.",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "This festive season is so much more than Christmas parties and gift giving. May your Christmas be filled with the true miracles and meaning of this beautiful time.",
+               "May you feel all the love and joy I have for you throughout this festive season and all year round. Having you as my friend brings me great joy.",
+               "Best friends are to a friendship like Christmas is to the other celebrations: always on top. Have a merry one.",
+               "Christmas is a special time to enjoy with all your loved ones, spreading divinity and cheer around, Merry Christmas and a happy new year!",
+               "Christmas is really a time for families to unite. It is a time to share all the laughter and cheers. Without you, this family will not be called a family. You complete our lives. Merry Christmas . . . !!!",
+               "For your Christmas time, I wish you many blessings, much happiness, and even more love I am grateful for you and your thoughtfulness.",
+               "May your heart and home be filled with all of the joys the festive season brings. Merry Christmas and a wonderful New Year!",
+               "During this festive season of giving, let us take time to slow down and enjoy the simple things. May this wonderful time of the year touch your heart in a special way. Wishing you much happiness not just today, but throughout the New Year.",
+               "May the joy and peace of Christmas be with you all through the Year. Wishing you a season of blessings from heaven above. Happy Christmas!!",
+               "May your world be filled with warmth and good cheer this Holy season, and throughout the year.",
+               "Wish you a Merry Christmas and may this festival bring abundant joy and happiness in your life!",
+               "Warmest greetings of this festive season and best wishes for Happiness in the New Year",
+               "Warmest thoughts and best wishes for a wonderful Christmas and a Happy New Year. May peace, love and prosperity follow you always",
+               "The true heart of Christmas is one of wonder and warmth. May any festive stress you feel fade away and be replaced with this. Merry Christmas!",
+               "I hope Santa is good to you this year because you only deserve the best. Merry Christmas from our family to yours.",
+               "Christmas is the time to touch every heart with love and care. Christmas is the time to receive and send blessings. It is the time to breathe the magic in the air. Wishing you a very Merry Christmas.",
+               "I’m wishing you all the blessings of a wonderful Christmastime and I hope you feel all the job this holiday season has to offer.",
+               "Beneath the hustle and bustle of the festive season, there is the true beauty of connecting with loved ones. May this beauty and joy lift you up during Christmas and the New Year!",
+               "May all the sweet magic of Christmas conspire to gladden your heart and fill every desire. Merry Christmas!",
+               "Fill your heart with the warmth that is the closeness of your family, friends and loved ones this holiday season and forever.",
+               "Let the spirit of love gently fill our hearts and homes. In this loveliest of celebrations may you find many reasons for happiness.",
+               "There are some people who want to throw their arms around you simply because it is Christmas; there are other people who want to strangle you simply because it is Christmas. Which one are you?",
+               "Having you as my friend makes me feel as if it is Christmas every day. Merry Christmas to my dear friend, may this season be filled with joy and laughter for you and your family.",
+               "Christmas is the gentlest, loveliest festival of the revolving year — and yet, for all that, when it speaks, its voice has strong authority. ~W.J. Cameron",
+               "The one who has not Christmas in his heart will never find it under a tree. Celebrate the true meaning of Christmas and embrace the warmth of your closest ones. Merry Christmas",
+               "A silent night, a star above, a blessed gift of hope and love. A Merry Christmas to you and your whole family.",
+               "May your heart and home be filled with all of the joys the festive season brings. Here is a toast to a Merry Christmas and prosperous New Year!",
+               "May this Christmas end the present year on a cheerful note and make way for a fresh and bright New Year. Here’s wishing you a Merry Christmas and a Happy New Year!",
+               "May your Christmas sparkle with moments of love, laughter and goodwill, And may the year ahead be full of contentment and joy.",
+               "On Christmas, there’s a reason to be happy and a reason to smile, and there’s a reason why I’m sending Christmas wishes your way. You’re it.",
+               "Wishing you a joyous Christmas and a happy and prosperous New Year.",
+               "One of the most glorious messes in the world is the mess created in the living room on Christmas day. Don’t clean it up too quickly. Savor and enjoy the moment. Merry Christmas!",
+               "The Gift of Christmas is a precious reminder that we are loved! I am so lucky to have someone I love so much at my side this festive season.",
+               "A Christmas candle is a lovely thing; It makes no noise at all but softly gives itself away; while quite unselfish,it grows small.",
+               "A little smile, a word of cheer a bit of love from someone near a little gift from one held dear, best wishes for the coming year.",
+               "Christmas is not a time for celebration, but a state of mind. To cherish peace and kindness, to be plenteous in mercy, is to have the real spirit of Christmas.",
+               "There is no greater gift this festive season than spending time with family all around the Christmas tree.",
+               "May the good times and treasures of the present become the golden memories of tomorrow. Wish you lots of love, joy, and happiness. MERRY CHRISTMAS",
+               "Christmas is a special time to enjoy with, All your loved ones, To spread the divinity and cheer around, Merry Christmas and a happy new year!",
+               "The gift of love. The gift of peace. The gift of happiness. May all these be yours at Christmas.",
+               "May you have the spirit of Christmas which is Peace, the gladness of Christmas which is Hope, and the Heart of Christmas which is Love."
+               ] | random}} ... 
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.kitchen_tts
+          - service: timer.start
+            data:
+              entity_id: timer.timer_kitchen_tts
+
+#cg_home
+    lt_home:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('media_player.all', 'off') %}
+                  script.lt_home_tts
+                {% else %}
+                  script.lt_home_notts
+                {% endif %}
+#hallway
+    lt_home_tts:
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.hallway
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.hallway
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.hallway
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
+            data_template:
+              entity_id: media_player.hallway
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Are you coming or leaving.",
+               "Namaste Lidija",
+               "What’s happening Lidija",
+               "What’s up Lidija",
+               "I have now been fully activated since Lidija came home. ",
+               "Hello and, again, welcome Lidija.",
+               "You're doing very well Lidija!"] | random}} ... 
+               {% elif now().strftime("%H")|int < 18 %}
+               {{["Good afternoon Lidija.",
+               "Greetings and salutations Lidija!",
+               "Heeey, Lidija.",
+               "Salutations Lidija",
+               "Greetings Lidija",
+               "Howdy Lidija"
+               ] | random}} ... 
+               {% elif now().strftime("%H")|int < 07 %}
+               "Good to see you Lidija.",
+               "Nice to see you Lidija.",
+               "It’s good to see you Lidija.",
+               "What are you doing Lidija?"
+               {% else %}
+               {{["Good evening Lidija.",
+               "Good to see you Lidija.",
+               "Nice to see you Lidija.",
+               "It’s good to see you Lidija."
+               ] | random}} ... 
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+          - service: input_boolean.turn_on
+            data:
+              entity_id: input_boolean.hallway_tts
+          - service: timer.start
+            data:
+              entity_id: timer.timer_hallway_tts
+              
+
+#hallway
     hallway:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('switch.xmas', 'on') %}
+                  script.tts_xmas_hallen
+                {% elif is_state('switch.halloween', 'on') %}
+                  script.tts_halloween
+                {% else %}
+                  script.hallway_welcome_tts
+                {% endif %}
+
+#hallway
+    hallway_welcome_tts:
         sequence:
           - service: media_player.turn_on
             data:
@@ -864,6 +1644,7 @@
                {{["Are you coming or leaving.",
                "Namaste",
                "What’s happening",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "How’s it going",
                "What’s up",
                "Im an informational delivery system, I literraly know everything. ",
@@ -892,6 +1673,7 @@
                "Heeey, baaaaaby.",
                "How you doin",
                "Salutations",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "Greetings",
                "Howdy",
                "The Ultimate Answer to Life, The Universe and Everything is...42!",
@@ -917,6 +1699,7 @@
                "Good to see you.",
                "Nice to see you.",
                "leaving this hour, are you",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "It’s good to see you.",
                "Tomorrow is often the busiest day of the week.",
                "I don’t go crazy. I am crazy. I just go normal from time to time.",
@@ -938,6 +1721,7 @@
                "Good to see you.",
                "Nice to see you.",
                "leaving this late, are you",
+               "time is  {{ now().strftime('%H %M') }} just if you want to know",
                "It’s good to see you.",
                "Tomorrow is often the busiest day of the week.",
                "I don’t go crazy. I am crazy. I just go normal from time to time.",
@@ -1285,11 +2069,24 @@
           - delay: 00:00:01
           - service: light.turn_off
             data:
+              entity_id: light.hue_color_candle_1_5
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
               entity_id: light.hue_go_1
           - service: input_select.select_option
             data_template:
               entity_id: input_select.house_mode
               option: 'Night'
+
 ##############################################################
 #                                                            #
 #         Codes for broadlink ir packet                      #
@@ -1682,7 +2479,7 @@
             data:
               entity_id: light.living_room_window_light, light.hue_color_candle_1, light.hue_color_candle_1_3
               effect: colorloop
-              brightness: 127
+              brightness: 160
               transition: 5
 
     stop_mood_window:
@@ -1776,3 +2573,66 @@
           - service: light.turn_on
             data:
               entity_id: light.kaffe
+
+ #media_off
+    media_off:   
+#    media_off: 
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.kitchen
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.kitchen
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               "Streaming is off"
+
+ #media_playing
+    media_playing:   
+#    media_playing: 
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.kitchen
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.kitchen
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               "Streaming is started"
+
+ #media_paused
+    media_paused:   
+#    media_paused: 
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.kitchen
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.kitchen
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.kitchen
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
+            data_template:
+              entity_id: media_player.kitchen
+              message: >
+               "Streaming is paused"
