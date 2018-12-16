@@ -83,3 +83,101 @@
           service: light.turn_off
           data:
             entity_id: light.onoff_plug_3
+            
+      lt_present:
+        value_template: "{{ is_state('input_boolean.lt_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.lt_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.lt_present
+
+      cg_present:
+        value_template: "{{ is_state('input_boolean.cg_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.cg_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.cg_present
+
+      guests_present:
+        value_template: "{{ is_state('input_boolean.guests_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.guests_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.guests_present
+
+      all_lights:
+        value_template: "{{ is_state('group.all_actual_lights', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_lights
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_lights
+
+      all_switches:
+        value_template: "{{ is_state('group.all_actual_switches', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_switches
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_switches
+
+      living_room_normal:
+        value_template: "{{ is_state('scene.livingroom_normal', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: scene.livingroom_normal
+        turn_off:
+          service: homeassistant.turn_on
+          data:
+            entity_id: scene.livingroom_normal
+
+      home:
+        value_template: "{{ is_state('input_boolean.home', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.home
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.home
+
+      xmas:
+        value_template: "{{ is_state('input_boolean.xmas', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.xmas
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.xmas
+      halloween:
+        value_template: "{{ is_state('input_boolean.halloween', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.halloween
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.halloween
