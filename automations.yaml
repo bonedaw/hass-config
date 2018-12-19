@@ -17,515 +17,79 @@
       data: 
         entity_id: group.all_actual_lights
 
-- alias: Home Mode - Away
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: input_select.house_mode
-    to: 'Away'
-  action:
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.home
-      
-- alias: Home Mode - Home
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: input_select.house_mode
-    to: 'Home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.home
 
-- alias: Home Mode - Arriving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id:
-      - input_boolean.cg_present
-      - input_boolean.lt_present
-      - input_boolean.guests_present
-    to: 'on'
-  - platform: state
-    entity_id:
-      - device_tracker.christer_samsung_s9
-      - device_tracker.honor9lan
-      - device_tracker.tracy_all
-      - device_tracker.galaxys9lan
-#      - group.extra_device_trackers
-    to: 'home'
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Away'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
 
-- alias: 'morning_on'
-  initial_state: 'on'
-  trigger:
-    - platform: time
-      at: '07:00:00'
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: device_tracker.galaxys9lan
-        state: 'home'
-      - condition: state
-        entity_id: device_tracker.christer_samsung_s9
-        state: 'home'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
+#######################################
+#                                     #
+#       Mode                          #
+#                                     #
+#######################################
 
-- alias: Home Lidija - check
-  initial_state: 'on'
-  trigger:
-    platform: time
-    hours: '/1'
-    minutes: 0
-    seconds: 0
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Lidija - check away
+- alias: 'xmas to on'
   initial_state: 'on'
   trigger:
   - platform: state
-    entity_id:
-      - switch.lt_present
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Lidija - Arriving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id:
-      - device_tracker.galaxys9lan
-    to: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: notify.push
-    data:
-      title: 'Home'
-      message: 'LT Home'
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'Hass Started checking LT home'
-  initial_state: 'on'
-  trigger:
-    platform: homeassistant
-    # Event can also be 'shutdown'
-    event: start
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Christer - check
-  initial_state: 'on'
-  trigger:
-    platform: time
-    hours: '/1'
-    minutes: 0
-    seconds: 0
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Christer - check away
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id:
-      - switch.cg_present
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'Hass Started checking CG home'
-  initial_state: 'on'
-  trigger:
-    platform: homeassistant
-    # Event can also be 'shutdown'
-    event: start
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Christer - Arriving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id:
-      - device_tracker.christer_samsung_s9
-    to: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: notify.push
-    data:
-      title: 'Home'
-      message: 'CG Home'
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Lidija - Leaving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.galaxys9lan
-    to: 'not_home'
-    for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'not_home'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Away'
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.lt_present
-
-- alias: Home Lidija - Leaving 2
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.galaxys9lan
-    to: 'not_home'
-    for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  action:
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.lt_present
-
-- alias: Home Christer - Leaving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.christer_samsung_s9
-    to: 'not_home'
-    for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'not_home'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Away'
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.cg_present
-
-- alias: Home Christer - Leaving 2
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.christer_samsung_s9
-    to: 'not_home'
-    for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  action:
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.cg_present
-
-- alias: 'Kitchen CG presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.kitchen_motion_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Guest CG presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.guest_room_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Hallway CG presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.hallway_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'Kitchen LT presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.kitchen_motion_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Guest LT presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.guest_room_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Hallway LT presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.hallway_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'home to home'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: input_boolean.home
+    entity_id: input_boolean.xmas
     to: 'on'
   action:
   - service: switch.turn_on
     data: 
-      entity_id: switch.home
+      entity_id: switch.xmas
 
-- alias: 'home to away'
+- alias: 'xmas to off'
   initial_state: 'on'
   trigger:
   - platform: state
-    entity_id: input_boolean.home
+    entity_id: input_boolean.xmas
     to: 'off'
   action:
   - service: switch.turn_off
     data: 
-      entity_id: switch.home
+      entity_id: switch.xmas
+
+- alias: 'halloween to on'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.halloween
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.halloween
+
+- alias: 'halloween to off'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.halloween
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.halloween
+
+- alias: 'party to on'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.party
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.party
+
+- alias: 'party to off'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.party
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.party
 
 #######################################
 #                                     #
@@ -769,18 +333,38 @@
   condition:
   - condition: numeric_state
     entity_id: sun.sun
-    value_template: '{{ state.attributes.elevation }}'
+    value_template: '{{ states.attributes.elevation }}'
     below: 4.0  
   action:
   - service: automation.turn_on
     entity_id: automation.window_lightning
+
+- alias: Living Room Lamp - Sunset
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: "-00:30:00"
+    - platform: state
+      entity_id: input_select.house_mode
+      to: 'Home'
+  condition:
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Home'
+    - condition: sun 
+      after: sunset 
+      after_offset: "-00:30:00"
+  action:
+  - service: script.turn_on
+    entity_id: 
+      - script.skymning
 
 - alias: 'window lightning'
   initial_state: true
   trigger:
 #  - platform: numeric_state
 #    entity_id: sun.sun
-#    value_template: '{{ state.attributes.elevation }}'
+#    value_template: '{{ states.attributes.elevation }}'
 #    below: 2.5
   - platform: sun
     event: sunset
@@ -889,6 +473,53 @@
 #                                     #
 #######################################
 
+- alias: 'Reset after power failure'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: light.hue_color_candle_1
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Away'
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Night'
+    - condition: time
+      after: '22:00'
+      before: '07:00'
+  action:
+    - service: light.turn_on
+      data: 
+        entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light
+        color_temp: 454
+        brightness: 135
+    - delay:
+        seconds: 1
+    - service: light.turn_off
+      entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light, light.onoff_plug_1, light.onoff_plug_2, light.onoff_plug_3, light.onoff_plug_4
+    - service: notify.push
+      data_template:
+        title: 'Power failure'
+        message: 'Strömavbrott'
+
+- alias: 'random color on lights'
+  trigger:
+  - seconds: /1200
+    platform: time
+  condition:
+  - after: sunset
+    condition: sun
+  - condition: state
+    entity_id: switch.party
+    state: 'on'
+  action:
+    - service: script.toggle
+      entity_id: 
+        - script.party_random
 
 - alias: "xmas_song"
   initial_state: 'on'
@@ -970,14 +601,14 @@
     - service: light.turn_on
       data: 
         entity_id: light.hue_color_candle_1
-        rgb_color: [255,0,67]
+        rgb_color: [255,43,0]
         brightness: 179
         transition: 10
 #Bedroom window
     - service: light.turn_on
       data: 
         entity_id: light.hue_color_candle_1_4
-        rgb_color: [255,0,67]
+        rgb_color: [255,43,0]
         brightness: 179
         transition: 10
 #right sofa
@@ -1059,6 +690,9 @@
   trigger:
     - platform: time
       at: '17:00:00'
+    - platform: state
+      entity_id: input_select.house_mode
+      to: 'Home'
   condition:
   - condition: state
     entity_id: input_select.status_hemma
@@ -1066,6 +700,9 @@
   - condition: state
     entity_id: input_select.house_mode
     state: 'Home'
+  - condition: time
+    after: '17:00'
+    before: '21:45'
   action:
     - service: homeassistant.turn_on
       entity_id: switch.twinkly
@@ -1075,6 +712,10 @@
   trigger:
   - platform: time
     at: '21:45:00'
+  condition:
+  - condition: state
+    entity_id: switch.party
+    state: 'off'
   action:
     - service: homeassistant.turn_off
       data: 
@@ -1115,14 +756,14 @@
     - service: light.turn_on
       data: 
         entity_id: light.hue_color_candle_1
-        rgb_color: [255,0,67]
+        rgb_color: [255,43,0]
         brightness: 179
         transition: 10
 #Bedroom window
     - service: light.turn_on
       data: 
         entity_id: light.hue_color_candle_1_4
-        rgb_color: [255,0,67]
+        rgb_color: [255,43,0]
         brightness: 179
         transition: 10
 #right sofa
@@ -1177,6 +818,10 @@
   - platform: state
     entity_id: switch.twinkly
     to: 'off'
+  condition:
+  - condition: state
+    entity_id: switch.party
+    state: 'off'
   action:
     - service: light.turn_on
       data: 
@@ -1215,91 +860,8 @@
       data: 
         entity_id: light.onoff_plug_2
 
-- alias: 'Reset after power failure'
-  initial_state: 'on'
-  trigger:
-  - platform: numeric_state
-    entity_id: light.hue_color_candle_1
-    value_template: '{{ state.attributes.brightness }}'
-    above: 253
-  condition:
-      - condition: template
-        value_template: "{{ states.sensor.period_of_day.state != 'night' }}"
-  action:
-    - service: light.turn_on
-      data: 
-        entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light
-        color_temp: 454
-        brightness: 135
-    - delay:
-        seconds: 1
-    - service: light.turn_off
-      entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light, light.onoff_plug_1
-    - service: notify.push
-      data_template:
-        title: Power failure
-        message: 'Strömavbrott'
 
 
-- alias: 'Reset after power failure two'
-  initial_state: 'on'
-  trigger:
-  - platform: numeric_state
-    entity_id: light.hue_color_candle_1
-    value_template: '{{ state.attributes.brightness }}'
-    above: 253
-  condition:
-      - condition: template
-        value_template: "{{ states.sensor.period_of_day.state != 'dawn' }}"
-  action:
-    - service: light.turn_on
-      data: 
-        entity_id: light.book_shelf_color_two, light.bookshelf_color, light.living_room_right_sofa, light.living_room_window_light
-        rgb_color: [255,189,84]
-        brightness: 150
-    - service: light.turn_on
-      data: 
-        entity_id: light.bedroom_window_light, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1
-    - delay:
-        seconds: 1
-    - service: light.turn_off
-      entity_id: light.bedroom_light, light.bedroom_window_light, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.onoff_plug_1
-    - service: notify.push
-      data_template:
-        title: Power failure
-        message: 'Strömavbrott'
-
-- alias: 'Reset after power failure three'
-  initial_state: 'on'
-  trigger:
-  - platform: numeric_state
-    entity_id: light.hue_color_candle_1
-    value_template: '{{ state.attributes.brightness }}'
-    above: 253
-  condition:
-      - condition: template
-        value_template: "{{ states.sensor.period_of_day.state != 'day' }}"
-      - condition: time
-        weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-  action:
-    - service: light.turn_on
-      data: 
-        entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light
-        color_temp: 454
-        brightness: 135
-    - delay:
-        seconds: 1
-    - service: light.turn_off
-      entity_id: light.bedroom_light, light.bedroom_window_light, light.book_shelf_color_two, light.bookshelf_color, light.guest_room_1, light.guest_room_2, light.guest_room_3, light.hallway_1, light.hallway_2, light.hallway_3, light.hallway_hanger, light.kitchen_fan, light.kitchen_fan_2, light.kitchen_sink, light.kitchen_sink_two, light.hue_color_candle_1, light.living_room_right_sofa, light.living_room_window_light, light.onoff_plug_1
-    - service: notify.push
-      data_template:
-        title: Power failure
-        message: 'Strömavbrott'
 #######################################
 #                                     #
 #      Fönster                        #
@@ -1377,6 +939,9 @@
     value_template: '{{ states.sensor.time.state == states.sensor.fading_time.state }}'
   condition:
   - condition: state
+    entity_id: switch.party
+    state: 'off'
+  - condition: state
     entity_id: input_boolean.fadelight
     state: 'on'
   - condition: state
@@ -1449,28 +1014,7 @@
     entity_id: input_boolean.guest_tts
     state: 'off'
   - condition: state
-    entity_id:  media_player.bedroom
-    state: 'off'
-  - condition: state
-    entity_id: media_player.chromecast_audio
-    state: 'off'
-  - condition: state
     entity_id: media_player.hallway
-    state: 'off'
-  - condition: state
-    entity_id: media_player.kitchen
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_left
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_display
-    state: 'off'
-  - condition: state
-    entity_id:  media_player.living_room_speaker
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_right
     state: 'off'
   - condition: state
     entity_id: media_player.all
@@ -1525,28 +1069,7 @@
     entity_id: input_boolean.guest_tts
     state: 'off'
   - condition: state
-    entity_id:  media_player.bedroom
-    state: 'off'
-  - condition: state
-    entity_id: media_player.chromecast_audio
-    state: 'off'
-  - condition: state
     entity_id: media_player.hallway
-    state: 'off'
-  - condition: state
-    entity_id: media_player.kitchen
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_left
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_display
-    state: 'off'
-  - condition: state
-    entity_id:  media_player.living_room_speaker
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_right
     state: 'off'
   - condition: state
     entity_id: media_player.all
@@ -1581,28 +1104,7 @@
     entity_id: input_boolean.guest_tts
     state: 'off'
   - condition: state
-    entity_id:  media_player.bedroom
-    state: 'off'
-  - condition: state
-    entity_id: media_player.chromecast_audio
-    state: 'off'
-  - condition: state
     entity_id: media_player.hallway
-    state: 'off'
-  - condition: state
-    entity_id: media_player.kitchen
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_left
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_display
-    state: 'off'
-  - condition: state
-    entity_id:  media_player.living_room_speaker
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_right
     state: 'off'
   - condition: state
     entity_id: media_player.all
@@ -1632,30 +1134,6 @@
     entity_id: input_boolean.hallway_tts
     state: 'off'
   - condition: state
-    entity_id:  media_player.bedroom
-    state: 'off'
-  - condition: state
-    entity_id: media_player.chromecast_audio
-    state: 'off'
-  - condition: state
-    entity_id: media_player.hallway
-    state: 'off'
-  - condition: state
-    entity_id: media_player.kitchen
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_left
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_display
-    state: 'off'
-  - condition: state
-    entity_id:  media_player.living_room_speaker
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_right
-    state: 'off'
-  - condition: state
     entity_id: media_player.all
     state: 'off'
   - condition: state
@@ -1683,28 +1161,7 @@
     entity_id: input_boolean.guest_tts
     state: 'off'
   - condition: state
-    entity_id:  media_player.bedroom
-    state: 'off'
-  - condition: state
-    entity_id: media_player.chromecast_audio
-    state: 'off'
-  - condition: state
-    entity_id: media_player.hallway
-    state: 'off'
-  - condition: state
     entity_id: media_player.kitchen
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_left
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_display
-    state: 'off'
-  - condition: state
-    entity_id:  media_player.living_room_speaker
-    state: 'off'
-  - condition: state
-    entity_id: media_player.living_room_right
     state: 'off'
   - condition: state
     entity_id: media_player.all
@@ -2057,3 +1514,615 @@
   action:
   - service: script.turn_on
     entity_id: script.coffee_off
+
+#######################################
+#                                     #
+#       Home or away                  #
+#                                     #
+#######################################
+
+- alias: Turn off lights when away
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.house_mode
+    to: 'Away'
+    for:
+      seconds: 1200
+  condition:
+  - condition: state
+    entity_id: input_boolean.guests_present
+    state: 'off'
+  action:
+    - delay:
+        seconds: 600
+    - service: light.turn_off
+      data: 
+        entity_id: group.all_actual_lights
+
+
+
+
+- alias: Home Mode - Away
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.house_mode
+    to: 'Away'
+  condition:
+  - condition: state
+    entity_id: input_boolean.guests_present
+    state: 'off'
+  action:
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.home
+      
+- alias: Home Mode - Home
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.house_mode
+    to: 'Home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.home
+
+- alias: Home Mode - Arriving
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+      - input_boolean.cg_present
+      - input_boolean.lt_present
+      - input_boolean.guests_present
+    to: 'on'
+  - platform: state
+    entity_id:
+      - device_tracker.christer_samsung_s9
+      - device_tracker.honor9lan
+      - device_tracker.tracy_all
+      - device_tracker.galaxys9lan
+      - device_tracker.google_maps_108889296451373807738
+      - device_tracker.google_maps_116768446304662806225
+#      - group.extra_device_trackers
+    to: 'home'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Away'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: 'morning_on'
+  initial_state: 'on'
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.galaxys9lan
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.christer_samsung_s9
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_108889296451373807738
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_116768446304662806225
+        state: 'home'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Lidija - check
+  initial_state: 'on'
+  trigger:
+    platform: time
+    hours: '/1'
+    minutes: 0
+    seconds: 0
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.galaxys9lan
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_108889296451373807738
+        state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Lidija - check away
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+      - switch.lt_present
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: device_tracker.galaxys9lan
+    state: 'home'
+  - condition: state
+    entity_id: device_tracker.google_maps_108889296451373807738
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Lidija - Arriving
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+      - device_tracker.galaxys9lan
+    to: 'home'
+  - platform: state
+    entity_id:
+      - device_tracker.google_maps_108889296451373807738
+    to: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: notify.push
+    data:
+      title: 'Home'
+      message: 'LT Home'
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: 'Hass Started checking LT home'
+  initial_state: 'on'
+  trigger:
+    platform: homeassistant
+    # Event can also be 'shutdown'
+    event: start
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.galaxys9lan
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_108889296451373807738
+        state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Christer - check
+  initial_state: 'on'
+  trigger:
+    platform: time
+    hours: '/1'
+    minutes: 0
+    seconds: 0
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.christer_samsung_s9
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_116768446304662806225
+        state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Christer - check away
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+      - switch.cg_present
+    to: 'off'
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.christer_samsung_s9
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_116768446304662806225
+        state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: 'Hass Started checking CG home'
+  initial_state: 'on'
+  trigger:
+    platform: homeassistant
+    # Event can also be 'shutdown'
+    event: start
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.christer_samsung_s9
+        state: 'home'
+      - condition: state
+        entity_id: device_tracker.google_maps_116768446304662806225
+        state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Christer - Arriving
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id:
+      - device_tracker.christer_samsung_s9
+    to: 'home'
+  - platform: state
+    entity_id:
+      - device_tracker.google_maps_116768446304662806225
+    to: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: notify.push
+    data:
+      title: 'Home'
+      message: 'CG Home'
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: Home Lidija - Leaving
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: device_tracker.galaxys9lan
+    to: 'not_home'
+    for:
+      seconds: 15
+  - platform: state
+    entity_id: device_tracker.google_maps_108889296451373807738
+    to: 'not_home'
+    for:
+      seconds: 15
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
+  - condition: state
+    entity_id: device_tracker.christer_samsung_s9
+    state: 'not_home'
+  - condition: state
+    entity_id: input_boolean.guests_present
+    state: 'off'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Away'
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.lt_present
+
+- alias: Home Lidija - Leaving 2
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: device_tracker.galaxys9lan
+    to: 'not_home'
+    for:
+      seconds: 15
+  - platform: state
+    entity_id: device_tracker.google_maps_108889296451373807738
+    to: 'not_home'
+    for:
+      seconds: 15
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
+  action:
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.lt_present
+
+- alias: Home Christer - Leaving
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: device_tracker.christer_samsung_s9
+    to: 'not_home'
+    for:
+      seconds: 15
+  - platform: state
+    entity_id: device_tracker.google_maps_116768446304662806225
+    to: 'not_home'
+    for:
+      seconds: 15
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
+  - condition: state
+    entity_id: device_tracker.galaxys9lan
+    state: 'not_home'
+  - condition: state
+    entity_id: input_boolean.guests_present
+    state: 'off'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Away'
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.cg_present
+
+- alias: Home Christer - Leaving 2
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: device_tracker.christer_samsung_s9
+    to: 'not_home'
+    for:
+      seconds: 15
+  - platform: state
+    entity_id: device_tracker.google_maps_116768446304662806225
+    to: 'not_home'
+    for:
+      seconds: 15
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.ha_runtime_in_minutes
+    above: 1
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
+  action:
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.cg_present
+
+- alias: 'Kitchen CG presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.kitchen_motion_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.christer_samsung_s9
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+- alias: 'Guest CG presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.guest_room_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.christer_samsung_s9
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+- alias: 'Hallway CG presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.hallway_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.christer_samsung_s9
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.cg_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: 'Kitchen LT presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.kitchen_motion_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.galaxys9lan
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+- alias: 'Guest LT presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.guest_room_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.galaxys9lan
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+- alias: 'Hallway LT presence'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: sensor.hallway_motion_sensor
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: device_tracker.galaxys9lan
+    state: 'home'
+  action:
+  - service: input_boolean.turn_on
+    data: 
+      entity_id: input_boolean.lt_present
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.lt_present
+  - service: input_select.select_option
+    entity_id: input_select.house_mode
+    data:
+      option: 'Home'
+
+- alias: 'home to home'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.home
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.home
+
+- alias: 'home to away'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.home
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.home
