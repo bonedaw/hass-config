@@ -1,0 +1,10 @@
+# https://materialdesignicons.com/
+scene.livingroom_normal:
+  friendly_name: Living room normal
+  icon: mdi:movie
+scene.livingroom_dim:
+  friendly_name: Living room dim
+  icon: mdi:movie
+scene.all_off:
+  friendly_name: All off
+  icon: mdi:movie
