@@ -1,7 +1,0 @@
-  - platform: hue
-    host: xxxxx
-    allow_hue_groups: true
-    allow_unreachable: true
-
-# https://developers.meethue.com/documentation/getting-started
-
