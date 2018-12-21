@@ -1,0 +1,19 @@
+  - platform: gpslogger
+#    password: !secret gpslogger_password
+
+
+  - platform: nmap_tracker
+    hosts: 192.168.
+    home_interval: 10
+    exclude:
+
+
+  - platform: google_maps
+    username: !secret gooidcg
+    password: !secret goopwcg
+  - platform: google_maps
+    username: !secret  gooidcgustavs
+    password: !secret  goopwcgustavs
+  - platform: google_maps
+    username: !secret  gooidlt
+    password: !secret  goopwlt
