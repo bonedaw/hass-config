@@ -1,0 +1,48 @@
+# https://materialdesignicons.com/
+switch.guests_present:
+  friendly_name: 'We have guests'
+  icon: mdi:account-multiple
+switch.cg_present:
+  friendly_name: 'Christer'
+  icon: mdi:human-male
+switch.lt_present:
+  friendly_name: 'Lidija'
+  icon: mdi:human-female
+
+switch.home:
+  friendly_name: 'Home'
+  icon: mdi:home-account
+
+switch.halloween:
+  friendly_name: 'Halloween'
+  icon: mdi:halloween
+switch.xmas:
+  friendly_name: 'Christmas'
+  icon: mdi:pine-tree
+
+switch.living_room_normal:
+  friendly_name: 'Living room normal'
+  icon: mdi:lightbulb
+switch.all_lights:
+  friendly_name: 'All lights'
+  icon: mdi:close-circle-outline
+
+switch.all_switches:
+  friendly_name: 'All switches'
+  icon: mdi:power-plug-off
+
+switch.party:
+  friendly_name: Party
+  icon: mdi:glass-cocktail
+
+switch.booksfelf_led:
+  friendly_name: 'Bookshelf led'
+  icon: mdi:power-plug
+
+switch.power_right_sofa:
+  friendly_name: 'Power right sofa'
+  icon: mdi:power-plug
+
+switch.power_left_sofa:
+  friendly_name: 'Power left sofa'
+  icon: mdi:power-plug
