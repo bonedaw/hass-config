@@ -1,3 +1,59 @@
+  - platform: template
+    sensors:
+      phone_battery:
+        friendly_name: 'CG Phone Battery'
+        value_template: '{{states.device_tracker.google_maps_116768446304662806225.attributes.battery_level | round}}'
+        unit_of_measurement: '%'
+
+  - platform: template
+    sensors:
+      phone_battery9:
+        friendly_name: 'CG Phone Charging'
+        value_template: '{{states.device_tracker.google_maps_116768446304662806225.attributes.battery_charging}}'
+
+  - platform: template
+    sensors:
+      phone_battery2:
+        friendly_name: 'LT Phone Battery'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.battery_level | round}}'
+        unit_of_measurement: '%'
+
+  - platform: template
+    sensors:
+      phone_battery3:
+        friendly_name: 'LT Phone Charging'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.battery_charging}}'
+
+  - platform: template
+    sensors:
+      phone_battery4:
+        friendly_name: 'LT Phone Address'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.address}}'
+
+  - platform: template
+    sensors:
+      phone_battery5:
+        friendly_name: 'LT Phone Lat'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.latitude}}'
+
+  - platform: template
+    sensors:
+      phone_battery6:
+        friendly_name: 'LT Phone Lon'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.longitude}}'
+
+  - platform: template
+    sensors:
+      phone_battery7:
+        friendly_name: 'LT Phone Last'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.last_seen}}'
+
+  - platform: template
+    sensors:
+      phone_battery8:
+        friendly_name: 'LT Phone GPS'
+        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.gps_accuracy}}'
+
   - platform: uptime
     name: "HA runtime in minutes"
     unit_of_measurement: minutes
@@ -666,7 +722,7 @@
 ##################################
 # medeltemperatur
   - platform: min_max
-    name: 'Medel temperatur'
+    name: 'Mid temp inside'
     type: mean
     entity_ids:
       - sensor.kitchen_temperature  
@@ -674,7 +730,7 @@
       - sensor.guest_room_temperature
 #maxtemperatur
   - platform: min_max
-    name: 'Max temperatur'
+    name: 'Max temp inside'
     type: max
     entity_ids:
       - sensor.kitchen_temperature  
@@ -682,7 +738,7 @@
       - sensor.guest_room_temperature
 #minitemperatur
   - platform: min_max
-    name: 'Minsta temperatur'
+    name: 'Min temp inside'
     type: min
     entity_ids:
       - sensor.kitchen_temperature  
@@ -690,7 +746,7 @@
       - sensor.guest_room_temperature
 #senaste temperatur
   - platform: min_max
-    name: 'Senaste temperatur'
+    name: 'Latest temp inside'
     type: last
     entity_ids:
       - sensor.kitchen_temperature  
