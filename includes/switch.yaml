@@ -1,0 +1,227 @@
+  - platform: command_line
+    name: Twinkly
+    switches:
+      twinkly:
+        command_on: "python3 /config/python_scripts/twinkly.py 192.168.10.232 on"
+        command_off: "python3 /config/python_scripts/twinkly.py 192.168.10.232 off" 
+        command_state: "python3 /config/python_scripts/twinkly.py 192.168.10.232 state"
+        value_template: "{{ value == \"1\" }}"
+        friendly_name: Twinkly
+#Broadlink RM 
+  - platform: broadlink
+    type: 'rm2_pro_plus2'
+    host: 192.168.10.151
+    mac: '34:ea:34:55:3c:f6'
+    timeout: 15
+    switches:
+# stereo
+      denon_power:
+        friendly_name: "Denon power"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIGQg8CBkIPAg8CDwIPAgZCBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CBkIGQgZCBkIPAg8CDwIAAWWDQUAAA=='
+      denon_volume:
+        friendly_name: "Denon volume"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+      denon_cat_tv:
+        friendly_name: "Denon CBL TV"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIGQgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+      denon_cd_tv:
+        friendly_name: "Denon CD TV"
+        command_on: 'JgBEAAgZCDwIGQgZCBkIGQgZCDwIGQgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIPAgZCDwIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgBEAAgZCDwIGQgZCBkIPAgZCBkIPAgZCBkIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CBkIPAg8CBkIGQg8CDwIAAWWDQUAAA=='
+      denon_volume_10:
+        friendly_name: "Denon volume 10"
+        command_on: 'JgpEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+        command_off: 'JgpEAAgZCDwIGQgZCBkIGQg8CBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCDwIGQg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=='
+#tv
+      tv_hdmi1_2:
+        friendly_name: "Tv HDMI12"
+        command_on: 'JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISOBISEhISOBISEjgSOBI4EhISOBI4EhISOBISEhISEhIABi0NBQ=='
+        command_off: 'JgBGAJWVEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EjgSOBI4EjgSEhI4EjgSEhISEhISEhISEjgSEhIABi0NBQ=='
+      tv_power:
+        friendly_name: "Tv Power"
+        command_on: 'JgBGAJSUEzcTNxM3ExITEhMSExITEhM3EzcTNxMSExITEhMSExITNxMSExITNxM3ExITEhM3ExITNxM3ExITEhM3EzcTEhMABiMNBQ=='
+        command_off: 'JgBGAJKSETYRNhE2ERERERERERERERE2ETYRNhERERERERERERERERE2ERERERERERERERERETYRERE2ETYRNhE2ETYRNhEABhANBQ=='
+      tv_play:
+        friendly_name: "Play Pause"
+        command_on: 'JgBGAJGSEjcSNxI3EhISEhISExISEhI3EjcSNxISEhMSEhISEhITNhM2EjcSExISEhISNxISExISEhISEjcSNxI3EhITNhMABe0NBQ=='
+        command_off: 'JgBGAJOTEjgSOBI4EhISEhISEhISEhI4EjgSOBISEhISEhISEhISEhI4EhISOBISEhISOBISEjgSEhI4EhISOBI4EhISOBIABgsNBQ=='
+        
+# https://irdb.globalcache.com/Home/Database
+# https://dimagoltsman.github.io/Random-Broadlink-RM-Code-Generator/#
+
+  - platform: template
+    switches:
+      laddare:
+        value_template: "{{ is_state('light.onoff_plug_2', 'on') }}"
+        turn_on:
+          service: light.turn_on
+          data:
+            entity_id: light.onoff_plug_2
+        turn_off:
+          service: light.turn_off
+          data:
+            entity_id: light.onoff_plug_2
+      coffee:
+        value_template: "{{ is_state('light.kaffe', 'on') }}"
+        friendly_name: coffee
+        turn_on:
+          service: homeassistant.turn_on
+          entity_id: light.kaffe  
+        turn_off:
+          service: homeassistant.turn_off
+          entity_id: light.kaffe
+      left_sofa_power:
+        value_template: "{{ is_state('light.onoff_plug_3', 'on') }}"
+        turn_on:
+          service: light.turn_on
+          data:
+            entity_id: light.onoff_plug_3
+        turn_off:
+          service: light.turn_off
+          data:
+            entity_id: light.onoff_plug_3
+            
+      lt_present:
+        value_template: "{{ is_state('input_boolean.lt_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.lt_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.lt_present
+
+      cg_present:
+        value_template: "{{ is_state('input_boolean.cg_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.cg_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.cg_present
+
+      guests_present:
+        value_template: "{{ is_state('input_boolean.guests_present', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.guests_present
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.guests_present
+
+      all_lights:
+        value_template: "{{ is_state('group.all_actual_lights', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_lights
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_lights
+
+      all_switches:
+        value_template: "{{ is_state('group.all_actual_switches', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_switches
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.all_actual_switches
+
+      living_room_normal:
+        value_template: "{{ is_state('scene.livingroom_normal', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_off
+          data:
+            entity_id: scene.livingroom_normal
+        turn_off:
+          service: homeassistant.turn_on
+          data:
+            entity_id: scene.livingroom_normal
+
+      home:
+        value_template: "{{ is_state('input_boolean.home', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.home
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.home
+
+      xmas:
+        value_template: "{{ is_state('input_boolean.xmas', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.xmas
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.xmas
+      halloween:
+        value_template: "{{ is_state('input_boolean.halloween', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.halloween
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.halloween
+
+      party:
+        value_template: "{{ is_state('input_boolean.party', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: input_boolean.party
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: input_boolean.party
+
+      booksfelf_led:
+        value_template: "{{ is_state('light.onoff_plug_4', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: light.onoff_plug_4
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.onoff_plug_4
+
+      power_right_sofa:
+        value_template: "{{ is_state('light.onoff_plug_2', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: light.onoff_plug_2
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.onoff_plug_2
+
+      power_left_sofa:
+        value_template: "{{ is_state('light.onoff_plug_3', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: light.onoff_plug_3
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: light.onoff_plug_3
