@@ -1,0 +1,48 @@
+# https://materialdesignicons.com/
+input_number.map_zoom:
+  friendly_name: Map zoom
+input_number.v_rum_vindow:
+  friendly_name: Window living room dim
+  icon: mdi:auto-fix
+input_number.s_rum_vindow:
+  friendly_name: Window bedroom dim
+  icon: mdi:auto-fix
+input_number.v_rum_sofa_r:
+  friendly_name: Right coffee table dim
+  icon: mdi:auto-fix
+input_number.v_rum_sofa_l:
+  friendly_name: Left coffee table dim
+  icon: mdi:auto-fix
+input_number.v_rum:
+  friendly_name: Living room dim
+  icon: mdi:auto-fix
+input_number.spotify_volume_bedroom:
+  friendly_name: Volume Bedroom
+  icon: mdi:volume-high
+input_number.spotify_volume_cca:
+  friendly_name: Volume Chromecast Audio
+  icon: mdi:volume-high
+input_number.spotify_volume_kitchen:
+  friendly_name: Volume Kitchen
+  icon: mdi:volume-high
+input_number.spotify_volume_lr_l:
+  friendly_name: Volume left coffee table
+  icon: mdi:volume-high
+input_number.spotify_volume_lr_r:
+  friendly_name: Volume right coffee table
+  icon: mdi:volume-high
+input_number.spotify_volume_lr:
+  friendly_name: Volume living room speaker
+  icon: mdi:volume-high
+input_number.spotify_volume_hallway:
+  friendly_name: Volume hallway
+  icon: mdi:volume-high
+input_number.spotify_volume_all:
+  friendly_name: Volume all
+  icon: mdi:volume-high
+input_number.spotify_volume_music:
+  friendly_name: Volume music
+  icon: mdi:volume-high
+input_number.spotify_volume_living_room:
+  friendly_name: Volume living room
+  icon: mdi:volume-high
