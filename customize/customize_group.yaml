@@ -1,0 +1,6 @@
+group.christer:
+  friendly_name: Christer
+  icon: mdi:human
+group.lidija:
+  friendly_name: Lidija
+  icon: mdi:human-female
