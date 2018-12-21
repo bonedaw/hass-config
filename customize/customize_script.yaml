@@ -1,0 +1,129 @@
+# https://materialdesignicons.com/
+script.radio538:
+  friendly_name: 'Radio'
+  icon: mdi:play
+script.spotify_music:
+  friendly_name: 'Spotify'
+  icon: mdi:play
+script.spotify:
+  icon: mdi:spotify
+script.tv_hdmi1:
+  friendly_name: TV HDMI1
+  icon: mdi:television-classic
+script.tv_hdmi2:
+  friendly_name: TV HDMI2
+  icon: mdi:television-classic
+script.tv_power_on:
+  friendly_name: TV Power
+  icon: mdi:television-classic
+script.tv_paus:
+  friendly_name: TV Paus
+  icon: mdi:play-pause
+script.tv_play:
+  friendly_name: TV Play
+  icon: mdi:play-pause
+script.tv_power_toggle:
+  friendly_name: TV Power Toggle
+  icon: mdi:television-classic
+script.tv_mute_toggle:
+  friendly_name: TV Mute
+  icon: mdi:volume-off
+script.topbox_power_toggle:
+  friendly_name: TVbox Power
+  icon: mdi:set-top-box
+script.topbox_mute_toggle:
+  friendly_name: TVbox Mute
+  icon: mdi:set-top-box
+script.topbox_play_pause_toggle:
+  friendly_name: TVbox Play/Pause toggle
+  icon: mdi:set-top-box
+script.topbox_previous_channel:
+  friendly_name: TVbox Previous Channel
+  icon: mdi:set-top-box
+script.topbox_channel_up:
+  friendly_name: Channel up
+  icon: mdi:set-top-box
+script.topbox_channel_down:
+  friendly_name: Channel down
+  icon: mdi:set-top-box
+script.denon_on:
+  friendly_name: Denon Power On
+  icon: mdi:cassette
+script.denon_off:
+  friendly_name: Denon Power Off
+  icon: mdi:cassette
+script.denon_cbl:
+  friendly_name: Denon CBL
+  icon: mdi:cassette
+script.denon_cd:
+  friendly_name: Denon CD
+  icon: mdi:cassette
+script.denon_tv:
+  friendly_name: Denon TV
+  icon: mdi:cassette
+script.volume_up:
+  friendly_name: Denon Volume Up
+  icon: mdi:cassette
+script.volume_up_10:
+  friendly_name: Denon Volume Up 10
+  icon: mdi:cassette
+script.volume_down:
+  friendly_name: Denon Volume Down
+  icon: mdi:cassette
+script.volume_down_10:
+  friendly_name: Denon Volume Down 10
+  icon: mdi:cassette
+script.tv_picture_dynamic:
+  friendly_name: Dynamic picture
+  icon: mdi:movie-roll
+script.tv_picture_movie:
+  friendly_name: Movie picture
+  icon: mdi:movie-roll
+script.tv_picture_movie1:
+  friendly_name: Movie picture 2
+  icon: mdi:movie-roll
+script.tv_picture_movie2:
+  friendly_name: Movie picture 3
+  icon: mdi:movie-roll
+script.tv_smart_hub:
+  friendly_name: Smart Hub
+  icon: mdi:lock-smart
+script.tv_cursor_down:
+  friendly_name: Down
+  icon: mdi:arrow-down-bold-outline
+script.tv_cursor_enter:
+  friendly_name: Enter
+  icon: mdi:image-filter-center-focus
+script.tv_cursor_left:
+  friendly_name: Left
+  icon: mdi:arrow-left-bold-outline
+script.tv_cursor_right:
+  friendly_name: Right
+  icon: mdi:arrow-right-bold-outline
+script.tv_cursor_up:
+  friendly_name: Up
+  icon: mdi:arrow-up-bold-outline
+script.tv_netflix:
+  friendly_name: Netflix
+  icon: mdi:netflix
+script.start_music:
+  friendly_name: Denon Start music
+  icon: mdi:music
+light.golvlampa_hallen:
+  friendly_name: Hallway floor
+  icon: mdi:lightbulb
+script.volume_down_5:
+  friendly_name: Denon Volume Down 5
+  icon: mdi:cassette
+script.volume_up_5:
+  friendly_name: Denon Volume up 5
+  icon: mdi:cassette
+script.moodlight:
+  friendly_name: Mood light
+  icon: mdi:movie
+script.start_cast:
+  friendly_name: Start cast
+  icon: mdi:cast
+script.all_off:
+  friendly_name: All off
+  icon: mdi:script
