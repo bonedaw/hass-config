@@ -892,3 +892,104 @@ house_presence:
 #    - device_tracker.carolsiphone
 #    - device_tracker.jimsiphone
     - input_boolean.guests_present
+
+primary_presence:
+  name: Primary Presence for Routines
+  icon: mdi:account-multiple
+  view: no
+  entities:
+    - binary_sensor.cg_presence
+    - binary_sensor.lt_presence
+
+all_actual_lights:
+  name: 'all_actual_lights'
+  icon: mdi:lightbulb
+  view: false
+  control: hidden
+  entities:
+  - light.bedroom_light
+  - light.hue_color_candle_1_4
+  - light.book_shelf_color_two
+  - light.entertainment_area_1
+  - light.hue_ambiance_lamp_1
+  - light.hue_ambiance_lamp_1_2
+  - light.hue_ambiance_lamp_1_3
+  - light.group_for_wakeup
+  - light.group_for_wakeup_2
+  - light.living_room_right_sofa
+  - light.kitchen_window
+  - light.bedroom_window_light
+  - light.guestroom_roof
+  - light.hue_color_candle_1_3
+  - light.hallway_hanger_2
+  - light.hue_color_lamp_1
+  - light.hallway_night
+  - light.kitchen_fan
+  - light.hue_color_lamp_1_2
+  - light.kitchen_sink
+  - light.kitchen_sink_two
+  - light.hue_color_candle_1
+  - light.hue_color_candle_1_2
+  - light.living_room_window_light
+  - light.hue_go_1
+  - light.bookshelf_color
+  - light.sink
+  - light.hue_color_candle_1_5
+  - light.onoff_plug_1
+  - light.onoff_plug_2
+  - light.onoff_plug_3
+  - light.onoff_plug_4
+
+all_actual_switches:
+  name: 'all_actual_lights'
+  icon: mdi:lightbulb
+  view: false
+  control: hidden
+  entities:
+  - switch.coffee
+  - switch.laddare
+  - switch.left_sofa_power
+  - light.onoff_plug_1
+
+livingroom_lights:
+  name: 'all_actual_lights'
+  icon: mdi:lightbulb
+  view: false
+  control: hidden
+  entities:
+  - light.living_room_window_light
+  - light.book_shelf_color_two
+  - light.bookshelf_color
+  - light.hue_color_candle_1_5
+  - light.hue_color_candle_1_2
+  - light.hue_go_1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
