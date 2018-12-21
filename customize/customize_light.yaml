@@ -1,0 +1,197 @@
+# https://materialdesignicons.com/
+
+group.all_lights:
+  friendly_name: All lights
+  icon: mdi:lightbulb
+
+#bedroom
+light.bedroom_light:
+  friendly_name: Bedroom wall light
+  icon: mdi:desk-lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_color_candle_1_4:
+  friendly_name: Bedroom window light
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+
+switch.twinkly:
+  friendly_name: Twinkly balcony light
+  icon: mdi:led-strip
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+
+#guest room
+light.living_room_right_sofa:
+  friendly_name: Guest room 1
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.kitchen_window:
+  friendly_name: Guest room 2
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.bedroom_window_light:
+  friendly_name: Guest room 3
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_color_candle_1_3:
+  friendly_name: Guest room window
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+  
+#Hallway  
+light.hue_ambiance_lamp_1:
+  friendly_name: Hallway one
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_ambiance_lamp_1_2:
+  friendly_name: Hallway two
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_ambiance_lamp_1_3:
+  friendly_name: Hallway three
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_color_lamp_1:
+  friendly_name: Hallway hanger
+  icon: mdi:floor-lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.onoff_plug_1:
+  friendly_name: Hallway floor
+  icon: mdi:led-on
+
+#kitchen
+light.kaffe:
+  friendly_name: Power sink
+  icon: mdi:power-plug
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.kitchen_fan:
+  friendly_name: Kitchen fan
+  icon: mdi:fan
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.kitchen_fan_2:
+  friendly_name: Kitchen fan
+  icon: mdi:fan
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.kitchen_sink:
+  friendly_name: Kitchen sink 1
+  icon: mdi:track-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.kitchen_sink_two:
+  friendly_name: Kitchen sink 2
+  icon: mdi:track-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_color_lamp_1_2:
+  friendly_name: Kitchen roof
+  icon: mdi:ceiling-light
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+
+light.hue_color_candle_1:
+  friendly_name: Kitchen window
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+
+#living room
+light.hue_color_candle_1_2:
+  friendly_name: Right coffee table
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.living_room_window_light:
+  friendly_name: Living room window
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.onoff_plug_2:
+  friendly_name: Power right sofa
+  icon: mdi:power-plug
+light.book_shelf_color_two:
+  friendly_name: Bookshelf 2
+  icon: mdi:spotlight-beam
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.bookshelf_color:
+  friendly_name: Bookshelf 1
+  icon: mdi:spotlight-beam
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.hue_color_candle_1_5:
+  friendly_name: Bookshelf 3
+  icon: mdi:spotlight-beam
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
+light.onoff_plug_3:
+  friendly_name: Power left sofa
+  icon: mdi:power-plug
+light.onoff_plug_4:
+  friendly_name: Power bookshelf
+  icon: mdi:power-plug
+light.hue_go_1:
+  friendly_name: Left coffee table
+  icon: mdi:lamp
+  assumed_state: false
+  stretch_slider: true
+  hide_control: false
+  show_last_changed: false
