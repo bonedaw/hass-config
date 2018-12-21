@@ -1,0 +1,58 @@
+# https://materialdesignicons.com/
+automation.morningalarm:
+  friendly_name: 'Wake up'
+  icon: mdi:alarm-multiple
+automation.bedtime_lidija:
+  friendly_name: 'Sunset'
+  icon: mdi:sleep
+automation.polleninfo:
+  friendly_name: Pollen information
+  icon: mdi:poll
+automation.play_spotify:
+  friendly_name: Play Spotify
+  icon: mdi:spotify
+automation.tvstereo:
+  friendly_name: TV/Stereo
+  icon: mdi:television-classic
+automation.alarm_nar_vi_inte_ar_hemma:
+  friendly_name: Alarm 
+  icon: mdi:alarm-light
+automation.fonster_efter_skymning:
+  friendly_name: Window after sunset
+  icon: mdi:lightbulb-on-outline
+automation.slack_nar_vi_inte_ar_hemma:
+  friendly_name: Turn off lights when not home
+  icon: mdi:lightbulb
+automation.tand_i_hallen_vid_upptackt_rorelse:
+  friendly_name: Turn on lights hallway if motion
+  icon: mdi:animation
+automation.light_hallway_if_motion:
+  friendly_name: Turn on lights hallway if motion
+  icon: mdi:animation
+automation.stang_av_perkulator_35_minuter_efter_start:
+  friendly_name: Turn of power plug on timer
+  icon: mdi:coffee
+automation.kaffe:
+  friendly_name: Coffee
+  icon: mdi:coffee-to-go
+automation.morningmusic:
+  friendly_name: Music in morning
+  icon: mdi:spotify
+automation.morningalarm_helger:
+  friendly_name: Wake up
+  icon: mdi:alarm-multiple
+automation.christer_kom_hem:
+  friendly_name: Christer came home
+  icon: mdi:account-plus
+automation.kallt_i_lagenheten:
+  friendly_name: Low temperature
+  icon: mdi:thermometer-lines
+automation.lidija_kom_hem:
+  friendly_name: Lidija came home
+  icon: mdi:account-plus
+automation.change_current_theme:
+  friendly_name: Change theme
+  icon: mdi:palette
+automation.set_spotify_volume:
+  friendly_name: Spotify volume
+  icon: mdi:volume-high
