@@ -1,0 +1,5 @@
+# https://materialdesignicons.com/
+input_select.center_map_on:
+  friendly_name: Center for
+input_select.radio_station:
+  icon: mdi:radio
