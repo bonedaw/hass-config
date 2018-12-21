@@ -1,0 +1,19 @@
+# Google
+  - platform: google
+    cache: true
+    cache_dir: /tmp/tts
+    time_memory: 300
+    language: 'en-us'
+#    base_url: http://192.168.0.242:8123
+# Voicerss
+#  - platform: voicerss
+#    api_key: !secret voicerss_api
+#    language: 'en-gb' #en-us
+#    codec: mp3
+#    format: '44khz_16bit_stereo'
+# Polly
+  - platform: amazon_polly
+    aws_access_key_id: !secret aws_access_key_id
+    aws_secret_access_key: !secret aws_secret_access_key
+    Voice: Salli
+# us = Ivy Joanna Kendra Kimberly Salli # gb = Amy Emma
