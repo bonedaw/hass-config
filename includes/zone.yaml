@@ -1,0 +1,31 @@
+  - name: 'Work Bergfotsgatan'
+    latitude: 57.667321
+    longitude: 12.016551
+    radius: 250
+    icon: mdi:briefcase
+  - name: 'Work VAK'
+    latitude: 57.725374
+    longitude: 11.849495
+    radius: 250
+    icon: mdi:briefcase
+  - name: 'Work Gamlestan'
+    latitude: 57.731861
+    longitude: 12.006826
+    radius: 250
+    icon: mdi:briefcase
+  - name: 'Work TJA'
+    latitude: 57.7206598
+    longitude: 11.842357
+    radius: 250
+    icon: mdi:briefcase
+  - name: 'Hisingens Cykelklubb'
+    latitude: 57.730936
+    longitude: 11.921242
+    radius: 250
+    icon: mdi:bike
+  # This will override the default home zone
+  - name: Home
+    latitude: 
+    longitude: 
+    radius: 200
+    icon: mdi:castle
