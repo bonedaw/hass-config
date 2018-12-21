@@ -1,3 +1,66 @@
+
+    party_random:
+        sequence:
+          - service: light.turn_on
+            data_template:
+              entity_id: light.living_room_window_light, light.hue_color_candle_1_3
+              brightness: 180
+              color_name: >
+                {% set colors = ['white', 'yellow', 'blue', 'green', 'purple'] %}
+                {{ colors|random }}
+              transition: 10
+
+    party:
+        sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.living_room_window_light, light.hue_color_candle_1_3
+              brightness: 180
+              rgb_color: [255,191,88]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.hue_color_candle_1, light.hue_color_candle_1_4
+              brightness: 180
+              rgb_color: [255,0,67]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.onoff_plug_3, light.onoff_plug_2
+          - service: light.turn_on
+            data:
+              entity_id: light.hue_go_1
+              brightness: 60
+              rgb_color: [191,29,255]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.hue_color_candle_1_2
+              brightness: 60
+              rgb_color: [64,255,0]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.bookshelf_color
+              brightness: 60
+              rgb_color: [255,43,48]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.hue_color_candle_1_5
+              brightness: 60
+              rgb_color: [64,0,255]
+              transition: 10
+          - service: light.turn_on
+            data:
+              entity_id: light.book_shelf_color_two
+              brightness: 60
+              rgb_color: [81,255,119]
+              transition: 10
+          - service: switch.turn_on
+            data:
+              entity_id: switch.twinkly
+
     select_hue_light:
         sequence:
           - service: script.set_hue_christmas_color
@@ -32,6 +95,92 @@
               entity_id: '{{ light_id }}'
               color_name: '{{ color_name }}'
               transition: 10
+
+    cg_phone:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('media_player.all', 'off') %}
+                  script.cg_phone_tss
+                {% else %}
+                  script.cg_phone_notts
+                {% endif %}
+    cg_phone_notts:
+        sequence:
+          - service: notify.push
+            data:
+              title: 'Battery low'
+              message: 'Charge the phone'
+    cg_phone_tss:   
+#    coffeedone: 
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.all
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.kitchen
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.all
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
+            data_template:
+              entity_id: media_player.all
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Christer Charge the phone"
+               ] | random}} ...
+               {% else %}
+               {{["Christer Charge the phone"
+               ] | random}} ...
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
+
+    lt_phone:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('media_player.all', 'off') %}
+                  script.lt_phone_tss
+                {% else %}
+                  script.lt_phone_notts
+                {% endif %}
+    lt_phone_notts:
+        sequence:
+          - service: notify.push
+            data:
+              title: 'Battery low'
+              message: 'Lidija need to charge the phone'
+    lt_phone_tss:   
+#    coffeedone: 
+        sequence:
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.all
+          - service: media_player.volume_set
+#            data:
+#              entity_id: media_player.kitchen
+#              volume_level: '0.5'
+            data_template:
+              entity_id: media_player.all
+              volume_level: >
+               0.4
+          - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
+            data_template:
+              entity_id: media_player.all
+              message: >
+               {% if now().strftime("%H")|int < 12 %}
+               {{["Lidija Charge the phone"
+               ] | random}} ...
+               {% else %}
+               {{["Lidija Charge the phone"
+               ] | random}} ...
+               {% endif %}
+               {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
 
 #mixer
     mixdone:
@@ -1975,6 +2124,9 @@
               entity_id: script.topbox_power_toggle
     goodbye3:
         sequence:
+          - service: switch.turn_off
+            data:
+              entity_id: switch.party
           - service: light.turn_off
             data:
               entity_id: light.hallway_1
@@ -2081,12 +2233,190 @@
           - delay: 00:00:01
           - service: light.turn_off
             data:
+              entity_id: light.onoff_plug_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_4
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
               entity_id: light.hue_go_1
           - service: input_select.select_option
             data_template:
               entity_id: input_select.house_mode
               option: 'Night'
-
+          - service: light.turn_off
+            data:
+              entity_id: group.all_actual_lights
+    darkness:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.darkness1
+          - delay: 00:00:14
+          - service: script.turn_on
+            data:
+              entity_id: script.darkness2
+          - delay: 00:00:06
+          - service: script.turn_on
+            data:
+              entity_id: script.darkness3
+          - delay: 00:00:01
+    darkness1:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+          - delay: 00:00:03
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_down_10
+    darkness2:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_off
+          - delay: 00:00:01
+    darkness3:
+        sequence:
+          - service: switch.turn_off
+            data:
+              entity_id: switch.party
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_hanger
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_fan
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_sink
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_sink_two
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.kitchen_window
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.book_shelf_color_two
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.bookshelf_color
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.living_room_right_sofa
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.living_room_window_light
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_candle_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_candle_1_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hallway_hanger
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_ambiance_lamp_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_ambiance_lamp_1_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_ambiance_lamp_1_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_candle_1_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_lamp_1_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_lamp_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_candle_1_4
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_color_candle_1_5
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_3
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_2
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_1
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.onoff_plug_4
+          - delay: 00:00:01
+          - service: light.turn_off
+            data:
+              entity_id: light.hue_go_1
+          - service: input_select.select_option
+            data_template:
+              entity_id: input_select.house_mode
+              option: 'Night'
+          - service: light.turn_off
+            data:
+              entity_id: group.all_actual_lights
 ##############################################################
 #                                                            #
 #         Codes for broadlink ir packet                      #
@@ -2387,6 +2717,19 @@
             data:
               packet:
               - "JgVEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+    start_party:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_on
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.denon_cd
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.volume_up_10
     start_music:
         sequence:
           - service: script.turn_on
@@ -2425,6 +2768,9 @@
           - service: script.turn_on
             data:
               entity_id: script.volume_up_10
+          - service: script.turn_on
+            data:
+              entity_id: tv_hdmi1
     start_cast:
         sequence:
           - service: script.turn_on
@@ -2468,9 +2814,7 @@
             data:
               entity_id: light.book_shelf_color_two,light.bookshelf_color,light.living_room_window_light, light.hue_color_candle_1_2
               brightness: 197
-              hs_color: 36.706,66.667
-              rgb_color: 255,189,84
-              xy_color: 0.502,0.416
+              rgb_color: [255,189,84]
               transition: 5
 
     mood_window:
@@ -2492,9 +2836,7 @@
             data:
               entity_id: light.living_room_window_light, light.hue_color_candle_1, light.hue_color_candle_1_3
               brightness: 197
-              hs_color: 36.706,66.667
-              rgb_color: 255,189,84
-              xy_color: 0.502,0.416
+              rgb_color: [255,189,84]
               transition: 5
 
     sleep:
