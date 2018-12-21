@@ -16,6 +16,7 @@ frontend:
 #  themes: !include themes.yaml
 config:
 http:
+  api_password: !secret api_pass
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   base_url: !secret my_baseurl
 #  server_port: 8123
@@ -23,6 +24,8 @@ http:
 #  ssl_key: !secret ssl_key
 #  trusted_networks: !secret trusted_networks
 #  api_password: !secret http_password
+lovelace:
+  mode: yaml
 updater:
 #custom_updater:
 #  card_urls:
@@ -87,6 +90,7 @@ device_tracker: !include includes/device_tracker.yaml
 mqtt: !include includes/mqtt.yaml
 media_player: !include includes/media_player.yaml
 cast:
+#  - platform: cast 
 input_boolean: !include includes/input_booleans.yaml
 notify: !include notify.yaml
 tts: !include includes/tts.yaml
@@ -112,6 +116,7 @@ logger:
   default: error
 map:
 sun:
+
 # Cloud
 cloud:
   google_actions:
