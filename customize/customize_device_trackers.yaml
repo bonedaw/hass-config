@@ -1,0 +1,55 @@
+# https://materialdesignicons.com/
+device_tracker.christer_honor:
+  friendly_name: Christer
+  icon: mdi:human
+device_tracker.lidija_xx:
+  friendly_name: Lidija
+  icon: mdi:human-female
+
+device_tracker.google_maps_xx:
+  friendly_name: Christer
+  icon: mdi:human
+device_tracker.christer_samsung_s9:
+  friendly_name: Christer
+  icon: mdi:human
+device_tracker.google_maps_xx:
+  friendly_name: Lidija
+  icon: mdi:human-female
+device_tracker.galaxys9lan:
+  friendly_name: Lidija
+  icon: mdi:human-female
+
+sensor.phone_battery:
+  friendly_name: Christer battery
+  icon: mdi:battery-50
+sensor.phone_battery9:
+  friendly_name: Christer battery charging
+  icon: mdi:battery-charging
+
+sensor.phone_battery2:
+  friendly_name: Lidija battery
+  icon: mdi:battery-50
+
+sensor.phone_battery3:
+  friendly_name: Lidija battery charging
+  icon: mdi:battery-charging
+
+sensor.phone_battery4:
+  friendly_name: Lidija address
+  icon: mdi:map-marker
+
+sensor.phone_battery5:
+  friendly_name: Lidija latitude
+  icon: mdi:crosshairs
+
+sensor.phone_battery6:
+  friendly_name: Lidija longitude
+  icon: mdi:crosshairs
+
+sensor.phone_battery7:
+  friendly_name: Lidija last seen
+  icon: mdi:lastpass
+
+sensor.phone_battery8:
+  friendly_name: Lidija GPS accuracy
+  icon: mdi:crosshairs-gps
