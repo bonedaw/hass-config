@@ -1,0 +1,48 @@
+- cal_id: 
+  entities:
+  - device_id: gemensam
+    ignore_availability: true
+    name: Gemensam
+    track: true
+
+- cal_id: '@group.calendar.google.com'
+  entities:
+  - device_id: cykelkalendern
+    ignore_availability: true
+    name: Cykelkalendern
+    track: true
+
+- cal_id: '#contacts@group.v.calendar.google.com'
+  entities:
+  - device_id: contacts
+    ignore_availability: true
+    name: Contacts
+    track: true
+
+- cal_id: 'sv.swedish#holiday@group.v.calendar.google.com'
+  entities:
+  - device_id: helgdagar_i_sverige
+    ignore_availability: true
+    name: Helgdagar i Sverige
+    track: true
+
+- cal_id: 'p#weather@group.v.calendar.google.com'
+  entities:
+  - device_id: weather_scherpenzeel
+    ignore_availability: true
+    name: 'Weather: Scherpenzeel'
+    track: true
+
+- cal_id: 'p#weeknum@group.v.calendar.google.com'
+  entities:
+  - device_id: week_numbers
+    ignore_availability: true
+    name: Week Numbers
+    track: true
+
+- cal_id: 
+  entities:
+  - device_id: 
+    ignore_availability: true
+    name: 
+    track: true
