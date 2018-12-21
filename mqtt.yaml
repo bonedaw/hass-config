@@ -1,8 +1,0 @@
-  broker: m23.cloudmqtt.com
-  port: 18182
-  username: !secret mqtt_user
-  password: !secret mqtt_pw
-  client_id: hassio
-  keepalive: 60
-  discovery: true
-  discovery_prefix: homeassistant
