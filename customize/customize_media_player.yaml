@@ -1,0 +1,47 @@
+# https://materialdesignicons.com/
+media_player.googlehome5567:
+  friendly_name: Kitchen
+  icon: mdi:google-home
+media_player.living_room_speaker_left:
+  friendly_name: Living room left
+  icon: mdi:google-home
+media_player.googlehome6157:
+  friendly_name: Living room right
+  icon: mdi:google-home
+media_player.googlehome1771:
+  friendly_name: Hallway
+  icon: mdi:google-home
+media_player.music:
+  friendly_name: Music
+  icon: mdi:google-home
+media_player.all:
+  friendly_name: All
+  icon: mdi:google-home
+media_player.living_room_:
+  friendly_name: Living room
+  icon: mdi:google-home
+media_player.chromecastultra6229:
+  friendly_name: Living Room Television
+  icon: mdi:television-classic
+media_player.living_room_display:
+  friendly_name: Living Room Display
+  icon: mdi:television
+
+media_player.living_room_left:
+  icon: mdi:google-home
+media_player.living_room_right:
+  icon: mdi:google-home
+media_player.living_room_speaker:
+  icon: mdi:google-home
+media_player.hallway:
+  icon: mdi:google-home
+media_player.kitchen:
+  icon: mdi:google-home
+media_player.bedroom:
+  icon: mdi:google-home
+media_player.chromecast_audio:
+  icon: mdi:volume-high
+  
+media_player.jbllink104191:
+  friendly_name: Guestroom
+  icon: mdi:google-home
