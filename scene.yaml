@@ -1,3 +1,39 @@
+#scen mixer
+  - name: 'mixer'
+    entities:
+        script.mixer:
+           state: on
+#scen mix_done
+  - name: 'mixdone'
+    entities:
+        script.mixdone:
+           state: on
+
+#scen teamaker
+  - name: 'teamaker'
+    entities:
+        script.teamaker:
+           state: on
+#scen tea_done
+  - name: 'teadone'
+    entities:
+        script.teadone:
+           state: on
+#scen coffeemaker
+  - name: 'coffeemaker'
+    entities:
+        script.coffeemaker:
+           state: on
+#scen coffee_done
+  - name: 'coffe_done'
+    entities:
+        script.coffeedone:
+           state: on
+#scen moodlight
+  - name: 'moodlight'
+    entities:
+        script.moodlight:
+           state: on
   - name: 'goodbye'
     entities:
         script.goodbye:
@@ -78,6 +114,66 @@
     entities:
         script.start_cast:
            state: on
+
+  - name: 'party'
+    entities:
+        script.start_party:
+            state: on
+        light.living_room_window_light:
+            state: on
+            rgb_color: [70,227,255]
+            brightness: 144
+            transition: 3
+        light.book_shelf_color_two:
+            state: on
+            brightness: 144
+            rgb_color: [63,255,66]
+            transition: 3
+        light.bookshelf_color:
+            state: on
+            brightness: 144
+            rgb_color: [255,43,53]
+            transition: 3
+        light.hue_color_candle_1_5:
+            state: on
+            brightness: 144
+            rgb_color: [62,92,255]
+            transition: 3
+        light.hue_color_candle_1_2:
+            state: on
+            brightness: 32
+            rgb_color: [81,255,133]
+            transition: 3
+        light.hue_go_1:
+            state: on
+            brightness: 144
+            rgb_color: [166,82,255]
+            transition: 3
+        light.hue_color_candle_1_3:
+            state: on
+            brightness: 144
+            rgb_color: [255,191,88]
+            transition: 3
+        light.hue_color_candle_1:
+            state: on
+            brightness: 144
+            rgb_color: [255,191,88]
+            transition: 3
+        light.hue_color_candle_1_4:
+            state: on
+            brightness: 144
+            rgb_color: [255,191,88]
+            transition: 3
+        light.onoff_plug_3:
+            state: on
+        light.onoff_plug_2:
+            state: on
+
+  - name: 'Darkness'
+    entities:
+        script.darkness:
+            state: on
+            
   - name: 'Livingroom normal'
     entities:
         light.bookshelf_color:
@@ -93,6 +189,11 @@
         light.living_room_window_light:
             state: on
             brightness: 150
+            rgb_color: [255,189,84]
+            transition: 3
+        light.hue_color_candle_1_2:
+            state: on
+            brightness: 51
             rgb_color: [255,189,84]
             transition: 3
   - name: 'Livingroom dim'
@@ -112,36 +213,37 @@
             rgb_color: [255,189,84]
             brightness: 50
             transition: 30
+        light.hue_color_candle_1_2:
+            state: on
+            brightness: 10
+            rgb_color: [255,189,84]
+            transition: 3
   - name: 'skymning'
     entities:
-        light.living_room_right_sofa:
-            state: on
-            color_temp: 454
-            brightness: 50
-            transition: 30
-        light.bookshelf_color:
-            state: on
-            rgb_color: [255,189,84]
-            brightness: 50
-            transition: 30
         light.living_room_window_light:
             state: on
             rgb_color: [255,189,84]
-            brightness: 50
+            brightness: 179
             transition: 30
-        light.book_shelf_color_two:
+        light.hue_color_candle_1:
             state: on
             rgb_color: [255,189,84]
-            brightness: 50
+            brightness: 179
             transition: 30
-        light.kitchen_window:
+        light.hue_color_candle_1_3:
             state: on
-            color_temp: 454
-            brightness: 50
-            transition: 30
+            rgb_color: [255,189,84]
+            brightness: 179
+            transition: 10
+        light.hue_color_candle_1_4:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 179
+            transition: 10
+
   - name: 'skymning2'
     entities:
-        light.living_room_right_sofa:
+        light.hue_color_candle_1_2:
             state: off
             transition: 30
         light.bookshelf_color:
@@ -159,9 +261,92 @@
             brightness: 150
             rgb_color: [255,189,84]
             transition: 30
-        light.kitchen_window:
+        light.hue_color_candle_1:
+            state: on
+            brightness: 150
+            rgb_color: [255,189,84]
+            transition: 30
+  - name: 'skymning_dim_1'
+    entities:
+        light.hue_color_candle_1_2:
             state: on
             color_temp: 454
+            brightness: 10
+            transition: 30
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 10
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 10
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 10
+            transition: 30
+        light.hue_color_candle_1:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 10
+            transition: 30
+
+  - name: 'skymning_dim_2'
+    entities:
+        light.hue_color_candle_1_2:
+            state: on
+            color_temp: 454
+            brightness: 30
+            transition: 30
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 30
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 30
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 30
+            transition: 30
+        light.hue_color_candle_1:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 30
+            transition: 30
+
+  - name: 'skymning_dim_3'
+    entities:
+        light.hue_color_candle_1_2:
+            state: on
+            color_temp: 454
+            brightness: 10
+            transition: 30
+        light.bookshelf_color:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 135
+            transition: 30
+        light.living_room_window_light:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 135
+            transition: 30
+        light.book_shelf_color_two:
+            state: on
+            rgb_color: [255,189,84]
+            brightness: 135
+            transition: 30
+        light.hue_color_candle_1:
+            state: on
+            rgb_color: [255,189,84]
             brightness: 135
             transition: 30
   - name: 'all off'
@@ -182,11 +367,12 @@
             state: off
   - name: 'sleep1'
     entities:
-        light.bedroom_window_light:
+        light.hue_color_candle_1_4:
             state: on
             brightness: 122
+            xy_color: [0.67,0.39]
   - name: 'sleep2'
     entities:
-        light.bedroom_window_light:
+        light.hue_color_candle_1_4:
             state: off
             transition: 1800
