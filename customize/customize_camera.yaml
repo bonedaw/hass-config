@@ -1,0 +1,22 @@
+# https://materialdesignicons.com/
+camera.street_view_christer_gps:
+  friendly_name: Christer street view
+camera.street_view_lidija_gps:
+  friendly_name: Lidija street view
+camera.location_map:
+  friendly_name: Map
+camera.goteborg:
+  friendly_name: Göteborg
+  icon: mdi:google-maps
+camera.lindholmsmotet:
+  friendly_name: Lindholmsmotet
+  icon: mdi:google-maps
+camera.regn:
+  friendly_name: Rain
+  icon: mdi:google-maps
+camera.temperatur:
+  friendly_name: Temperature
+  icon: mdi:google-maps
+camera.weather:
+  friendly_name: Weather
+  icon: mdi:google-maps
