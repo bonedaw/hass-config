@@ -1,0 +1,15 @@
+  timer_perka:
+    duration: '00:35:00'
+  timer_vattenkokare:
+    duration: '00:10:00'
+  timer_hallway:
+    duration: '00:00:45'
+
+  timer_kitchen_tts:
+    duration: '00:20:45'
+
+  timer_hallway_tts:
+    duration: '00:15:45'
+
+  timer_guest_tts:
+    duration: '00:15:45'
