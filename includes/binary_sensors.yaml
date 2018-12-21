@@ -1,0 +1,84 @@
+  - platform: template
+    sensors:
+      people_home:
+       friendly_name: People Home
+       device_class: presence
+       value_template: >
+         {{ is_state('group.primary_presence', 'on') or
+            is_state('input_boolean.guests_present', 'on') or
+            is_state('group.extra_device_trackers', 'home')  }}
+       entity_id: group.primary_presence,input_boolean.guests_present,group.extra_device_trackers
+
+  - platform: template
+    sensors:
+      kitchen_movement:
+        device_class: motion
+        value_template: "{{ is_state('sensor.hallway_presence', 'True') }}"
+  - platform: template
+    sensors:
+      hallway_movement:
+        device_class: motion
+        value_template: "{{ is_state('sensor.kitchen_presence', 'True') }}"
+
+  - platform: template
+    sensors:
+      guestroom_movement:
+        device_class: motion
+        value_template: "{{ is_state('sensor.guest_room_presence', 'True') }}"
+
+  - platform: template
+    sensors:
+      media_player_bedroom:
+        value_template: "{{ is_state('media_player.bedroom', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_chromecast_audio:
+        value_template: "{{ is_state('media_player.chromecast_audio', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_chromecastultra7586:
+        value_template: "{{ is_state('media_player.chromecastultra7586', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_hallway:
+        value_template: "{{ is_state('media_player.hallway', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_kitchen:
+        value_template: "{{ is_state('media_player.kitchen', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_living_room_left:
+        value_template: "{{ is_state('media_player.living_room_left', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_living_room_right:
+        value_template: "{{ is_state('media_player.living_room_right', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_living_room_speaker:
+        value_template: "{{ is_state('media_player.living_room_speaker', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_spotify:
+        value_template: "{{ is_state('media_player.spotify', 'Playing') }}"
+  - platform: template
+    sensors:
+      media_player_all:
+        value_template: "{{ is_state('media_player.all', 'Playing') }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
