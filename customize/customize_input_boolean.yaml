@@ -1,0 +1,14 @@
+input_boolean.news:
+  friendly_name: News
+input_boolean.fake_heater:
+  hidden: true
+
+input_boolean.guests_present:
+  friendly_name: 'We have guests'
+  icon: mdi:account-multiple
+input_boolean.cg_present:
+  friendly_name: 'Christer'
+  icon: mdi:human-male
+input_boolean.lt_present:
+  friendly_name: 'Lidija'
+  icon: mdi:human-female
