@@ -2,57 +2,57 @@
     sensors:
       phone_battery:
         friendly_name: 'CG Phone Battery'
-        value_template: '{{states.device_tracker.google_maps_116768446304662806225.attributes.battery_level | round}}'
+        value_template: '{{states.device_tracker..attributes.battery_level | round}}'
         unit_of_measurement: '%'
 
   - platform: template
     sensors:
       phone_battery9:
         friendly_name: 'CG Phone Charging'
-        value_template: '{{states.device_tracker.google_maps_116768446304662806225.attributes.battery_charging}}'
+        value_template: '{{states.device_tracker..attributes.battery_charging}}'
 
   - platform: template
     sensors:
       phone_battery2:
         friendly_name: 'LT Phone Battery'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.battery_level | round}}'
+        value_template: '{{states.device_tracker..attributes.battery_level | round}}'
         unit_of_measurement: '%'
 
   - platform: template
     sensors:
       phone_battery3:
         friendly_name: 'LT Phone Charging'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.battery_charging}}'
+        value_template: '{{states.device_tracker..attributes.battery_charging}}'
 
   - platform: template
     sensors:
       phone_battery4:
         friendly_name: 'LT Phone Address'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.address}}'
+        value_template: '{{states.device_tracker..attributes.address}}'
 
   - platform: template
     sensors:
       phone_battery5:
         friendly_name: 'LT Phone Lat'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.latitude}}'
+        value_template: '{{states.device_tracker..attributes.latitude}}'
 
   - platform: template
     sensors:
       phone_battery6:
         friendly_name: 'LT Phone Lon'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.longitude}}'
+        value_template: '{{states.device_tracker..attributes.longitude}}'
 
   - platform: template
     sensors:
       phone_battery7:
         friendly_name: 'LT Phone Last'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.last_seen}}'
+        value_template: '{{states.device_tracker..attributes.last_seen}}'
 
   - platform: template
     sensors:
       phone_battery8:
         friendly_name: 'LT Phone GPS'
-        value_template: '{{states.device_tracker.google_maps_108889296451373807738.attributes.gps_accuracy}}'
+        value_template: '{{states.device_tracker..attributes.gps_accuracy}}'
 
   - platform: uptime
     name: "HA runtime in minutes"
@@ -68,23 +68,23 @@
   - platform: template
     sensors:
       cmessage:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.message}}"
+        value_template: "{{ states.calendar..attributes.message}}"
   - platform: template
     sensors:
       caday:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.all_day}}"
+        value_template: "{{ states.calendar..attributes.all_day}}"
   - platform: template
     sensors:
       cstart:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.start_time}}"
+        value_template: "{{ states.calendar..attributes.start_time}}"
   - platform: template
     sensors:
       cend:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.end_time}}"
+        value_template: "{{ states.calendar..attributes.end_time}}"
   - platform: template
     sensors:
       clocation:
-        value_template: "{{ states.calendar.christerninjusnet.attributes.location}}"
+        value_template: "{{ states.calendar..attributes.location}}"
 
   - platform: template
     sensors:
@@ -128,91 +128,88 @@
       cylocation:
         value_template: "{{ states.calendar.cykelkalendern.attributes.location}}"
         
-# http://192.168.10.218/debug/clip.html
-
-# http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors
 
 
   - platform: hue
-    ip_address: 192.168.10.218
-    token: 57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46
+    ip_address: 192.168.1
+    token: 57OnxKljBAeIp2-
     scan_interval: 2
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/54
+    resource: http://192.1/api/57OnxKljBAeIp2-/sensors/54
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Kitchen Temperature'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: /sensors/41
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Hallway Temperature'
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/41
+    resource: /sensors/41
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Hallway Battery'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/48
+    resource: http://192.16De2aI6MUObo9O46/sensors/48
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
     name: 'Guest room Battery'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/48
+    resource: http://192.MUObo9O46/sensors/48
     value_template: '{{ value_json.state.temperature | float / 100 }}'
     unit_of_measurement: °C
     scan_interval: 1800
     name: 'Guest room Temperature'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/50
+    resource: http://1923De2aI6MUObo9O46/sensors/50
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Guest room Lux'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/49
+    resource: http://1923De2aI6MUObo9O46/sensors/49
     value_template: '{{ value_json.state.presence }}'
     name: 'Guest room Presence'
     scan_interval: 10
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/42
+    resource: http://192.e2aI6MUObo9O46/sensors/42
     value_template: '{{ value_json.state.presence }}'
     name: 'Hallway Presence'
     scan_interval: 10
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/43
+    resource: http://192.De2aI6MUObo9O46/sensors/43
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Hallway Lux'
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/56
+    resource: http://192.Xk3De2aI6MUObo9O46/sensors/56
     value_template: '{{ (10 ** (float(value_json.state.lightlevel - 1) / 10000))|round(1) }}'
     unit_of_measurement: Lux
     scan_interval: 300
     name: 'Kitchen Lux'
     
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/55
+    resource: http://192aI6MUObo9O46/sensors/55
     value_template: '{{ value_json.state.presence }}'
     name: 'Kitchen Presence'
     scan_interval: 10
 
   - platform: rest
-    resource: http://192.168.10.218/api/57OnxKljBAeIp2-NTM4WKtXk3De2aI6MUObo9O46/sensors/55
+    resource: http://192.16MUObo9O46/sensors/55
     value_template: '{{ value_json.config.battery }}'
     unit_of_measurement: '%'
     scan_interval: 1800
