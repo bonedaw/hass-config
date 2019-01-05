@@ -1926,12 +1926,7 @@
     to: 'on'
   - platform: state
     entity_id:
-      - device_tracker.christer_samsung_s9
-      - device_tracker.honor9lan
-      - device_tracker.tracy_all
-      - device_tracker.galaxys9lan
-      - device_tracker.google_maps_108889296451373807738
-      - device_tracker.google_maps_116768446304662806225
+
 #      - group.extra_device_trackers
     to: 'home'
   condition:
@@ -1953,16 +1948,16 @@
     condition: or
     conditions:
       - condition: state
-        entity_id: device_tracker.galaxys9lan
+        entity_id: device_tracker.
         state: 'home'
       - condition: state
-        entity_id: device_tracker.christer_samsung_s9
+        entity_id: device_tracker.
         state: 'home'
       - condition: state
-        entity_id: device_tracker.google_maps_108889296451373807738
+        entity_id: device_tracker.
         state: 'home'
       - condition: state
-        entity_id: device_tracker.google_maps_116768446304662806225
+        entity_id: device_tracker.
         state: 'home'
   action:
   - service: input_select.select_option
@@ -1987,10 +1982,10 @@
     condition: or
     conditions:
       - condition: state
-        entity_id: device_tracker.galaxys9lan
+        entity_id: device_tracker.
         state: 'home'
       - condition: state
-        entity_id: device_tracker.google_maps_108889296451373807738
+        entity_id: device_tracker.
         state: 'home'
   action:
   - service: input_boolean.turn_on
@@ -2009,11 +2004,11 @@
   trigger:
   - platform: state
     entity_id:
-      - device_tracker.galaxys9lan
+      - device_tracker.
     to: 'home'
   - platform: state
     entity_id:
-      - device_tracker.google_maps_108889296451373807738
+      - device_tracker.
     to: 'home'
   action:
   - service: input_boolean.turn_on
@@ -2038,10 +2033,10 @@
     condition: or
     conditions:
       - condition: state
-        entity_id: device_tracker.galaxys9lan
+        entity_id: device_tracker.
         state: 'not_home'
       - condition: state
-        entity_id: device_tracker.google_maps_108889296451373807738
+        entity_id: device_tracker.
         state: 'not_home'
   action:
   - service: input_boolean.turn_off
@@ -2068,10 +2063,10 @@
     condition: or
     conditions:
       - condition: state
-        entity_id: device_tracker.christer_samsung_s9
+        entity_id: device_tracker.
         state: 'home'
       - condition: state
-        entity_id: device_tracker.google_maps_116768446304662806225
+        entity_id: device_tracker.
         state: 'home'
   action:
   - service: input_boolean.turn_on
@@ -2094,10 +2089,10 @@
     condition: or
     conditions:
       - condition: state
-        entity_id: device_tracker.christer_samsung_s9
+        entity_id: device_tracker.
         state: 'not_home'
       - condition: state
-        entity_id: device_tracker.google_maps_116768446304662806225
+        entity_id: device_tracker.
         state: 'not_home'
   action:
   - service: input_boolean.turn_off
@@ -2112,11 +2107,11 @@
   trigger:
   - platform: state
     entity_id:
-      - device_tracker.christer_samsung_s9
+      - device_tracker.
     to: 'home'
   - platform: state
     entity_id:
-      - device_tracker.google_maps_116768446304662806225
+      - device_tracker.
     to: 'home'
   action:
   - service: input_boolean.turn_on
@@ -2134,12 +2129,12 @@
   initial_state: 'on'
   trigger:
   - platform: state
-    entity_id: device_tracker.galaxys9lan
+    entity_id: device_tracker.
     to: 'not_home'
     for:
       seconds: 180
   - platform: state
-    entity_id: device_tracker.google_maps_108889296451373807738
+    entity_id: device_tracker.
     to: 'not_home'
     for:
       seconds: 180
@@ -2165,12 +2160,12 @@
   initial_state: 'on'
   trigger:
   - platform: state
-    entity_id: device_tracker.christer_samsung_s9
+    entity_id: device_tracker.
     to: 'not_home'
     for:
       seconds: 180
   - platform: state
-    entity_id: device_tracker.google_maps_116768446304662806225
+    entity_id: device_tracker.
     to: 'not_home'
     for:
       seconds: 180
@@ -2208,10 +2203,10 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: device_tracker.christer_samsung_s9
+      entity_id: device_tracker.
       state: 'home'
     - condition: state
-      entity_id: device_tracker.google_maps_116768446304662806225
+      entity_id: device_tracker.
       state: 'home'
   action:
   - service: input_boolean.turn_on
@@ -2241,10 +2236,10 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: device_tracker.galaxys9lan
+      entity_id: device_tracker.
       state: 'home'
     - condition: state
-      entity_id: device_tracker.google_maps_108889296451373807738
+      entity_id: device_tracker.
       state: 'home'
   action:
   - service: input_boolean.turn_on
