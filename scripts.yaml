@@ -1,3 +1,24 @@
+    home_or_not:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('device_tracker.christer_samsung_s9', 'not_home') and is_state('device_tracker.galaxys9lan', 'not_home') %}
+                  script.not_home
+                {% else %}
+                  script.at_home
+                {% endif %}
+
+    not_home:
+        sequence:
+          - service: switch.turn_off
+            data: 
+              entity_id: switch.home
+    at_home:
+        sequence:
+          - service: switch.turn_on
+            data: 
+              entity_id: switch.home
 
     party_random:
         sequence:
@@ -10,60 +31,81 @@
                 {{ colors|random }}
               transition: 10
 
-    party:
+    xmas_lights_on:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_select.house_mode', 'Home') %}
+                  script.dusk_inside
+                {% else %}
+                  script.christmas_dusk_not_home
+                {% endif %}
+    christmas_dusk_not_home:
+        sequence:
+          - service: scene.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_select.house_mode', 'Home') %}
+                  scene.dusk_window
+                {% else %}
+                  scene.christmas_dusk_not_home
+                {% endif %}
+
+    xmas_lights_night:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_select.house_mode', 'Home') %}
+                  script.xmas_lights_evening
+                {% else %}
+                  script.xmas_lights_off
+                {% endif %}
+    xmas_lights_evening:
         sequence:
           - service: light.turn_on
             data:
-              entity_id: light.living_room_window_light, light.hue_color_candle_1_3
-              brightness: 180
-              rgb_color: [255,191,88]
+              entity_id: light.bookshelf_color, light.hue_color_candle_1_5, light.book_shelf_color_two
+              brightness: 137
+              rgb_color: [255,189,84]
               transition: 10
-          - service: light.turn_on
+          - service: light.turn_off
+            data: 
+              entity_id: light.hue_color_candle_1_2
+#              rgb_color: [255,189,84]
+#              brightness: 10
+#              transition: 10
+          - service: light.turn_off
+            data: 
+              entity_id: light.onoff_plug_3
+          - service: light.turn_off
+            data: 
+              entity_id: light.hue_go_1
+          - service: light.turn_off
+            data: 
+              entity_id: light.onoff_plug_2
+    xmas_lights_off:
+        sequence:
+          - service: light.turn_off
             data:
-              entity_id: light.hue_color_candle_1, light.hue_color_candle_1_4
-              brightness: 180
-              rgb_color: [255,0,67]
-              transition: 10
+              entity_id: light.bookshelf_color, light.hue_color_candle_1_5, light.book_shelf_color_two, light.hue_color_candle_1_2, light.onoff_plug_3, light.hue_go_1, light.onoff_plug_2
+
+    party:
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.party_dusk
           - service: light.turn_on
             data:
               entity_id: light.onoff_plug_3, light.onoff_plug_2
-          - service: light.turn_on
-            data:
-              entity_id: light.hue_go_1
-              brightness: 60
-              rgb_color: [191,29,255]
-              transition: 10
-          - service: light.turn_on
-            data:
-              entity_id: light.hue_color_candle_1_2
-              brightness: 60
-              rgb_color: [64,255,0]
-              transition: 10
-          - service: light.turn_on
-            data:
-              entity_id: light.bookshelf_color
-              brightness: 60
-              rgb_color: [255,43,48]
-              transition: 10
-          - service: light.turn_on
-            data:
-              entity_id: light.hue_color_candle_1_5
-              brightness: 60
-              rgb_color: [64,0,255]
-              transition: 10
-          - service: light.turn_on
-            data:
-              entity_id: light.book_shelf_color_two
-              brightness: 60
-              rgb_color: [81,255,119]
-              transition: 10
           - service: switch.turn_on
             data:
               entity_id: switch.twinkly
 
     select_hue_light:
         sequence:
-          - service: script.set_hue_christmas_color
+          - service: script.set_hue_random_color
             data_template:
               light_id: >-
                 {% set i = (range(1,6)|random) %}
@@ -88,7 +130,7 @@
                 {%- endif %}  
                 {{ color }}  
 
-    set_hue_christmas_color:
+    set_hue_random_color:
         sequence:
           - service: light.turn_on
             data_template:
@@ -101,7 +143,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.cg_phone_tss
                 {% else %}
                   script.cg_phone_notts
@@ -125,7 +167,15 @@
             data_template:
               entity_id: media_player.all
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.all
@@ -144,7 +194,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.lt_phone_tss
                 {% else %}
                   script.lt_phone_notts
@@ -168,7 +218,15 @@
             data_template:
               entity_id: media_player.all
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.all
@@ -188,7 +246,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.mixdone_tss
                 {% else %}
                   script.mixdone_notts
@@ -227,7 +285,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
@@ -253,7 +319,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.mixer_tss
                 {% else %}
                   script.mixer_notts
@@ -281,7 +347,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.kitchen
@@ -316,7 +390,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.coffeemaker_tss
                 {% else %}
                   script.coffeemaker_notts
@@ -344,7 +418,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.kitchen
@@ -406,7 +488,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.teadone_tts
                 {% else %}
                   script.teadone_notts
@@ -434,7 +516,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
@@ -494,7 +584,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.coffeedone_tts
                 {% else %}
                   script.coffeedone_notts
@@ -523,7 +613,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
@@ -590,7 +688,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.coffeemaker_tss
                 {% else %}
                   script.coffeemaker_notts
@@ -618,7 +716,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.kitchen
@@ -719,10 +825,12 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('switch.xmas', 'on') %}
+                {% if is_state('switch.xmas', 'on' ) and is_state('switch.new_year', 'off') -%}
                   script.tts_xmas_guest
                 {% elif is_state('switch.halloween', 'on') %}
                   script.tts_halloween
+                {% elif is_state('switch.new_year', 'on') and is_state('switch.xmas', 'on') -%}
+                  script.guest_room_welcome_tts
                 {% else %}
                   script.guest_room_welcome_tts
                 {% endif %}
@@ -740,7 +848,15 @@
             data_template:
               entity_id: media_player.jbllink104191
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.jbllink104191
@@ -748,7 +864,7 @@
                {% if now().strftime("%H")|int < 12 %}
                {{["Keep the dream alive: Hit the snooze button.",
                "Mankind is divisible into two great classes: hosts and guests.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "Every house where love abides And friendship is a guest, Is surely home, and home, sweet home For there the heart can rest.",
                "The ornaments of your home are the people who smile upon entering time and time again.",
                "It is not the quantity of the meat but the cheerfulness of the guests which makes the feast.",
@@ -775,7 +891,7 @@
                ] | random}} ... 
                {% elif now().strftime("%H")|int < 18 %}
                {{["The elevator to success is out of order. You’ll have to use the stairs.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "People say nothing is impossible, but I do nothing every day.",
                "I'm not shy, I'm holding back my awesomeness so I don't intimidate you.",
                "Sorry for the mean, awful, accurate things I said.",
@@ -794,7 +910,7 @@
                "There are two ways of arguing with a woman, and neither one works.",
                "The right person in the wrong place can make all the difference in the world.",
                "The President has been kidnapped by ninjas. Are you a bad enough dude to rescue the President?",
-               "It’s time to kick ass and chew bubble gum…and I’m all out off gum.",
+               "It’s time to kick ass and chew bubble gum… and I am all out off bubble gum.",
                "What are you doing with that thing that no one knows what it does",
                "Keeping one's guests supplied with liquor is the first law of hospitality. "
                ] | random}} ... 
@@ -802,7 +918,7 @@
                {{["When life gives you lemons, squirt someone in the eye.",
                "Accept who you are. Unless you're a serial killer.",
                "Never go to bed mad. Stay up and fight.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "Good evening.",
                "Good to see you.",
                "Nice to see you.",
@@ -827,7 +943,7 @@
                "Never go to bed mad. Stay up and fight.",
                "Good evening.",
                "Good to see you.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "Nice to see you.",
                "Going to eat now again, are you?",
                "Never trust people who smile constantly. They’re either selling something or not very bright.",
@@ -843,7 +959,7 @@
                "Throughout human history, we have been dependent on machines to survive. Fate, it seems, is not without a sense of irony.",
                "There is a difference between knowing the path and walking the path.",
                "To deny our impulses is to deny the very thing that makes us human."
-               ] | random}} ...                
+               ] | random}} ...
                {% endif %}
                {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
           - service: input_boolean.turn_on
@@ -859,10 +975,12 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('switch.xmas', 'on') %}
+                {% if is_state('switch.xmas', 'on' ) and is_state('switch.new_year', 'off') -%}
                   script.tts_xmas_kitchen
                 {% elif is_state('switch.halloween', 'on') %}
                   script.tts_halloween
+                {% elif is_state('switch.new_year', 'on') and is_state('switch.xmas', 'on') -%}
+                  script.kitchen_welcome_tts
                 {% else %}
                   script.kitchen_welcome_tts
                 {% endif %}
@@ -880,7 +998,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.kitchen
@@ -889,7 +1015,7 @@
                {{["Keep the dream alive: Hit the snooze button.",
                "Morning comes whether you set the alarm or not.",
                "With the new day comes new strength and new thoughts.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is an illusion just if you want to know",
                "Every morning starts a new page in your story.",
                "Just one small positive thought in the morning can change your whole day.",
                "Joy comes in the morning",
@@ -914,12 +1040,12 @@
                {% elif now().strftime("%H")|int < 18 %}
                {{["An apple a day keeps anyone away if you throw it hard enough.",
                "The elevator to success is out of order. You’ll have to use the stairs.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is just an illusion,  just if you want to know",
                "People say nothing is impossible, but I do nothing every day.",
                "I'm not shy, I'm holding back my awesomeness so I don't intimidate you.",
                "Sorry for the mean, awful, accurate things I said.",
                "A balanced diet means a cupcake in each hand.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  just an illusion,   just if you want to know",
                "I am not lazy, I am on energy saving mode.",
                "Doing nothing is hard, you never know when you're done.",
                "Time is an illusion, lunchtime doubly so.",
@@ -929,7 +1055,7 @@
                "What’s kickin’, little chicken",
                "Put that cookie down!",
                "What's cookin', good lookin'?",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is just an illusion,   just if you want to know",
                "Quit now and cake will be served immediately.",
                "Uh oh. Somebody cut the cake. I told them to wait for you, but they did it anyway. There is still some left, though, if you hurry back.",
                "You really shouldn't be here. This isn't safe for you.",
@@ -940,11 +1066,11 @@
                "It's been a long time. How have you been?",
                "Bring me a bucket, and I'll show you a bucket!",
                "Thank You Mario! But our princess is in another castle!",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  just an illusion,   just if you want to know",
                "There are two ways of arguing with a woman, and neither one works.",
                "The right person in the wrong place can make all the difference in the world.",
                "The President has been kidnapped by ninjas. Are you a bad enough dude to rescue the President?",
-               "It’s time to kick ass and chew bubble gum…and I’m all out off gum.",
+               "It’s time to kick ass and chew bubble gum… and I am all out off bubble gum.",
                "What are you doing with that thing that no one knows what it does"
                ] | random}} ... 
                {% elif now().strftime("%H")|int < 07 %}
@@ -954,7 +1080,7 @@
                "The more you weight the harder you are to kidnap. Stay safe, eat cake.",
                "Good evening.",
                "Good to see you.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  just an illusion,   just if you want to know",
                "Nice to see you.",
                "Going to eat now again, are you?",
                "do you eat again now?",
@@ -978,7 +1104,7 @@
                "Accept who you are. Unless you're a serial killer.",
                "Never go to bed mad. Stay up and fight.",
                "The more you weight the harder you are to kidnap. Stay safe, eat cake.",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  just an illusion,   just if you want to know",
                "Good evening.",
                "Good to see you.",
                "Nice to see you.",
@@ -998,7 +1124,7 @@
                "Throughout human history, we have been dependent on machines to survive. Fate, it seems, is not without a sense of irony.",
                "There is a difference between knowing the path and walking the path.",
                "To deny our impulses is to deny the very thing that makes us human."
-               ] | random}} ...                
+               ] | random}} ...
                {% endif %}
                {{ speech_message | replace("\n","") | replace("   ","") | replace("  "," ") }}
           - service: input_boolean.turn_on
@@ -1014,7 +1140,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.cg_home_tts
                 {% else %}
                   script.cg_home_notts
@@ -1032,7 +1158,15 @@
             data_template:
               entity_id: media_player.hallway
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway
@@ -1086,7 +1220,15 @@
             data_template:
               entity_id: media_player.hallway, media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway, media_player.kitchen, media_player.jbllink104191
@@ -1155,7 +1297,15 @@
             data_template:
               entity_id: media_player.hallway
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway
@@ -1338,7 +1488,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.kitchen
@@ -1521,7 +1679,15 @@
             data_template:
               entity_id: media_player.media_player.jbllink104191
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.media_player.jbllink104191
@@ -1697,7 +1863,7 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('media_player.all', 'off') %}
+                {% if is_state('input_boolean.audio_off', 'off') %}
                   script.lt_home_tts
                 {% else %}
                   script.lt_home_notts
@@ -1715,7 +1881,15 @@
             data_template:
               entity_id: media_player.hallway
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway
@@ -1763,10 +1937,12 @@
           - service: script.turn_on
             data_template:
               entity_id: >
-                {% if is_state('switch.xmas', 'on') %}
+                {% if is_state('switch.xmas', 'on' ) and is_state('switch.new_year', 'off') -%}
                   script.tts_xmas_hallen
                 {% elif is_state('switch.halloween', 'on') %}
                   script.tts_halloween
+                {% elif is_state('switch.new_year', 'on') and is_state('switch.xmas', 'on') -%}
+                  script.hallway_welcome_tts
                 {% else %}
                   script.hallway_welcome_tts
                 {% endif %}
@@ -1784,7 +1960,15 @@
             data_template:
               entity_id: media_player.hallway
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway
@@ -1793,7 +1977,7 @@
                {{["Are you coming or leaving.",
                "Namaste",
                "What’s happening",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  an illusion, just if you want to know",
                "How’s it going",
                "What’s up",
                "Im an informational delivery system, I literraly know everything. ",
@@ -1822,7 +2006,7 @@
                "Heeey, baaaaaby.",
                "How you doin",
                "Salutations",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is an illusion, just if you want to know",
                "Greetings",
                "Howdy",
                "The Ultimate Answer to Life, The Universe and Everything is...42!",
@@ -1848,7 +2032,7 @@
                "Good to see you.",
                "Nice to see you.",
                "leaving this hour, are you",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "It’s good to see you.",
                "Tomorrow is often the busiest day of the week.",
                "I don’t go crazy. I am crazy. I just go normal from time to time.",
@@ -1870,7 +2054,7 @@
                "Good to see you.",
                "Nice to see you.",
                "leaving this late, are you",
-               "time is  {{ now().strftime('%H %M') }} just if you want to know",
+               "time is  is an illusion, just if you want to know",
                "It’s good to see you.",
                "Tomorrow is often the busiest day of the week.",
                "I don’t go crazy. I am crazy. I just go normal from time to time.",
@@ -1911,7 +2095,15 @@
             data_template:
               entity_id: media_player.hallway
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.google_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.hallway
@@ -1935,21 +2127,63 @@
               media_content_type: playlist
               media_content_id: spotify:user:spotify:playlist:37i9dQZF1DXcxacyAXkQDu
 
-    play_song:
+    romantic_song:
         sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.valentines_morning
+          - delay: 00:00:01
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_power
+          - delay: 00:00:14
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_up_20
+          - delay: 00:00:01
           - service: media_player.turn_on
             data:
-              entity_id: media_player.living_room_speaker
+              entity_id: media_player.chromecastaudio1108
+          - delay: 00:00:01
           - service: media_player.volume_set
             data_template:
-              entity_id: media_player.living_room_speaker
-              volume_level: 0.5
+              entity_id: media_player.chromecastaudio1108
+              volume_level: 1.0
+          - delay: 00:00:01
           - service: media_player.play_media
             data_template:
-              entity_id: media_player.living_room_speaker
-              media_content_id: '/local/mp3/dawn-chorus.mp3'
-              media_content_type: music
-              
+              entity_id: media_player.chromecastaudio1108
+              media_content_id: 'http://media.ninjus.net/2019/01/Calming-harp-music.mp3'
+              media_content_type: 'music'
+    birthday_song:
+        sequence:
+          - service: scene.turn_on
+            data:
+              entity_id: scene.party_morning
+          - delay: 00:00:01
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_power
+          - delay: 00:00:14
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_up_20
+          - delay: 00:00:01
+          - service: media_player.turn_on
+            data:
+              entity_id: media_player.chromecastaudio1108
+          - delay: 00:00:01
+          - service: media_player.volume_set
+            data_template:
+              entity_id: media_player.chromecastaudio1108
+              volume_level: 1.0
+          - delay: 00:00:01
+          - service: media_player.play_media
+            data_template:
+              entity_id: media_player.chromecastaudio1108
+              media_content_id: "http://media.ninjus.net/2019/01/bday.mp3"
+              media_content_type: 'music'
+
 #weather
     weather:
         sequence:
@@ -1963,7 +2197,15 @@
             data_template:
               entity_id: media_player.living_room_speaker
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.living_room_speaker
@@ -1991,7 +2233,15 @@
             data_template:
               entity_id: media_player.living_room_speaker
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.living_room_speaker
@@ -2020,7 +2270,15 @@
             data_template:
               entity_id: media_player.living_room_speaker
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say voicerss amazon_polly_say
             data_template:
               entity_id: media_player.living_room_speaker
@@ -2122,6 +2380,15 @@
           - service: script.turn_on
             data:
               entity_id: script.topbox_power_toggle
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_down_30
+          - delay: 00:00:14
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_power
+
+
     goodbye3:
         sequence:
           - service: switch.turn_off
@@ -2717,7 +2984,113 @@
             data:
               packet:
               - "JgVEAAgZCDwIGQgZCBkIPAgZCBkIGQg8CDwIPAg8CBkIGQgABZYIGQg8CBkIGQgZCBkIPAg8CDwIGQgZCBkIGQg8CDwIAAWWDQUAAA=="
+#Soundbar
+#power
+    soundbar_power:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDw8PDw8PDw8PMQ8xDzEPDw8xDzEPMQ8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+#aux
+    soundbar_aux:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDw8PDw8xDw8PMQ8PDw8PMQ8xDzEPDw8xDw8PMQ8xDw8PAAcaDQUAAAAAAAA="
+#mute
+    soundbar_mute:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDzEPDw8PDw8PMQ8xDzEPDw8PDzEPMQ8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+#volume down
+    soundbar_down:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDw8PDw8PDzEPMQ8xDzEPDw8xDzEPMQ8PDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+#volume up
+    soundbar_up:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgBQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDzEPMQ8xDw8PMQ8xDzEPDw8PDw8PDw8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+#volume down 5
+    soundbar_down_5:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgVQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDw8PDw8PDzEPMQ8xDzEPDw8xDzEPMQ8PDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+#volume up 5
+    soundbar_up_5:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JgVQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDzEPMQ8xDw8PMQ8xDzEPDw8PDw8PDw8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+
+    soundbar_down_30:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "Jh5QAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDw8PDw8PDzEPMQ8xDzEPDw8xDzEPMQ8PDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+
+    soundbar_up_30:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "Jh5QAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDzEPMQ8xDw8PMQ8xDzEPDw8PDw8PDw8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+
+    soundbar_up_20:
+        sequence:
+          - service: switch.broadlink_send_packet_192_168_10_151
+            data:
+              packet:
+              - "JhRQAJOTDw8PDw8PDw8PMQ8xDw8PDw8xDzEPMQ8xDw8PDw8PDw8Pkw8PDw8PDw8PDzEPMQ8xDw8PMQ8xDzEPDw8PDw8PDw8xDw8PDw8PDzEPAAcaDQUAAAAAAAA="
+
     start_party:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.start_soundbar
+          - service: script.turn_on
+            data:
+              entity_id: script.start_denon
+          - service: script.turn_on
+            data:
+              entity_id: script.start_mediaplayers
+          - delay: 00:00:50
+          - service: script.turn_off
+            data:
+              entity_id: script.start_soundbar
+          - service: script.turn_off
+            data:
+              entity_id: script.start_denon
+          - service: script.turn_off
+            data:
+              entity_id: script.start_mediaplayers
+    start_soundbar:
+        sequence:
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_power
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_aux
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_up_20
+    start_denon:
         sequence:
           - service: script.turn_on
             data:
@@ -2730,6 +3103,47 @@
           - service: script.turn_on
             data:
               entity_id: script.volume_up_10
+    start_mediaplayers:
+        sequence:
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.kitchen
+              volume_level: '0.3'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.hallway
+              volume_level: '0.3'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.bedroom
+              volume_level: '0.4'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_speaker
+              volume_level: '0.5'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_right
+              volume_level: '0.5'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_left
+              volume_level: '0.5'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.living_room_display
+              volume_level: '0.5'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.chromecastaudio1108
+              volume_level: '1.0'
+          - service: media_player.volume_set
+            data:
+              entity_id: media_player.chromecast_audio
+              volume_level: '1.0'
+
+
+
     start_music:
         sequence:
           - service: script.turn_on
@@ -2747,6 +3161,17 @@
           - service: script.turn_on
             data:
               entity_id: script.volume_up_10
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_power
+          - delay: 00:00:10
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_aux
+          - delay: 00:00:02
+          - service: script.turn_on
+            data:
+              entity_id: script.soundbar_up_20
     start_television:
         sequence:
           - service: script.turn_on
@@ -2848,32 +3273,68 @@
           - service: scene.turn_on
             data:
               entity_id: scene.sleep2
-    skymning:
+    
+    morning_routine:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if (now().month==2 and now().day==14)%} script.romantic_song
+                {% elif (now().month==1 and now().day==4)%} script.romantic_song
+                {% elif (now().month==3 and now().day==15)%} script.romantic_song
+                {% elif (now().month==2 and now().day==20)%} script.birthday_song
+                {% else %} script.morning_twillight
+                {% endif%}
+    dusk_window:
         sequence:
           - service: scene.turn_on
-            data:
-              entity_id: scene.skymning
-              
-    skymning_dim_1:
+            data_template:
+              entity_id: >
+                {% if (now().month==2 and now().day==14)%} scene.valentines_dusk
+                {% elif (now().month==2 and now().day==20)%} scene.party_dusk
+                {% elif (now().month==6 and now().day==30)%} scene.party_dusk
+                {% elif (now().month==1 and now().day==4)%} scene.valentines_dusk
+                {% elif (now().month==3 and now().day==15)%} scene.valentines_dusk
+                {% elif (now().month==6 and now().day==6)%} scene.national_holiday
+                {% elif (now().month==10)%} scene.halloween_dusk
+                {% elif is_state('switch.xmas', 'on') %} scene.christmas_dusk
+                {% else %} scene.normal_dusk
+                {% endif%}
+    dusk_inside:
         sequence:
           - service: scene.turn_on
-            data:
-              entity_id: scene.skymning_dim_1
-    skymning_dim_2:
+            data_template:
+              entity_id: >
+                {% if (now().month==2 and now().day==14)%} scene.valentines_dusk_inside
+                {% elif (now().month==2 and now().day==20)%} scene.party_dusk_inside
+                {% elif (now().month==6 and now().day==30)%} scene.party_dusk_inside
+                {% elif (now().month==1 and now().day==4)%} scene.valentines_dusk_inside
+                {% elif (now().month==3 and now().day==15)%} scene.valentines_dusk_inside
+                {% elif (now().month==6 and now().day==6)%} scene.national_holiday_inside
+                {% elif (now().month==10)%} scene.halloween_dusk_inside
+                {% elif is_state('switch.xmas', 'on') %} scene.christmas_dusk_inside
+                {% else %} scene.normal_dusk_inside
+                {% endif%}
+    morning_twillight:
         sequence:
           - service: scene.turn_on
-            data:
-              entity_id: scene.skymning_dim_2
-    skymning_dim_3:
-        sequence:
-          - service: scene.turn_on
-            data:
-              entity_id: scene.skymning_dim_3
-    skymning2:
-        sequence:
-          - service: scene.turn_on
-            data:
-              entity_id: scene.skymning2
+            data_template:
+              entity_id: >
+                {% if (now().month==2 and now().day==14)%} scene.valentines_morning
+                {% elif (now().month==2 and now().day==20)%} scene.party_morning
+                {% elif (now().month==6 and now().day==30)%} scene.party_morning
+                {% elif (now().month==1 and now().day==4)%} scene.valentines_morning
+                {% elif (now().month==3 and now().day==15)%} scene.valentines_morning
+                {% elif (now().month==2)%} scene.normal_dusk_morning
+                {% elif (now().month==3)%} scene.normal_dusk_morning
+                {% elif (now().month==4)%} scene.normal_dusk_morning
+                {% elif (now().month==9)%} scene.normal_dusk_morning
+                {% elif (now().month==10)%} scene.halloween_morning
+                {% elif is_state('switch.xmas', 'on') %} scene.christmas_morning
+                {% else %} scene.morning_routine
+                {% endif%}
+
+
 #coffe/vattenkokare off
     coffee_off:
         sequence:
@@ -2916,8 +3377,25 @@
             data:
               entity_id: light.kaffe
 
+    media_off:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_boolean.audio_off', 'off') %}
+                  script.media_off_tts
+                {% else %}
+                  script.media_off_notts
+                {% endif %}
+    media_off_notts:
+        sequence:
+          - service: notify.push
+            data:
+              title: 'Media off'
+              message: 'Livingroom TV is off'
+
  #media_off
-    media_off:   
+    media_off_tts:   
 #    media_off: 
         sequence:
           - service: media_player.turn_on
@@ -2930,15 +3408,58 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
               message: >
                "Streaming is off"
 
+
+    media_playing:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_boolean.audio_off', 'off') %}
+                  script.media_playing_tts
+                {% else %}
+                  script.media_playing_notts
+                {% endif %}
+    media_playing_notts:
+        sequence:
+          - service: notify.push
+            data:
+              title: 'Media playing'
+              message: 'Livingroom TV playing'
+
+    lidija_home:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state("device_tracker.christer_samsung_s9", "not_home") -%}
+                  script.push_lt_home
+                {% else %}
+                  script.push_lt_home_notts
+                {% endif %}
+
+    push_lt_home_notts:
+        sequence:
+          - service: switch.turn_on
+            data: 
+              entity_id: switch.lt_present
+
  #media_playing
-    media_playing:   
+    media_playing_tts:   
 #    media_playing: 
         sequence:
           - service: media_player.turn_on
@@ -2951,15 +3472,40 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
               message: >
                "Streaming is started"
 
+    media_paused:
+        sequence:
+          - service: script.turn_on
+            data_template:
+              entity_id: >
+                {% if is_state('input_boolean.audio_off', 'off') %}
+                  script.media_paused_tts
+                {% else %}
+                  script.media_paused_notts
+                {% endif %}
+    media_paused_notts:
+        sequence:
+          - service: notify.push
+            data:
+              title: 'Media paused'
+              message: 'Livingroom TV paused'
+
  #media_paused
-    media_paused:   
+    media_paused_tts:   
 #    media_paused: 
         sequence:
           - service: media_player.turn_on
@@ -2972,7 +3518,15 @@
             data_template:
               entity_id: media_player.kitchen
               volume_level: >
-               0.4
+                {% if is_state('sensor.period_of_day', 'day') %}
+                  0.5
+                {% elif is_state('sensor.period_of_day', 'dusk') %}
+                  0.4
+                {% elif is_state('sensor.period_of_day', 'dawn') %}
+                  0.3
+                {% else %}
+                  0.3
+                {% endif %}
           - service: tts.amazon_polly_say #google_say amazon_polly_say voicerss
             data_template:
               entity_id: media_player.kitchen
