@@ -24,7 +24,71 @@
 #       Mode                          #
 #                                     #
 #######################################
+- alias: 'Winter'
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: '00:10:00'
+  - platform: homeassistant
+    event: start
+  condition:
+    - condition: state
+      entity_id: sensor.seasons
+      state: 'Winter'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_season
+    data:
+      option: 'Winter'
 
+- alias: 'Spring'
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: '00:10:00'
+  - platform: homeassistant
+    event: start
+  condition:
+    - condition: state
+      entity_id: sensor.seasons
+      state: 'Spring'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_season
+    data:
+      option: 'Spring'
+- alias: 'Summer'
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: '00:10:00'
+  - platform: homeassistant
+    event: start
+  condition:
+    - condition: state
+      entity_id: sensor.seasons
+      state: 'Summer'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_season
+    data:
+      option: 'Summer'
+- alias: 'Autumn'
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: '00:10:00'
+  - platform: homeassistant
+    event: start
+  condition:
+    - condition: state
+      entity_id: sensor.seasons
+      state: 'Autumn'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_season
+    data:
+      option: 'Autumn'
 
 #  - service: scene.turn_on
 #    data:
@@ -51,6 +115,28 @@
   - service: switch.turn_off
     data: 
       entity_id: switch.xmas
+
+- alias: 'new year to on'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.new_year
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.new_year
+
+- alias: 'new year to off'
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_boolean.new_year
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.new_year
 
 - alias: 'halloween to on'
   initial_state: 'on'
@@ -243,6 +329,10 @@
     platform: homeassistant
     # Event can also be 'shutdown'
     event: shutdown
+  condition:
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Away'
   action:
     - service: notify.push
       data:
@@ -384,9 +474,39 @@
       title: Pollen Alert
       message: 'Höga halter av pollen'
 
+#######################################
+#                                     #
+#       Morning                       #
+#                                     #
+#######################################
 
+- alias: morning
+  initial_state: 'on'
+  trigger:
+    - platform: time
+      at: '07:00:00'
+  condition:
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Home'
+  action:
+  - service: script.turn_on
+    entity_id: 
+      - script.morning_routine
 
-
+- alias: morning
+  initial_state: 'on'
+  trigger:
+    - platform: time
+      at: '08:30:00'
+  condition:
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Away'
+  action:
+  - service: scene.turn_on
+    entity_id: 
+      - scene.morning_twillight_off
 #######################################
 #                                     #
 #       Skymning                      #
@@ -406,17 +526,28 @@
     entity_id: sun.sun
     value_template: '{{ states.attributes.elevation }}'
     below: 4.0  
+  - condition: numeric_state
+    entity_id: 'sensor.kitchen_lux'
+    below: 5.0
   - condition: time
+    after: '14:00'
     before: '21:45'
+  - condition: state
+    entity_id: light.living_room_window_light
+    state: 'off'
+  - condition: state
+    entity_id: switch.party
+    state: 'off'
   action:
-  - service: automation.turn_on
-    entity_id: automation.window_lightning
+  - service: script.turn_on
+    entity_id: 
+      - script.dusk_window
 
 - alias: Living Room Lamp - Sunset
   trigger:
     - platform: sun
       event: sunset
-      offset: "-00:30:00"
+      offset: "+0:55:00"
     - platform: state
       entity_id: input_select.house_mode
       to: 'Home'
@@ -426,16 +557,23 @@
       state: 'Home'
     - condition: sun 
       after: sunset 
-      after_offset: "-00:30:00"
+      after_offset: "+0:55:00"
     - condition: state
       entity_id: switch.party
       state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
     - condition: time
+      after: '14:00'
       before: '21:45'
+    - condition: state
+      entity_id: light.living_room_window_light
+      state: 'off'
   action:
   - service: script.turn_on
     entity_id: 
-      - script.skymning
+      - script.dusk_inside
 
 - alias: 'window lightning'
   initial_state: true
@@ -460,12 +598,19 @@
   - condition: state
     entity_id: switch.party
     state: 'off'
+  - condition: numeric_state
+    entity_id: 'sensor.kitchen_lux'
+    below: 5.0
   - condition: time
+    after: '14:00'
     before: '21:45'
+  - condition: state
+    entity_id: light.living_room_window_light
+    state: 'off'
   action:
   - service: script.turn_on
     entity_id: 
-      - script.skymning
+      - script.dusk_window
 #skymning
 - alias: 'Window winter'
   initial_state: 'on'
@@ -486,12 +631,19 @@
     - condition: state
       entity_id: switch.party
       state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
     - condition: time
+      after: '14:00'
       before: '21:45'
+    - condition: state
+      entity_id: light.living_room_window_light
+      state: 'off'
   action:
     - service: script.turn_on
       entity_id: 
-        - script.skymning
+        - script.dusk_window
 - alias: 'Window Autumn'
   initial_state: 'on'
   trigger:
@@ -511,19 +663,26 @@
     - condition: state
       entity_id: switch.party
       state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
     - condition: time
+      after: '14:00'
       before: '21:45'
+    - condition: state
+      entity_id: light.living_room_window_light
+      state: 'off'
   action:
     - service: script.turn_on
       entity_id: 
-        - script.skymning
+        - script.dusk_window
 
 - alias: 'Window Spring'
   initial_state: 'on'
   trigger:
   - platform: sun
     event: sunset
-    offset: "+0:20:00"
+    offset: "+0:35:00"
   condition:
     - condition: state
       entity_id: sensor.seasons
@@ -537,19 +696,26 @@
     - condition: state
       entity_id: switch.party
       state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
     - condition: time
+      after: '14:00'
       before: '21:45'
+    - condition: state
+      entity_id: light.living_room_window_light
+      state: 'off'
   action:
     - service: script.turn_on
       entity_id: 
-        - script.skymning
+        - script.dusk_window
 
 - alias: 'Window Summer'
   initial_state: 'on'
   trigger:
   - platform: sun
     event: sunset
-    offset: "+0:40:00"
+    offset: "+0:55:00"
   condition:
     - condition: state
       entity_id: sensor.seasons
@@ -563,13 +729,46 @@
     - condition: state
       entity_id: switch.party
       state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
     - condition: time
+      after: '14:00'
+      before: '21:45'
+    - condition: state
+      entity_id: light.living_room_window_light
+      state: 'off'
+  action:
+    - service: script.turn_on
+      entity_id: 
+        - script.dusk_window
+
+- alias: 'dusk inside'
+  initial_state: 'on'
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: "+0:55:00"
+  condition:
+    - condition: state
+      entity_id: input_select.status_hemma
+      state: 'Home'
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Home'
+    - condition: state
+      entity_id: switch.party
+      state: 'off'
+    - condition: numeric_state
+      entity_id: 'sensor.kitchen_lux'
+      below: 5.0
+    - condition: time
+      after: '14:00'
       before: '21:45'
   action:
     - service: script.turn_on
       entity_id: 
-        - script.skymning
-
+        - script.dusk_inside
 #######################################
 #                                     #
 #       Belysning                     #
@@ -811,6 +1010,9 @@
   - condition: time
     after: '17:00'
     before: '21:45'
+  - condition: state
+    entity_id: switch.xmas
+    state: 'on'
   action:
     - service: homeassistant.turn_on
       entity_id: switch.twinkly
@@ -836,89 +1038,19 @@
     entity_id: switch.twinkly
     to: 'on'
   condition:
-  - condition: state
-    entity_id: input_select.status_hemma
-    state: 'Home'
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
+#  - condition: state
+#    entity_id: input_select.status_hemma
+#    state: 'Home'
   - condition: state
     entity_id: switch.xmas
     state: 'on'
+  - condition: state
+    entity_id: switch.party
+    state: 'off'
   action:
-#Living room window
-    - service: light.turn_on
+    - service: script.turn_on
       data: 
-        entity_id: light.living_room_window_light
-        rgb_color: [255,191,88]
-        brightness: 220
-        transition: 10
-#Guest room window
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_color_candle_1_3
-        rgb_color: [255,191,88]
-        brightness: 220
-        transition: 10
-#Kitchen window
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_color_candle_1
-        rgb_color: [255,43,0]
-        brightness: 179
-        transition: 10
-#Bedroom window
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_color_candle_1_4
-        rgb_color: [255,43,0]
-        brightness: 179
-        transition: 10
-#right sofa
-    - service: light.turn_off
-      data: 
-        entity_id: light.hue_color_candle_1_2
-#        rgb_color: [255,191,88]
-#        brightness: 60
-#        transition: 10
-#Left sofa
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_go_1
-        rgb_color: [255,191,88]
-        brightness: 179
-        transition: 10
-#Bookshelf
-    - service: light.turn_on
-      data: 
-        entity_id: light.bookshelf_color
-        rgb_color: [255,191,88]
-        brightness: 60
-        transition: 10
-#Bookshelf
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_color_candle_1_5
-        rgb_color: [255,191,88]
-        brightness: 60
-        transition: 10
-#Bookshelf
-    - service: light.turn_on
-      data: 
-        entity_id: light.book_shelf_color_two
-        rgb_color: [255,191,88]
-        brightness: 60
-        transition: 10
-#Left power
-    - service: light.turn_on
-      data: 
-        entity_id: light.onoff_plug_3
-#right power
-    - service: light.turn_on
-      data: 
-        entity_id: light.onoff_plug_2
-    - delay:
-        seconds: 600
+        entity_id: script.xmas_lights_on
 
 - alias: 'xmas_off'
   initial_state: 'on'
@@ -931,46 +1063,15 @@
     entity_id: switch.party
     state: 'off'
   - condition: state
-    entity_id: light.living_room_window_light
-    state: 'off'
+    entity_id: input_select.status_hemma
+    state: 'Home'
+  - condition: state
+    entity_id: input_select.house_mode
+    state: 'Home'
   action:
-    - service: light.turn_on
+    - service: script.turn_on
       data: 
-        entity_id: light.bookshelf_color
-        rgb_color: [255,189,84]
-        brightness: 137
-        transition: 10
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_color_candle_1_5
-        rgb_color: [255,189,84]
-        brightness: 137
-        transition: 10
-    - service: light.turn_on
-      data: 
-        entity_id: light.book_shelf_color_two
-        rgb_color: [255,189,84]
-        brightness: 137
-        transition: 10
-    - service: light.turn_off
-      data: 
-        entity_id: light.hue_color_candle_1_2
-#        rgb_color: [255,189,84]
-#        brightness: 10
-#        transition: 10
-    - service: light.turn_off
-      data: 
-        entity_id: light.onoff_plug_3
-    - service: light.turn_on
-      data: 
-        entity_id: light.hue_go_1
-        rgb_color: [255,189,84]
-        brightness: 10
-        transition: 10
-    - service: light.turn_on
-      data: 
-        entity_id: light.onoff_plug_2
-
+        entity_id: script.xmas_lights_night
 
 
 #######################################
@@ -1089,9 +1190,9 @@
     entity_id: sensor.medel_temperatur
     below: 16
   condition:
-  - condition: state
-    entity_id: input_select.status_hemma
-    state: 'Home'
+    - condition: state
+      entity_id: input_select.house_mode
+      state: 'Away'
   action:
     service: notify.push
     data_template:
@@ -1142,13 +1243,21 @@
   - platform: state
     entity_id: sensor.hallway_motion_sensor
     to: 'on'
+  - platform: state
+    entity_id: sensor.kitchen_motion_motion_sensor
+    to: 'on'
+  - platform: state
+    entity_id: sensor.guest_room_motion_sensor
+    to: 'on'
   condition:
-  - condition: state
-    entity_id: alarm_control_panel.ha_alarm
-    state: armed_away
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Away'
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: alarm_control_panel.ha_alarm
+        state: 'armed_away'
+      - condition: state
+        entity_id: input_select.house_mode
+        state: 'Away'
   action:
   - service: notify.push
     data_template:
@@ -1347,72 +1456,132 @@
 #       Media                         #
 #                                     #
 #######################################
-# - alias: 'something playing'
-#   initial_state: 'on'
-#   trigger:
-#   - platform: state
-#     entity:
-#          data_template:
-#            entity_id: >
-#             {% if is_state("media_player.bedroom", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.chromecast_audio", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.hallway", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.kitchen", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.living_room_left", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.living_room_display", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.living_room_speaker", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% elif is_state("media_player.living_room_right", "on") %} 
-#             input_boolean.audio_off: 'on'
-#             {% else %} 
-#             input_boolean.audio_off: 'off'
-#             {% endif %}
-
-
-- alias: 'Announcement Movie state playing'
+- alias: 'something playing'
   initial_state: 'on'
   hide_entity: true
   trigger:
     platform: state
-    entity_id: media_player.chromecastultra6229
-    # you can leave this following line out if you want an announcement on every state change.
+    entity_id: media_player.bedroom, media_player.chromecast_audio, media_player.hallway, media_player.kitchen, media_player.living_room_left, media_player.living_room_speaker, media_player.living_room_right, media_player.jbllink104191, media_player.all, media_player.spa
     to: 'playing'
+  # condition:
+  #   condition: or
+  #   conditions:
+  #     - condition: state
+  #       entity_id: media_player.bedroom
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.chromecast_audio
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.hallway
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.kitchen
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.living_room_left
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.living_room_speaker
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.living_room_right
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.jbllink104191
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.all
+  #       state: 'playing'
+  #     - condition: state
+  #       entity_id: media_player.spa
+  #       state: 'playing'
   action:
-  - service: script.turn_on
+  - service: homeassistant.turn_on
     entity_id: 
-      - script.media_playing
+      - input_boolean.audio_off
 
-- alias: 'Announcement Movie state paused'
+- alias: 'something stopped playing'
   initial_state: 'on'
   hide_entity: true
   trigger:
     platform: state
-    entity_id: media_player.chromecastultra6229
-    # you can leave this following line out if you want an announcement on every state change.
-    to: 'paused'
-  action:
-  - service: script.turn_on
-    entity_id: 
-      - script.media_paused
-
-- alias: 'Announcement Movie state paused'
-  initial_state: 'on'
-  hide_entity: true
-  trigger:
-    platform: state
-    entity_id: media_player.chromecastultra6229
-    # you can leave this following line out if you want an announcement on every state change.
+    entity_id: media_player.bedroom, media_player.chromecast_audio, media_player.hallway, media_player.kitchen, media_player.living_room_left, media_player.living_room_speaker, media_player.living_room_right, media_player.jbllink104191, media_player.all, media_player.spa
     to: 'off'
+  condition:
+      - condition: state
+        entity_id: media_player.bedroom
+        state: 'off'
+      - condition: state
+        entity_id: media_player.chromecast_audio
+        state: 'off'
+      - condition: state
+        entity_id: media_player.hallway
+        state: 'off'
+      - condition: state
+        entity_id: media_player.kitchen
+        state: 'off'
+      - condition: state
+        entity_id: media_player.living_room_left
+        state: 'off'
+      - condition: state
+        entity_id: media_player.living_room_speaker
+        state: 'off'
+      - condition: state
+        entity_id: media_player.living_room_right
+        state: 'off'
+      - condition: state
+        entity_id: media_player.jbllink104191
+        state: 'off'
+      - condition: state
+        entity_id: media_player.all
+        state: 'off'
+      - condition: state
+        entity_id: media_player.spa
+        state: 'off'
   action:
-  - service: script.turn_on
+  - service: homeassistant.turn_off
     entity_id: 
-      - script.media_off
+      - input_boolean.audio_off
+
+#- alias: 'Announcement Movie state playing'
+#   initial_state: 'on'
+#   hide_entity: true
+#   trigger:
+#     platform: state
+#     entity_id: media_player.chromecastultra6229
+#     # you can leave this following line out if you want an announcement on every state change.
+#     to: 'playing'
+#   action:
+#   - service: script.turn_on
+#     entity_id: 
+#       - script.media_playing
+
+# - alias: 'Announcement Movie state paused'
+#   initial_state: 'on'
+#   hide_entity: true
+#   trigger:
+#     platform: state
+#     entity_id: media_player.chromecastultra6229
+#     # you can leave this following line out if you want an announcement on every state change.
+#     to: 'paused'
+#   action:
+#   - service: script.turn_on
+#     entity_id: 
+#       - script.media_paused
+
+# - alias: 'Announcement Movie state paused'
+#   initial_state: 'on'
+#   hide_entity: true
+#   trigger:
+#     platform: state
+#     entity_id: media_player.chromecastultra6229
+#     # you can leave this following line out if you want an announcement on every state change.
+#     to: 'off'
+#   action:
+#   - service: script.turn_on
+#     entity_id: 
+#       - script.media_off
 
 #casting
 - alias: 'casting'
@@ -1520,6 +1689,28 @@
     data_template:
       entity_id: media_player.living_room_display
       volume_level: '{{  states.input_number.spotify_volume_hub.state }}'
+
+- alias: 'Volume Guest'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: media_player.jbllink104191
+  action:
+    service: media_player.volume_set
+    data_template:
+      entity_id: media_player.jbllink104191
+      volume_level: '{{  states.input_number.spotify_volume_guest.state }}'
+
+- alias: 'Volume Soundbar'
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: media_player.chromecastaudio1108
+  action:
+    service: media_player.volume_set
+    data_template:
+      entity_id: media_player.chromecastaudio1108
+      volume_level: '{{  states.input_number.spotify_volume_soundbar.state }}'
       
 - alias: 'Volume All'
   initial_state: 'on'
@@ -1529,11 +1720,11 @@
   action:
   - service: media_player.volume_set
     data_template:
-      entity_id: media_player.kitchen, media_player.living_room_left, media_player.living_room_right, media_player.living_room_speaker, media_player.hallway, media_player.chromecast_audio, media_player.bedroom, media_player.living_room_display
+      entity_id: media_player.chromecastaudio1108, media_player.kitchen, media_player.living_room_left, media_player.living_room_right, media_player.living_room_speaker, media_player.hallway, media_player.chromecast_audio, media_player.bedroom, media_player.living_room_display
       volume_level: '{{  states.input_number.spotify_volume_all.state }}'
   - service: input_number.set_value 
     data_template:
-      entity_id: input_number.spotify_volume_kitchen, input_number.spotify_volume_hallway, input_number.spotify_volume_lr, input_number.spotify_volume_lr_r, input_number.spotify_volume_lr_l, input_number.spotify_volume_living_room, input_number.spotify_volume_music, input_number.spotify_volume_cca, input_number.spotify_volume_bedroom, input_number.spotify_volume_hub
+      entity_id: input_number.spotify_volume_soundbar, input_number.spotify_volume_kitchen, input_number.spotify_volume_hallway, input_number.spotify_volume_lr, input_number.spotify_volume_lr_r, input_number.spotify_volume_lr_l, input_number.spotify_volume_living_room, input_number.spotify_volume_music, input_number.spotify_volume_cca, input_number.spotify_volume_bedroom, input_number.spotify_volume_hub
       value: "{{ states.input_number.spotify_volume_all.state }}"
 - alias: 'Volume Music'
   initial_state: 'on'
@@ -1557,11 +1748,11 @@
   action:
   - service: media_player.volume_set
     data_template:
-      entity_id: media_player.living_room_left, media_player.living_room_right, media_player.living_room_speaker
+      entity_id: media_player.chromecastaudio1108, media_player.living_room_left, media_player.living_room_right, media_player.living_room_speaker
       volume_level: '{{  states.input_number.spotify_volume_living_room.state }}'
   - service: input_number.set_value 
     data_template:
-      entity_id: input_number.spotify_volume_lr, input_number.spotify_volume_lr_r, input_number.spotify_volume_lr_l
+      entity_id: input_number.spotify_volume_soundbar, input_number.spotify_volume_lr, input_number.spotify_volume_lr_r, input_number.spotify_volume_lr_l
       value: "{{ states.input_number.spotify_volume_living_room.state }}"
 #######################################
 #                                     #
@@ -1652,7 +1843,51 @@
         entity_id: group.all_actual_lights
 
 
+- alias: Home Mode - Status Home
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.status_hemma
+    to: 'Home'
+  action:
+  - service: switch.turn_on
+    data: 
+      entity_id: switch.status_hemma
 
+- alias: Home Mode - Status Home 2
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: switch.status_hemma
+    to: 'on'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_hemma
+    data:
+      option: 'Home'
+
+- alias: Home Mode - Status Away
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: input_select.status_hemma
+    to: 'Away'
+  action:
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.status_hemma
+
+- alias: Home Mode - Status Away 2
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: switch.status_hemma
+    to: 'off'
+  action:
+  - service: input_select.select_option
+    entity_id: input_select.status_hemma
+    data:
+      option: 'Away'
 
 - alias: Home Mode - Away
   initial_state: 'on'
@@ -1703,20 +1938,17 @@
   - condition: numeric_state
     entity_id: sensor.ha_runtime_in_minutes
     above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Away'
   action:
   - service: input_select.select_option
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
+#morning check
 - alias: 'morning_on'
   initial_state: 'on'
   trigger:
     - platform: time
-      at: '07:00:00'
+      at: '06:30:00'
   condition:
     condition: or
     conditions:
@@ -1737,14 +1969,20 @@
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
-- alias: Home Lidija - check
+#checking LT home
+- alias: 'Hass Started checking LT home'
   initial_state: 'on'
   trigger:
-    platform: time
+  - platform: time
     hours: '/1'
     minutes: 0
     seconds: 0
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id:
+      - switch.lt_present
+    to: 'off'
   condition:
     condition: or
     conditions:
@@ -1765,33 +2003,7 @@
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
-- alias: Home Lidija - check away
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id:
-      - switch.lt_present
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  - condition: state
-    entity_id: device_tracker.google_maps_108889296451373807738
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
+#LT arrives
 - alias: Home Lidija - Arriving
   initial_state: 'on'
   trigger:
@@ -1810,103 +2022,47 @@
   - service: switch.turn_on
     data: 
       entity_id: switch.lt_present
-  - service: notify.push
-    data:
-      title: 'Home'
-      message: 'LT Home'
+  - service: script.turn_on
+    entity_id: script.lidija_home
   - service: input_select.select_option
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
+#checking if LT is home
 - alias: 'Hass Started checking LT home'
   initial_state: 'on'
   trigger:
     platform: homeassistant
-    # Event can also be 'shutdown'
     event: start
   condition:
     condition: or
     conditions:
       - condition: state
         entity_id: device_tracker.galaxys9lan
-        state: 'home'
+        state: 'not_home'
       - condition: state
         entity_id: device_tracker.google_maps_108889296451373807738
-        state: 'home'
+        state: 'not_home'
   action:
-  - service: input_boolean.turn_on
+  - service: input_boolean.turn_off
     data: 
       entity_id: input_boolean.lt_present
-  - service: switch.turn_on
+  - service: switch.turn_off
     data: 
       entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: Home Christer - check
-  initial_state: 'on'
-  trigger:
-    platform: time
-    hours: '/1'
-    minutes: 0
-    seconds: 0
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: device_tracker.christer_samsung_s9
-        state: 'home'
-      - condition: state
-        entity_id: device_tracker.google_maps_116768446304662806225
-        state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
+#checking if CG is away
 - alias: Home Christer - check away
   initial_state: 'on'
   trigger:
+  - platform: time
+    hours: '/1'
+    minutes: 0
+    seconds: 0
   - platform: state
     entity_id:
       - switch.cg_present
     to: 'off'
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: device_tracker.christer_samsung_s9
-        state: 'home'
-      - condition: state
-        entity_id: device_tracker.google_maps_116768446304662806225
-        state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'Hass Started checking CG home'
-  initial_state: 'on'
-  trigger:
-    platform: homeassistant
-    # Event can also be 'shutdown'
+  - platform: homeassistant
     event: start
   condition:
     condition: or
@@ -1928,7 +2084,29 @@
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
+#checking if CG is home
+- alias: 'Hass Started checking CG home 2'
+  initial_state: 'on'
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: device_tracker.christer_samsung_s9
+        state: 'not_home'
+      - condition: state
+        entity_id: device_tracker.google_maps_116768446304662806225
+        state: 'not_home'
+  action:
+  - service: input_boolean.turn_off
+    data: 
+      entity_id: input_boolean.cg_present
+  - service: switch.turn_off
+    data: 
+      entity_id: switch.cg_present
+#CG arrives
 - alias: Home Christer - Arriving
   initial_state: 'on'
   trigger:
@@ -1947,53 +2125,11 @@
   - service: switch.turn_on
     data: 
       entity_id: switch.cg_present
-  - service: notify.push
-    data:
-      title: 'Home'
-      message: 'CG Home'
   - service: input_select.select_option
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-
-- alias: Home Lidija - Leaving
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.galaxys9lan
-    to: 'not_home'
-    for:
-      seconds: 15
-  - platform: state
-    entity_id: device_tracker.google_maps_108889296451373807738
-    to: 'not_home'
-    for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'not_home'
-  - condition: state
-    entity_id: input_boolean.guests_present
-    state: 'off'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Away'
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.lt_present
-
+#LT leaving
 - alias: Home Lidija - Leaving 2
   initial_state: 'on'
   trigger:
@@ -2001,12 +2137,12 @@
     entity_id: device_tracker.galaxys9lan
     to: 'not_home'
     for:
-      seconds: 15
+      seconds: 180
   - platform: state
     entity_id: device_tracker.google_maps_108889296451373807738
     to: 'not_home'
     for:
-      seconds: 15
+      seconds: 180
   condition:
   - condition: numeric_state
     entity_id: sensor.ha_runtime_in_minutes
@@ -2021,58 +2157,23 @@
   - service: switch.turn_off
     data: 
       entity_id: switch.lt_present
-
-- alias: Home Christer - Leaving
+  - service: script.turn_on
+    data: 
+      entity_id: script.home_or_not
+#CG leaving
+- alias: Home Christer - Leaving 
   initial_state: 'on'
   trigger:
   - platform: state
     entity_id: device_tracker.christer_samsung_s9
     to: 'not_home'
     for:
-      seconds: 15
+      seconds: 180
   - platform: state
     entity_id: device_tracker.google_maps_116768446304662806225
     to: 'not_home'
     for:
-      seconds: 15
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.ha_runtime_in_minutes
-    above: 1
-  - condition: state
-    entity_id: input_select.house_mode
-    state: 'Home'
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'not_home'
-  - condition: state
-    entity_id: input_boolean.guests_present
-    state: 'off'
-  action:
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Away'
-  - service: input_boolean.turn_off
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_off
-    data: 
-      entity_id: switch.cg_present
-
-- alias: Home Christer - Leaving 2
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: device_tracker.christer_samsung_s9
-    to: 'not_home'
-    for:
-      seconds: 15
-  - platform: state
-    entity_id: device_tracker.google_maps_116768446304662806225
-    to: 'not_home'
-    for:
-      seconds: 15
+      seconds: 180
   condition:
   - condition: numeric_state
     entity_id: sensor.ha_runtime_in_minutes
@@ -2087,38 +2188,31 @@
   - service: switch.turn_off
     data: 
       entity_id: switch.cg_present
-
-- alias: 'Kitchen CG presence'
+  - service: script.turn_on
+    data: 
+      entity_id: script.home_or_not
+#Motion CG presence
+- alias: 'Motion CG presence'
   initial_state: 'on'
   trigger:
   - platform: state
     entity_id: sensor.kitchen_motion_motion_sensor
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Guest CG presence'
-  initial_state: 'on'
-  trigger:
   - platform: state
     entity_id: sensor.guest_room_motion_sensor
     to: 'on'
+  - platform: state
+    entity_id: sensor.hallway_motion_sensor
+    to: 'on'
   condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: device_tracker.christer_samsung_s9
+      state: 'home'
+    - condition: state
+      entity_id: device_tracker.google_maps_116768446304662806225
+      state: 'home'
   action:
   - service: input_boolean.turn_on
     data: 
@@ -2130,38 +2224,28 @@
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-- alias: 'Hallway CG presence'
+#Motion LT presence
+- alias: 'Motion LT presence'
   initial_state: 'on'
   trigger:
   - platform: state
     entity_id: sensor.hallway_motion_sensor
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.christer_samsung_s9
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.cg_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.cg_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
-- alias: 'Kitchen LT presence'
-  initial_state: 'on'
-  trigger:
+  - platform: state
+    entity_id: sensor.guest_room_motion_sensor
+    to: 'on'
   - platform: state
     entity_id: sensor.kitchen_motion_motion_sensor
     to: 'on'
   condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: device_tracker.galaxys9lan
+      state: 'home'
+    - condition: state
+      entity_id: device_tracker.google_maps_108889296451373807738
+      state: 'home'
   action:
   - service: input_boolean.turn_on
     data: 
@@ -2173,49 +2257,7 @@
     entity_id: input_select.house_mode
     data:
       option: 'Home'
-- alias: 'Guest LT presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.guest_room_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-- alias: 'Hallway LT presence'
-  initial_state: 'on'
-  trigger:
-  - platform: state
-    entity_id: sensor.hallway_motion_sensor
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: device_tracker.galaxys9lan
-    state: 'home'
-  action:
-  - service: input_boolean.turn_on
-    data: 
-      entity_id: input_boolean.lt_present
-  - service: switch.turn_on
-    data: 
-      entity_id: switch.lt_present
-  - service: input_select.select_option
-    entity_id: input_select.house_mode
-    data:
-      option: 'Home'
-
+#Home to home
 - alias: 'home to home'
   initial_state: 'on'
   trigger:
@@ -2226,7 +2268,7 @@
   - service: switch.turn_on
     data: 
       entity_id: switch.home
-
+#Home to away
 - alias: 'home to away'
   initial_state: 'on'
   trigger:
