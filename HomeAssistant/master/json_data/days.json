@@ -1,0 +1,34 @@
+{
+  "MAJOR_US": {
+    "static": {
+      "8/7": "Magnus Birthday",
+      "2/20": "Lidija Birthday",     
+      "11/22": "Mamma Carina Birthday",
+      "2/14": "Valentine's Day",
+      "3/14": "Pi Day",
+      "3/17": "St. Patrick's Day",
+      "4/1": "April Fool's Day",
+      "11/3": "Pappa Sven-Olof Birthday",
+      "5/31": "Syster Mia Birthday",
+      "4/22": "Earth Day",
+      "2/23": "Syster Linda Birthday",
+      "11/5": "Bror Anton Birthday",
+      "5/5": "Cinco de Mayo",
+      "4/24": "Mammas Anders Birthday",
+      "1/30": "Pappas Birgit Birthday",
+      "1/4": "Aniversary Lidija",
+      "3/15": "Engagement Lidija",
+      "5/17": "Farmor Elsa Birthday",
+      "5/18": "Farfar Magnus Birthday",
+      "3/22": "Mormor Stina Birthday",
+      "5/6": "Morfar Mats Birthday",
+      "10/31": "Halloween",
+      "12/6": "St. Nicholas Day",
+      "12/24": "Christmas Eve",
+      "12/31": "New Year's Eve"
+    },
+    "dynamic": {
+      "1/21/2019": "MLK Day"
+    }
+  }
+}
